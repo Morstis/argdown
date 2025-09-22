@@ -3,7 +3,8 @@
 /*jshint esversion: 6 */
 /*jslint node: true */
 
-import yargs = require("yargs");
+import yargs from 'yargs';
+// import { version } from '../../package.json';  // for ES6
 require("pkginfo")(module, "version");
 
 yargs
