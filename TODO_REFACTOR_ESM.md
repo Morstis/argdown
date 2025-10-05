@@ -50,7 +50,7 @@
 - [x] Handle CommonJS-only dependencies (consider alternatives or wrapper modules)
 
 ## Phase 5: Build System Updates
-- [ ] Update all build scripts to remove CommonJS targets
+- [x] Update all build scripts to remove CommonJS targets
 - [ ] Simplify build process (single ESM output instead of dual)
 - [ ] Update test configurations for ESM
 - [ ] Update bundling/packaging for VS Code extension
