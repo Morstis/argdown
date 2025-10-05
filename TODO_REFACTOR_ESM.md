@@ -47,7 +47,7 @@
 - [x] Update dynamic imports to use ESM syntax
 - [x] Fix any `__dirname`/`__filename` usage (use import.meta.url)
 - [x] Update file extensions where necessary (.js → .mjs if needed)
-- [ ] Handle CommonJS-only dependencies (consider alternatives or wrapper modules)
+- [x] Handle CommonJS-only dependencies (consider alternatives or wrapper modules)
 
 ## Phase 5: Build System Updates
 - [ ] Update all build scripts to remove CommonJS targets
