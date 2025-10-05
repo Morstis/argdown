@@ -4,10 +4,16 @@
 /*jslint node: true */
 
 import yargs from 'yargs';
-// import { version } from '../../package.json';  // for ES6
-require("pkginfo")(module, "version");
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
-yargs
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf8'));
+const version = packageJson.version;
+
+yargs()
   .showHelpOnFail(true)
   .scriptName("argdown")
   .options({

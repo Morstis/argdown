@@ -1,16 +1,20 @@
 import PDFDocument from "pdfkit";
 // var fs = require("fs");
 import { promises as fs, createWriteStream } from "fs";
-let path = require("path");
-let mkdirp = require("mkdirp");
-import SVGtoPDF from "svg-to-pdfkit";
+import * as path from "path";
+import { createRequire } from "module";
+import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 import isFunction from "lodash.isfunction";
 import isString from "lodash.isstring";
+
+// Import CommonJS-only package using createRequire
+const require = createRequire(import.meta.url);
+const SVGtoPDF = require("svg-to-pdfkit");
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 import {
   IArgdownRequest,
   IRequestHandler,
@@ -20,7 +24,7 @@ import {
   mergeDefaults,
   ArgdownPluginError
 } from "@argdown/core";
-import { IFileNameProvider } from "./SaveAsFilePlugin";
+import { IFileNameProvider } from "./SaveAsFilePlugin.js";
 
 export interface IPdfSettings {
   outputDir?: string;

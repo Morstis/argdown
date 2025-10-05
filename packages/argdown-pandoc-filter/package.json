@@ -5,10 +5,18 @@
   },
   "version": "1.7.7",
   "description": "Turns Argdown code fences into svg, png, jpg, webp or web-component argument maps",
+  "type": "module",
   "bin": {
-    "argdown-filter": "dist/index.js"
+    "argdown-filter": "./dist/index.js"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
@@ -17,7 +25,7 @@
     "overwrite-snapshots": "cross-env CHAI_SNAPSHOT_UPDATE=true npm run test",
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "report": "nyc report",
-    "clean": "rimraf \"dist/*\" && rimraf \"dist-esm/*\"",
+    "clean": "rimraf \"dist/*\"",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master"
   },

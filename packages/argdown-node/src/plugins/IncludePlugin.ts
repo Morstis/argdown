@@ -2,13 +2,13 @@ import * as fs from "fs";
 import { promisify } from "util";
 
 const readFileAsync = promisify(fs.readFile);
-let path = require("path");
+import * as path from "path";
 import defaultsDeep from "lodash.defaultsdeep";
 import includes from "lodash.includes";
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 import {
   IArgdownRequest,
   IRequestHandler,

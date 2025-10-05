@@ -4,14 +4,13 @@ import {
   RelationMember,
   IRange,
   RangeType
-} from "./model/model";
-import { isTokenNode, isRuleNode } from "./model/model";
+} from "./model/model.js";
+import { isTokenNode, isRuleNode } from "./model/model.js";
 import { IToken } from "chevrotain";
 import pixelWidth from "string-pixel-width";
 import cloneDeep from "lodash.clonedeep";
-
-const mdurl = require("mdurl");
-const punycode = require("punycode/");
+import * as mdurl from "mdurl";
+import * as punycode from "punycode/";
 
 // taken from: https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 

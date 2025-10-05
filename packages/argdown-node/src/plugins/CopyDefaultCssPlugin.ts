@@ -1,13 +1,16 @@
-let fs = require("fs");
-let path = require("path");
-let mkdirp = require("mkdirp");
+import * as fs from "fs";
+import * as path from "path";
+import { createRequire } from "module";
+import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 
 import { IArgdownRequest, IRequestHandler } from "@argdown/core";
+
+const require = createRequire(import.meta.url);
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 
 export interface ICopyDefaultCssSettings {
   outputDir?: string;

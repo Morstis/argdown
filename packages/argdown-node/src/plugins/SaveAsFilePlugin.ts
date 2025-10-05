@@ -1,6 +1,6 @@
-let fs = require("fs");
-let path = require("path");
-let mkdirp = require("mkdirp");
+import * as fs from "fs";
+import * as path from "path";
+import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 import isString from "lodash.isstring";
 import isEmpty from "lodash.isempty";
@@ -14,7 +14,7 @@ import {
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 
 export interface IFileNameProvider {
   (

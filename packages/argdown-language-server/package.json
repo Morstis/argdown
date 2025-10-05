@@ -4,9 +4,20 @@
   "version": "1.8.0",
   "author": "Christian Voigt",
   "license": "MIT",
-  "main": "dist/node/server-node.js",
-  "browser": "dist/browser/server-browser.js",
-  "types": "dist/node/server-node.d.ts",
+  "type": "module",
+  "main": "./dist/node/server-node.js",
+  "browser": "./dist/browser/server-browser.js",
+  "types": "./dist/node/server-node.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/node/server-node.js",
+      "types": "./dist/node/server-node.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser/server-browser.js",
+      "types": "./dist/browser/server-browser.d.ts"
+    }
+  },
   "files": [
     "dist/"
   ],

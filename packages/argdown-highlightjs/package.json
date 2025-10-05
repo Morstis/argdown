@@ -2,18 +2,22 @@
   "name": "@argdown/highlightjs",
   "version": "1.7.5",
   "description": "Argdown language definition for highlightjs",
-  "main": "dist/index.js",
-  "module": "dist-esm/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
-    "dist/",
-    "dist-esm/"
+    "dist/"
   ],
   "scripts": {
     "sandbox": "parcel ./test/sandbox.html",
-    "build": "npm run clean && npm run build:src && npm run build:esm && node copy-css.js",
-    "build:esm": "tsc -m es6 --target ES2022 --outDir dist-esm",
-    "build:src": "tsc",
-    "clean": "rimraf \"dist/*\" --glob && rimraf \"dist-esm/*\" --glob",
+    "build": "npm run clean && tsc && node copy-css.js",
+    "clean": "rimraf \"dist/*\" --glob",
     "copy-css": "",
     "test": "echo \"No tests to run here\""
   },

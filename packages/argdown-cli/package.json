@@ -12,7 +12,14 @@
   },
   "version": "1.7.5",
   "license": "MIT",
-  "main": "dist/cli.js",
+  "type": "module",
+  "main": "./dist/cli.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "dependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
@@ -21,7 +28,6 @@
     "@types/yargs": "^17.0.33",
     "import-global": "^1.1.1",
     "markdown-it": "^14.1.0",
-    "pkginfo": "^0.4.1",
     "yargs": "^17.7.2"
   },
   "bin": {
@@ -37,8 +43,7 @@
   },
   "scripts": {
     "deploy": "npm run version:patch && git push --tags origin HEAD:master",
-    "build": "npm run clean && npm run build:src",
-    "build:src": "tsc",
+    "build": "npm run clean && tsc",
     "test": "NODE_OPTIONS=--no-deprecation mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
     "test:build": "NODE_OPTIONS=--no-deprecation npm run build && NODE_OPTIONS=--no-deprecation mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
     "test:custom-process": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts --fgrep \"custom process\"",
