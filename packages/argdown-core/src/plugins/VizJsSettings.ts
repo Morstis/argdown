@@ -12,7 +12,7 @@ export interface IVizJsSettings {
   engine?: GraphvizEngine;
   nop?: number;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for any plugin using Viz.js, for example the [[DotToSvgExportPlugin]]

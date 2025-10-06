@@ -1,6 +1,6 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest, IArgdownResponse } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import {
   validateColorString,
   isString,
@@ -9,15 +9,15 @@ import {
   mergeDefaults,
   ensure,
   DefaultSettings
-} from "../utils";
-import { colorSchemes } from "./colorSchemes";
+} from "../utils.js";
+import { colorSchemes } from "./colorSchemes.js";
 import {
   ISection,
   ArgdownTypes,
   IMapNode,
   isGroupMapNode
-} from "../model/model";
-import { ITagData } from "./ModelPlugin";
+} from "../model/model.js";
+import { ITagData } from "./ModelPlugin.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 export interface IColorSettings {
@@ -87,7 +87,7 @@ export interface IColorSettings {
    */
   ignoreColorData?: boolean;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for colorization
@@ -150,10 +150,10 @@ export class ColorPlugin implements IArgdownPlugin {
     } else {
       colorScheme = settings.colorScheme!;
     }
-    let groupColorScheme: string[] = settings.groupColorScheme!;
+    const groupColorScheme: string[] = settings.groupColorScheme!;
 
     if (settings.colorizeByTag || settings.colorizeGroupsByTag) {
-      for (let tagData of Object.values(response.tags!)) {
+      for (const tagData of Object.values(response.tags ?? {})) {
         const tag = tagData.tag;
         if (!tag) {
           continue;
@@ -192,7 +192,7 @@ export class ColorPlugin implements IArgdownPlugin {
         }
       }
     }
-    for (let ec of Object.values(response.statements!)) {
+    for (const ec of Object.values(response.statements ?? {})) {
       ec.fontColor = settings.statementFontColor;
       if (!settings.ignoreColorData && ec.data && ec.data.color !== undefined) {
         ec.color = getColor(colorScheme, ec.data.color);
@@ -202,7 +202,7 @@ export class ColorPlugin implements IArgdownPlugin {
       ) {
         ec.color = getColor(colorScheme, settings.statementColors[ec.title!]);
       } else if (settings.colorizeByTag && ec.tags && ec.tags.length > 0) {
-        const tag = getTagWithHighestPriority(ec.tags, response.tags!);
+        const tag = getTagWithHighestPriority(ec.tags, response.tags ?? {});
         ec.color = getColor(colorScheme, tagColors[tag]);
       } else if (colorScheme && colorScheme.length > 0) {
         ec.color = colorScheme[0];
@@ -213,12 +213,12 @@ export class ColorPlugin implements IArgdownPlugin {
           .forEach(r => {
             r.color = getColor(
               colorScheme,
-              settings.relationColors![r.relationType]!
+              settings.relationColors![r.relationType] ?? "default"
             );
           });
       }
     }
-    for (let a of Object.values(response.arguments!)) {
+    for (const a of Object.values(response.arguments ?? {})) {
       a.fontColor = settings.argumentFontColor;
       if (!settings.ignoreColorData && a.data && a.data.color !== undefined) {
         a.color = getColor(colorScheme, a.data.color);
@@ -228,7 +228,7 @@ export class ColorPlugin implements IArgdownPlugin {
       ) {
         a.color = getColor(colorScheme, settings.argumentColors[a.title!]);
       } else if (settings.colorizeByTag && a.tags && a.tags.length > 0) {
-        const tag = getTagWithHighestPriority(a.tags, response.tags!);
+        const tag = getTagWithHighestPriority(a.tags, response.tags ?? {});
         a.color = getColor(colorScheme, tagColors[tag]);
       } else if (colorScheme && colorScheme.length > 0) {
         a.color = colorScheme[0];
@@ -239,34 +239,34 @@ export class ColorPlugin implements IArgdownPlugin {
           .forEach(r => {
             r.color = getColor(
               colorScheme,
-              settings.relationColors![r.relationType]!
+              settings.relationColors![r.relationType] ?? "default"
             );
           });
       }
     }
-    const sectionsMap = createSectionsMap(response.sections!);
-    for (let [, s] of sectionsMap) {
+    const sectionsMap = createSectionsMap(response.sections ?? []);
+    for (const [, s] of sectionsMap) {
       colorizeSection(
         s,
         settings,
         groupColorScheme,
         groupTagColors,
-        response.tags!
+        response.tags ?? {}
       );
     }
     // copy statement, argument and section colors to map nodes
     // create edge colors (we can not copy relation colors, as edge relationType might differ)
     if (response.map) {
       if (response.map.nodes) {
-        for (let node of response.map.nodes) {
+        for (const node of response.map.nodes) {
           colorNodesRecursive(response, sectionsMap, settings, node);
         }
       }
       if (response.map.edges) {
-        for (let edge of response.map.edges) {
+        for (const edge of response.map.edges) {
           edge.color = getColor(
             colorScheme,
-            settings.relationColors![edge.relationType]!
+            settings.relationColors![edge.relationType] ?? "default"
           );
         }
       }
@@ -282,7 +282,7 @@ const colorNodesRecursive = (
 ) => {
   if (isGroupMapNode(node)) {
     node.fontColor = settings.groupFontColor;
-    const section = sectionsMap.get(node.id!)!;
+    const section = sectionsMap.get(node.id)!;
     // because the group level can differ from the section level, we have to check if the section was colored by level
     // if that's the case, we have to recalculate the color based on the groupColorScheme.
     if (
@@ -298,7 +298,7 @@ const colorNodesRecursive = (
         ];
     }
     if (node.children) {
-      for (let child of node.children) {
+      for (const child of node.children) {
         colorNodesRecursive(response, sectionsMap, settings, child);
       }
     }
@@ -312,7 +312,7 @@ const colorNodesRecursive = (
 };
 const createSectionsMap = (sections: ISection[]) => {
   const map = new Map<string, ISection>();
-  for (let s of sections) {
+  for (const s of sections) {
     populateSectionsMapRecursive(s, map);
   }
   return map;
@@ -322,7 +322,7 @@ const populateSectionsMapRecursive = (
   sectionsMap: Map<string, ISection>
 ) => {
   sectionsMap.set(section.id, section);
-  for (let child of section.children) {
+  for (const child of section.children) {
     populateSectionsMapRecursive(child, sectionsMap);
   }
 };
@@ -372,7 +372,7 @@ const getColor = (
   ) {
     return colorScheme[color];
   } else if (isObject(color)) {
-    const tagData = <ITagData>color;
+    const tagData = color;
     if (isString(tagData.color)) {
       return tagData.color;
     } else if (isNumber(tagData.color)) {

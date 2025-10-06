@@ -1,24 +1,24 @@
-import { ArgdownApplication } from "./ArgdownApplication";
-import { ParserPlugin } from "./plugins/ParserPlugin";
-import { ModelPlugin } from "./plugins/ModelPlugin";
-import { PreselectionPlugin } from "./plugins/PreselectionPlugin";
-import { StatementSelectionPlugin } from "./plugins/StatementSelectionPlugin";
-import { ArgumentSelectionPlugin } from "./plugins/ArgumentSelectionPlugin";
-import { MapPlugin } from "./plugins/MapPlugin";
-import { GroupPlugin } from "./plugins/GroupPlugin";
-import { ColorPlugin } from "./plugins/ColorPlugin";
-import { DotExportPlugin } from "./plugins/DotExportPlugin";
-import { SyncDotToSvgExportPlugin } from "./plugins/SyncDotToSvgExportPlugin";
-import { HighlightSourcePlugin } from "./plugins/HighlightSourcePlugin";
-import { RegroupPlugin } from "./plugins/RegroupPlugin";
-import { DataPlugin } from "./plugins/DataPlugin";
-import { ClosedGroupPlugin } from "./plugins/ClosedGroupPlugin";
-import { HtmlExportPlugin } from "./plugins/HtmlExportPlugin";
-import { JSONExportPlugin } from "./plugins/JSONExportPlugin";
-import { GraphMLExportPlugin } from "./plugins/GraphMLExportPlugin";
-import { WebComponentExportPlugin } from "./plugins/WebComponentExportPlugin";
-import { ExplodeArgumentsPlugin } from "./plugins/ExplodeArgumentsPlugin";
-import { MapNodeImagesPlugin } from "./plugins/MapNodeImagesPlugin";
+import { ArgdownApplication } from "./ArgdownApplication.js";
+import { ParserPlugin } from "./plugins/ParserPlugin.js";
+import { ModelPlugin } from "./plugins/ModelPlugin.js";
+import { PreselectionPlugin } from "./plugins/PreselectionPlugin.js";
+import { StatementSelectionPlugin } from "./plugins/StatementSelectionPlugin.js";
+import { ArgumentSelectionPlugin } from "./plugins/ArgumentSelectionPlugin.js";
+import { MapPlugin } from "./plugins/MapPlugin.js";
+import { GroupPlugin } from "./plugins/GroupPlugin.js";
+import { ColorPlugin } from "./plugins/ColorPlugin.js";
+import { DotExportPlugin } from "./plugins/DotExportPlugin.js";
+import { SyncDotToSvgExportPlugin } from "./plugins/SyncDotToSvgExportPlugin.js";
+import { HighlightSourcePlugin } from "./plugins/HighlightSourcePlugin.js";
+import { RegroupPlugin } from "./plugins/RegroupPlugin.js";
+import { DataPlugin } from "./plugins/DataPlugin.js";
+import { ClosedGroupPlugin } from "./plugins/ClosedGroupPlugin.js";
+import { HtmlExportPlugin } from "./plugins/HtmlExportPlugin.js";
+import { JSONExportPlugin } from "./plugins/JSONExportPlugin.js";
+import { GraphMLExportPlugin } from "./plugins/GraphMLExportPlugin.js";
+import { WebComponentExportPlugin } from "./plugins/WebComponentExportPlugin.js";
+import { ExplodeArgumentsPlugin } from "./plugins/ExplodeArgumentsPlugin.js";
+import { MapNodeImagesPlugin } from "./plugins/MapNodeImagesPlugin.js";
 
 /***
  * Default instance of a sync ArgdownApplication with all plugins of @argdown/core loaded and default processes defined.

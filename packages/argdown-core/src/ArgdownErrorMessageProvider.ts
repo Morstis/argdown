@@ -1,6 +1,6 @@
 import * as chevrotain from "chevrotain";
 import { TokenType, IToken, IParserErrorMessageProvider } from "chevrotain";
-import * as ArgdownLexer from "./lexer";
+import * as ArgdownLexer from "./lexer.js";
 
 //import * as _ from 'lodash';
 
@@ -47,7 +47,7 @@ const buildMissingEndError = (tokenType: TokenType): string => {
             escapedChar = "*";
             break;
     }
-    return `Incomplete ${ruleDesc}. Append ${tokenDesc} to complete the range. If you want to use this character for other purposes, use ${escapedChar} (you can use \ to escape any character in Argdown).`;
+    return `Incomplete ${ruleDesc}. Append ${tokenDesc} to complete the range. If you want to use this character for other purposes, use ${escapedChar} (you can use \\ to escape any character in Argdown).`;
 };
 const buildInvalidElementPositionError = (token: IToken): string => {
     const tokenDescription = getTokenDescription(token, true);
@@ -166,7 +166,7 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
         } else if (options.ruleName == "bold" || options.ruleName == "italic") {
             return buildMissingEndError(options.expected);
         }
-        return defaultParserErrorProvider.buildMismatchTokenMessage!(options);
+        return defaultParserErrorProvider.buildMismatchTokenMessage(options);
     },
     buildNotAllInputParsedMessage: (options: {
         firstRedundant: IToken;
@@ -215,7 +215,7 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
         ) {
             return INVALID_TEXT_POSITION_ERROR;
         } else {
-            return defaultParserErrorProvider.buildNotAllInputParsedMessage!(
+            return defaultParserErrorProvider.buildNotAllInputParsedMessage(
                 options
             );
         }
@@ -233,7 +233,7 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
                 tokens.length >= 2 &&
                 tokenMatcher(tokens[0], ArgdownLexer.Indent)
             ) {
-                let secondToken = tokens[1];
+                const secondToken = tokens[1];
                 return buildInvalidParagraphStartError(secondToken);
             } else if (tokens.length > 0) {
                 return buildInvalidParagraphStartError(tokens[0]);
@@ -250,7 +250,7 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
             }
             return MISSING_TEXT_CONTENT_ERROR;
         }
-        return defaultParserErrorProvider.buildNoViableAltMessage!(options);
+        return defaultParserErrorProvider.buildNoViableAltMessage(options);
     },
     buildEarlyExitMessage: (options: {
         expectedIterationPaths: TokenType[][];
@@ -259,7 +259,7 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
         customUserDescription: string;
         ruleName: string;
     }): string => {
-        var firstToken = options.actual.length > 0 ? options.actual[0] : null;
+        const firstToken = options.actual.length > 0 ? options.actual[0] : null;
         if (options.ruleName == "argdown") {
             if (firstToken && isRelationToken(firstToken)) {
                 return INVALID_RELATION_ERROR;
@@ -284,6 +284,6 @@ export const errorMessageProvider = <IArgdownErrorMessageProvider>{
         ) {
             return INVALID_INFERENCE_ERROR;
         }
-        return defaultParserErrorProvider.buildEarlyExitMessage!(options);
+        return defaultParserErrorProvider.buildEarlyExitMessage(options);
     }
 };

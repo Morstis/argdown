@@ -65,7 +65,6 @@
     "rimraf": "^6.0.1",
     "serve-static": "^2.2.0",
     "source-map-support": "^0.5.13",
-    "ts-node": "10.9.2",
     "typescript": "5.8.3"
   },
   "scripts": {
@@ -75,7 +74,7 @@
     "docs:build": "typedoc  --options ./typedoc.js",
     "copy:css": "copyfiles \"src/**/*.css\" dist -u 1",
     "test": "echo \"No tests to run here\"",
-    "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "coverage": "echo \"No tests to run here\"",
     "report": "nyc report",
     "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
@@ -93,7 +92,7 @@
       ".tsx"
     ],
     "require": [
-      "ts-node/register"
+      "tsx"
     ],
     "reporter": [
       "text",

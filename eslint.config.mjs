@@ -42,7 +42,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-namespace': 'error',
+      '@typescript-eslint/no-namespace': 'off', // Allow namespaces for now during ES2023 migration
       '@typescript-eslint/no-this-alias': 'error',
       '@typescript-eslint/no-require-imports': 'error',
       '@typescript-eslint/no-unsafe-function-type': 'error',

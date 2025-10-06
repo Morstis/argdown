@@ -1,9 +1,9 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest, IArgdownResponse } from "../index";
-import { ArgdownTypes, ISection } from "../model/model";
-import { IGroupSettings, ISectionConfig } from "./GroupPlugin";
-import { isObject } from "../utils";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
+import { ArgdownTypes, ISection } from "../model/model.js";
+import { IGroupSettings, ISectionConfig } from "./GroupPlugin.js";
+import { isObject } from "../utils.js";
 /**
  * Applies the regroup group setting by deleting all sections derived from headings and creating new ones based on the settings.
  *
@@ -30,10 +30,10 @@ export class RegroupPlugin implements IArgdownPlugin {
       ]);
 
       response.sections = [];
-      for (let ec of Object.values(response.statements!)) {
+      for (const ec of Object.values(response.statements ?? {})) {
         ec.section = null;
       }
-      for (let a of Object.values(response.arguments!)) {
+      for (const a of Object.values(response.arguments ?? {})) {
         a.section = null;
       }
       for (let i = 0; i < settings.regroup.length; i++) {
@@ -68,7 +68,7 @@ const regroupRecursively = (
   }
   sectionCounter++;
   if (sectionConfig.statements) {
-    for (let statementTitle of sectionConfig.statements) {
+    for (const statementTitle of sectionConfig.statements) {
       const ec = response.statements![statementTitle];
       if (ec) {
         ec.section = newSection;
@@ -76,7 +76,7 @@ const regroupRecursively = (
     }
   }
   if (sectionConfig.arguments) {
-    for (let argumentTitle of sectionConfig.arguments) {
+    for (const argumentTitle of sectionConfig.arguments) {
       const ec = response.arguments![argumentTitle];
       if (ec) {
         ec.section = newSection;

@@ -44,10 +44,10 @@
   "scripts": {
     "deploy": "npm run version:patch && git push --tags origin HEAD:master",
     "build": "npm run clean && tsc",
-    "test": "NODE_OPTIONS=--no-deprecation mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
-    "test:build": "NODE_OPTIONS=--no-deprecation npm run build && NODE_OPTIONS=--no-deprecation mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
-    "test:custom-process": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts --fgrep \"custom process\"",
-    "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "NODE_OPTIONS=--no-deprecation tsc --noEmit && NODE_OPTIONS=--no-deprecation mocha",
+    "test:build": "NODE_OPTIONS=--no-deprecation npm run build && NODE_OPTIONS=--no-deprecation mocha",
+    "test:custom-process": "NODE_OPTIONS=--no-deprecation mocha --fgrep \"custom process\"",
+    "coverage": "NODE_OPTIONS=--no-deprecation nyc mocha --bail",
     "report": "nyc report",
     "prepublishOnly": "npm run-script build",
     "clean": "rimraf \"dist/*\" --glob",
@@ -71,7 +71,6 @@
     "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
     "source-map-support": "^0.5.21",
-    "ts-node": "^10.9.2",
     "typedoc": "0.28.3",
     "typescript": "5.8.3"
   },
@@ -85,7 +84,7 @@
       ".jsx"
     ],
     "require": [
-      "ts-node/register"
+      "tsx"
     ],
     "reporter": [
       "text",

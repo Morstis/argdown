@@ -19,8 +19,8 @@
     "type-check": "tsc --noEmit",
     "build": "yarn run clean && tsc",
     "docs:build": "node ./node_modules/typedoc/bin/typedoc ./src/",
-    "test": "mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
-    "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "tsc --noEmit && mocha",
+    "coverage": "nyc mocha",
     "report": "nyc report",
     "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
@@ -78,7 +78,6 @@
     "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
     "source-map-support": "^0.5.21",
-    "ts-node": "^10.9.2",
     "typedoc": "0.27.9",
     "typescript": "5.8.3"
   },
@@ -92,7 +91,7 @@
       ".tsx"
     ],
     "require": [
-      "ts-node/register"
+      "tsx"
     ],
     "reporter": [
       "text",

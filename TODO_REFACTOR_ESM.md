@@ -52,7 +52,7 @@
 ## Phase 5: Build System Updates
 - [x] Update all build scripts to remove CommonJS targets
 - [x] Simplify build process (single ESM output instead of dual)
-- [ ] Update test configurations for ESM
+- [x] Update test configurations for ESM
 - [ ] Update bundling/packaging for VS Code extension
 - [ ] Verify all development tools work with ESM
 
@@ -67,5 +67,5 @@
 - **Consumer Impact**: Pure ESM packages cannot be imported with require()
 - **VS Code Extension**: May need webpack/bundling adjustments
 - **CLI Tools**: Ensure shebang and execution work correctly
-- **Documentation**: Update all examples and documentation for ESM imports
+- **Documentation**: Update all examples and documentation for ESM imports (esp.: packages/argdown-docs/docs/guide/integrating-argdown-markdown-into-applications.md)
 - **Version Bump**: Consider major version bump due to breaking changes

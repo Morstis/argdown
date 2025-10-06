@@ -1,10 +1,10 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { stringifyArgdownData } from "../model/toJSON";
-import { ArgdownTypes } from "../model/model";
-import { IArgdownRequest } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { stringifyArgdownData } from "../model/toJSON.js";
+import { ArgdownTypes } from "../model/model.js";
+import { IArgdownRequest } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
-import { mergeDefaults, isObject } from "../utils";
+import { mergeDefaults, isObject } from "../utils.js";
 
 /**
  * Settings used by the JSONExportPlugin
@@ -33,7 +33,7 @@ export interface IJSONSettings {
   exportData?: boolean;
   outputDir?: string; // default is "./json"
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[JSONExportPlugin]]

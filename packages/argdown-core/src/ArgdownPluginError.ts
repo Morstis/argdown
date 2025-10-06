@@ -1,5 +1,5 @@
-import { IArgdownPlugin } from "./IArgdownPlugin";
-import { IArgdownResponse } from ".";
+import { IArgdownPlugin } from "./IArgdownPlugin.js";
+import { IArgdownResponse } from "./index.js";
 
 /**
  * [[IArgdownPlugin]] implementations are expected to check in their [[IArgdownPlugin.prepare]] method
@@ -48,7 +48,7 @@ export const checkResponseFields = (
   response: IArgdownResponse,
   fields: string[]
 ) => {
-  for (let field of fields) {
+  for (const field of fields) {
     if ((<any>response)[field] == null) {
       throw createMissingResponseFieldError(plugin, field);
     }

@@ -1,14 +1,14 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest, IArgdownResponse } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import {
   IMapNode,
   ArgdownTypes,
   IGroupMapNode,
   ISection,
   isGroupMapNode
-} from "../model/model";
-import { mergeDefaults, ensure, DefaultSettings, isObject } from "../utils";
+} from "../model/model.js";
+import { mergeDefaults, ensure, DefaultSettings, isObject } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 export interface ISectionConfig extends ISection {
@@ -27,7 +27,7 @@ const defaultSettings: DefaultSettings<IGroupSettings> = {
   sections: ensure.object({}),
   regroup: ensure.array([])
 };
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     group?: IGroupSettings;
   }
@@ -62,7 +62,7 @@ export class GroupPlugin implements IArgdownPlugin {
       "arguments",
       "relations"
     ]);
-    let settings = this.getSettings(request);
+    const settings = this.getSettings(request);
     mergeDefaults(settings, this.defaults);
   };
   run: IRequestHandler = (request, response) => {
@@ -91,7 +91,7 @@ const createMapNodeTree = (
   [...groupMap.values()].reduce(createAncestorGroups, groupMap);
   const groups = [...groupMap.values()];
   const topLevelGroups = groups.filter(g => !g.parent);
-  for (let group of topLevelGroups) {
+  for (const group of topLevelGroups) {
     setGroupLevelsRecursive(group);
   }
   const nodesWithoutSection: IMapNode[] = nodes.filter(
@@ -106,7 +106,7 @@ const setIsGroupRecursive = (section: ISection, minGroupLevel: number) => {
     section.isGroup = section.level >= minGroupLevel;
   }
   if (section.children) {
-    for (let child of section.children) {
+    for (const child of section.children) {
       setIsGroupRecursive(child, minGroupLevel);
     }
   }
@@ -115,8 +115,8 @@ const setIsGroupRecursive = (section: ISection, minGroupLevel: number) => {
 
 const createGroups = (response: IArgdownResponse, nodes: IMapNode[]) => {
   const groupMap = new Map<string, IGroupMapNode>();
-  for (let node of nodes) {
-    let section = findSection(response, node);
+  for (const node of nodes) {
+    const section = findSection(response, node);
     if (section) {
       let group: IGroupMapNode | undefined = groupMap.get(section.id);
       if (!group) {
@@ -150,10 +150,10 @@ const findSection = (
 ): ISection | undefined | null => {
   let section = null;
   if (node.type == ArgdownTypes.ARGUMENT_MAP_NODE) {
-    let argument = response.arguments![node.title!];
+    const argument = response.arguments![node.title!];
     section = argument.section;
   } else {
-    let equivalenceClass = response.statements![node.title!];
+    const equivalenceClass = response.statements![node.title!];
     section = equivalenceClass.section;
   }
   while (section && section.isGroup === false) {
@@ -167,7 +167,7 @@ const setGroupLevelsRecursive = (
 ): IGroupMapNode => {
   currentGroup.level = parentLevel + 1;
   if (currentGroup.children) {
-    for (let child of currentGroup.children) {
+    for (const child of currentGroup.children) {
       if (isGroupMapNode(child)) {
         setGroupLevelsRecursive(child, currentGroup.level);
       }

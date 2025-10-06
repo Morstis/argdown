@@ -3,5 +3,6 @@
   "node-option": [
     "import=tsx"
   ],
-  "full-trace": true
+  "full-trace": true,
+  "bail": true
 }

@@ -1,5 +1,5 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
 import {
   RelationType,
   ArgdownTypes,
@@ -10,8 +10,8 @@ import {
   IMap,
   isGroupMapNode,
   IRange
-} from "../model/model";
-import { IArgdownRequest, IArgdownResponse } from "../index";
+} from "../model/model.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import {
   validateColorString,
   mergeDefaults,
@@ -19,11 +19,11 @@ import {
   ensure,
   stringIsEmpty,
   isObject
-} from "../utils";
-import { addLineBreaks } from "../utils";
+} from "../utils.js";
+import { addLineBreaks } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 import merge from "lodash.merge";
-import { IImagesSettings } from "./MapNodeImagesPlugin";
+import { IImagesSettings } from "./MapNodeImagesPlugin.js";
 
 export interface IRankMap {
   [key: string]: IRank;
@@ -106,7 +106,7 @@ export interface IDotSettings {
   graphVizSettings?: { [name: string]: string };
   sameRank?: IRank[];
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[DotExportPlugin]]
@@ -235,17 +235,17 @@ export class DotExportPlugin implements IArgdownPlugin {
       "map",
       "relations"
     ]);
-    let settings = this.getSettings(request);
+    const settings = this.getSettings(request);
     mergeDefaults(settings, defaultSettings);
   };
   run: IRequestHandler = (request, response) => {
     const settings = this.getSettings(request);
     let rankMap: IRankMap = {};
-    rankMap = Object.values(response.arguments!).reduce(
+    rankMap = Object.values(response.arguments ?? {}).reduce(
       reduceToRankMap,
       rankMap
     );
-    rankMap = Object.values(response.statements!).reduce(
+    rankMap = Object.values(response.statements ?? {}).reduce(
       reduceToRankMap,
       rankMap
     );
@@ -255,7 +255,7 @@ export class DotExportPlugin implements IArgdownPlugin {
     let dot = `digraph "${settings.graphname}" {\n\n`;
     if (settings.graphVizSettings) {
       const keys = Object.keys(settings.graphVizSettings);
-      for (let key of keys) {
+      for (const key of keys) {
         const value = settings.graphVizSettings[key];
         dot += key + ' = "' + value + '";\n';
       }
@@ -263,13 +263,13 @@ export class DotExportPlugin implements IArgdownPlugin {
     dot += `edge[arrowsize="${settings.edge?.arrowSize}", penwidth="${settings.edge?.penWidth}"]`;
     dot += `graph [bgcolor = "${settings.mapBgColor}" ]`;
 
-    for (let node of response.map!.nodes) {
+    for (const node of response.map!.nodes) {
       dot += this.exportNodesRecursive(node, request, response, settings);
     }
 
     dot += "\n\n";
     const edges = response.map!.edges;
-    for (let edge of edges) {
+    for (const edge of edges) {
       let attributes = `type="${edge.relationType}", `;
       attributes += `color="${edge.color}", `;
       attributes += `tooltip="${edge.relationType}"`;
@@ -284,17 +284,17 @@ export class DotExportPlugin implements IArgdownPlugin {
       dot += `  ${edge.from.id} -> ${edge.to.id} [${attributes}];\n`;
     }
     if (settings.sameRank && settings.sameRank.length > 0) {
-      const nodeMaps = getNodeIdsMaps(response.map!);
-      for (let rank of settings.sameRank) {
+      const nodeMaps = getNodeIdsMaps(response.map ?? { nodes: [], edges: [] });
+      for (const rank of settings.sameRank) {
         dot += `{ rank = same;\n`;
-        for (let argumentTitle of rank.arguments) {
+        for (const argumentTitle of rank.arguments) {
           const id = nodeMaps.argumentNodes[argumentTitle];
           if (!id) {
             continue;
           }
           dot += `${id};\n`;
         }
-        for (let ecTitle of rank.statements) {
+        for (const ecTitle of rank.statements) {
           const id = nodeMaps.statementNodes[ecTitle];
           if (!id) {
             continue;
@@ -322,7 +322,7 @@ export class DotExportPlugin implements IArgdownPlugin {
     if (node.type === ArgdownTypes.GROUP_MAP_NODE) {
       const groupNode: IGroupMapNode = <IGroupMapNode>node;
       response.groupCount++;
-      let dotGroupId = "cluster_" + response.groupCount;
+      const dotGroupId = "cluster_" + response.groupCount;
       let groupLabel = node.labelTitle || "";
       const groupSettings = groupNode.isClosed
         ? settings.closedGroup
@@ -345,7 +345,7 @@ export class DotExportPlugin implements IArgdownPlugin {
       } else {
         groupLabel = `"${escapeQuotesForDot(groupLabel)}"`;
       }
-      let groupColor = node.color || "#CCCCCC";
+      const groupColor = node.color || "#CCCCCC";
       if (groupNode.isClosed) {
         dot += `  ${node.id} [label=${groupLabel}, shape="box", margin="${
           groupSettings!.margin
@@ -365,7 +365,7 @@ export class DotExportPlugin implements IArgdownPlugin {
         }
         dot += ` labelloc = "${labelloc}";\n\n`;
         if (groupNode.children) {
-          for (let child of groupNode.children) {
+          for (const child of groupNode.children) {
             dot += this.exportNodesRecursive(
               child,
               request,
@@ -380,7 +380,7 @@ export class DotExportPlugin implements IArgdownPlugin {
     }
 
     let label = "";
-    let color =
+    const color =
       node.color && validateColorString(node.color) ? node.color : "#63AEF2";
     const imageSettings = request.images || {};
     imageSettings.files = imageSettings.files || {};
@@ -440,7 +440,7 @@ const addLineBreaksAndEscape = (
   return result.text;
 };
 const escapeQuotesForDot = (str: string): string => {
-  return str.replace(/\"/g, '\\"');
+  return str.replace(/"/g, '\\"');
 };
 const getLabel = (
   node: IMapNode,
@@ -448,8 +448,8 @@ const getLabel = (
   imageSettings: IImagesSettings
 ): string => {
   const isArgumentNode = node.type === ArgdownTypes.ARGUMENT_MAP_NODE;
-  const title = node.labelTitle;
-  const text = node.labelText;
+  const title = node.labelTitle ?? "untitled";
+  const text = node.labelText ?? "";
   const color = node.fontColor;
   let label = "";
   if (stringIsEmpty(title) && stringIsEmpty(text)) {
@@ -487,18 +487,18 @@ const getLabel = (
       label += img;
     }
     if (!stringIsEmpty(title)) {
-      let { fontSize, font, bold, charactersInLine } = isArgumentNode
+      const { fontSize, font, bold, charactersInLine } = isArgumentNode
         ? settings.argument!.title!
         : settings.statement!.title!;
       let titleLabel = settings.measureLineWidth
-        ? addLineBreaksAndEscape(title!, true, {
+        ? addLineBreaksAndEscape(title, true, {
             maxWidth: maxLineWidth,
             fontSize,
             bold,
             font,
             applyRanges: node.labelTitleRanges
           })
-        : addLineBreaksAndEscape(title!, false, {
+        : addLineBreaksAndEscape(title, false, {
             charactersInLine,
             applyRanges: node.labelTitleRanges
           });
@@ -509,18 +509,18 @@ const getLabel = (
       label += titleLabel;
     }
     if (!stringIsEmpty(text)) {
-      let { fontSize, font, bold, charactersInLine } = isArgumentNode
+      const { fontSize, font, bold, charactersInLine } = isArgumentNode
         ? settings.argument!.text!
         : settings.statement!.text!;
       let textLabel = settings.measureLineWidth
-        ? addLineBreaksAndEscape(text!, true, {
+        ? addLineBreaksAndEscape(text, true, {
             maxWidth: maxLineWidth,
             fontSize,
             bold,
             font,
             applyRanges: node.labelTextRanges
           })
-        : addLineBreaksAndEscape(text!, false, {
+        : addLineBreaksAndEscape(text, false, {
             charactersInLine,
             applyRanges: node.labelTextRanges
           });
@@ -550,9 +550,9 @@ const reduceToRankMap = (
       statements: []
     };
     if (curr.type === ArgdownTypes.ARGUMENT) {
-      rank.arguments.push(curr.title!);
+      rank.arguments.push(curr.title ?? "untitled");
     } else {
-      rank.statements.push(curr.title!);
+      rank.statements.push(curr.title ?? "untitled");
     }
     acc[curr.data.rank] = rank;
   }

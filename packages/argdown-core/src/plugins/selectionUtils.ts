@@ -6,8 +6,8 @@ import {
   ArgdownTypes,
   StatementRole,
   IPCSStatement
-} from "../model/model";
-import { other } from "../utils";
+} from "../model/model.js";
+import { other } from "../utils.js";
 export const otherRelationMemberIsInSelection = (
   relation: IRelation,
   relationMember: RelationMember,
@@ -28,7 +28,7 @@ export const relationMemberIsInSelection = (
   selectedArguments: Map<string, IArgument>
 ) => {
   if (relationMember.type === ArgdownTypes.EQUIVALENCE_CLASS) {
-    if (selectedStatements.get(relationMember.title!)) {
+    if (selectedStatements.get(relationMember.title ?? "")) {
       return true;
     }
     const isSymmetric = IRelation.isSymmetric(relation);
@@ -41,17 +41,17 @@ export const relationMemberIsInSelection = (
       relationMember.members.find(
         s =>
           (isSymmetric || s.role === role) &&
-          selectedArguments.get((<IPCSStatement>s).argumentTitle!) !== undefined
+          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !== undefined
       )
     );
   } else if (
     relationMember.type === ArgdownTypes.ARGUMENT &&
-    selectedArguments.get(relationMember.title!)
+    selectedArguments.get(relationMember.title ?? "")
   ) {
     return true;
   } else if (
     relationMember.type === ArgdownTypes.INFERENCE &&
-    selectedArguments.get(relationMember.argumentTitle!)
+    selectedArguments.get(relationMember.argumentTitle ?? "")
   ) {
     return true;
   }

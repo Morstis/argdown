@@ -10,8 +10,8 @@
     "type-check": "tsc --noEmit",
     "build": "npm run clean && tsc",
     "docs:build": "node ./node_modules/typedoc/bin/typedoc",
-    "test": "mocha",
-    "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "tsc --noEmit && mocha",
+    "coverage": "nyc mocha",
     "report": "nyc report",
     "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
@@ -52,7 +52,6 @@
     "remark-html": "16.0.1",
     "rimraf": "^6.0.1",
     "source-map-support": "^0.5.16",
-    "ts-node": "10.9.2",
     "typescript": "5.8.3"
   },
   "dependencies": {

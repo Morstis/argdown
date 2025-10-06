@@ -1,8 +1,8 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { mergeDefaults, isObject, DefaultSettings, ensure } from "../utils";
-import { IArgdownRequest, IArgdownResponse } from "../index";
-import { IMapNode, ArgdownTypes, HasData } from "../model/model";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { mergeDefaults, isObject, DefaultSettings, ensure } from "../utils.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
+import { IMapNode, ArgdownTypes, HasData } from "../model/model.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 /**
@@ -21,7 +21,7 @@ export interface IImagesSettings {
     };
   };
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[MapPlugin]]
@@ -73,7 +73,7 @@ export class MapNodeImagesPlugin implements IArgdownPlugin {
       "map"
     ]);
     const settings = this.getSettings(request);
-    for (let node of response.map!.nodes) {
+    for (const node of response.map!.nodes) {
       if (settings.useData) {
         node.images = this.getImagesFromData(response, node);
       }

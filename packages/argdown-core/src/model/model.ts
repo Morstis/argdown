@@ -1,4 +1,4 @@
-import { RuleNames } from "../RuleNames";
+import { RuleNames } from "../RuleNames.js";
 import { IToken } from "chevrotain";
 
 /**
@@ -411,7 +411,7 @@ export namespace IEquivalenceClass {
   export const getCanonicalMemberText = (
     ec: IEquivalenceClass
   ): string | undefined => {
-    let statement = getCanonicalMember(ec);
+    const statement = getCanonicalMember(ec);
     if (statement) {
       return statement.text;
     }
@@ -553,7 +553,7 @@ export interface IGroupMapNode extends IMapNode {
   isClosed?: boolean;
 }
 /**
- * An edge in an argument map derived from an [[IRelation]] or an [[IEquivalenceClass]].
+ * An edge in an argument map derived from an [[IRelation]] or an [[IEquivalenceClass]].
  *
  */
 export interface IMapEdge extends HasColor {

@@ -1,8 +1,8 @@
 import hljs from "highlight.js/lib/core";
 import argdown from "@argdown/highlightjs";
-import { DefaultSettings, isObject, mergeDefaults } from "../utils";
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { IArgdownRequest } from "..";
+import { DefaultSettings, isObject, mergeDefaults } from "../utils.js";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { IArgdownRequest } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
 hljs.registerLanguage("argdown", argdown);
 
@@ -15,7 +15,7 @@ export interface IHighlightSourceSettings {
    */
   removeFrontMatter?: boolean;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[WebComponentExportPlugin]]
@@ -56,10 +56,10 @@ export class HighlightSourcePlugin implements IArgdownPlugin {
   run: IRequestHandler = (request, response) => {
     const settings = this.getSettings(request);
     const code = settings.removeFrontMatter
-      ? this.removeFrontMatter(request.input!)
-      : request.input;
+      ? this.removeFrontMatter(request.input ?? "")
+      : request.input ?? "";
     response.highlightedSource = `<pre class="language-argdown"><code class="language-argdown">${
-      hljs.highlight(code || "", { language: "argdown" }).value
+      hljs.highlight(code ?? "", { language: "argdown" }).value
     }</code></pre>`;
   };
   removeFrontMatter(str: string) {

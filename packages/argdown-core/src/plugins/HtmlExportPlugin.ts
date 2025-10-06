@@ -1,10 +1,10 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { IRuleNodeHandler, ITokenNodeHandler } from "../ArgdownTreeWalker";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { ITokenNode, IRuleNode, isConclusion } from "../model/model";
-import { TokenNames } from "../TokenNames";
-import { RuleNames } from "../RuleNames";
-import { IArgdownRequest, IArgdownResponse } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { IRuleNodeHandler, ITokenNodeHandler } from "../ArgdownTreeWalker.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { ITokenNode, IRuleNode, isConclusion } from "../model/model.js";
+import { TokenNames } from "../TokenNames.js";
+import { RuleNames } from "../RuleNames.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import {
   validateLink,
   normalizeLink,
@@ -14,7 +14,7 @@ import {
   validateColorString,
   DefaultSettings,
   isObject
-} from "../utils";
+} from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 /**
@@ -63,7 +63,7 @@ const defaultSettings: DefaultSettings<IHtmlExportSettings> = {
   validateLink: validateLink,
   normalizeLink: normalizeLink
 };
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[HtmlExportPlugin]]
@@ -109,7 +109,6 @@ export class HtmlExportPlugin implements IArgdownPlugin {
   };
   constructor(config?: IHtmlExportSettings) {
     this.defaults = defaultsDeep({}, config, defaultSettings);
-    const $ = this;
     this.tokenListeners = {
       [TokenNames.STATEMENT_DEFINITION]: (
         _request,
@@ -117,18 +116,18 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        let htmlId = getHtmlId("statement", token.title!, response.htmlIds!);
+        const htmlId = getHtmlId("statement", token.title ?? "untitled", response.htmlIds ?? undefined);
         response.htmlIds![htmlId] = true;
         let classes = "definition statement-definition definiendum";
         if (
           parentNode!.equivalenceClass &&
-          parentNode!.equivalenceClass!.tags
+          parentNode!.equivalenceClass.tags
         ) {
           classes +=
             " " +
-            $.getCssClassesFromTags(
+            this.getCssClassesFromTags(
               response,
-              parentNode!.equivalenceClass!.tags!
+              parentNode!.equivalenceClass.tags
             );
         }
         const isTopLevel = parentNode!.statement!.isTopLevel;
@@ -146,17 +145,17 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        let htmlId = getHtmlId("statement", token.title!);
+        const htmlId = getHtmlId("statement", token.title ?? "untitled");
         let classes = "reference statement-reference";
         if (
           parentNode!.equivalenceClass &&
-          parentNode!.equivalenceClass!.tags
+          parentNode!.equivalenceClass.tags
         ) {
           classes +=
             " " +
-            $.getCssClassesFromTags(
+            this.getCssClassesFromTags(
               response,
-              parentNode!.equivalenceClass!.tags!
+              parentNode!.equivalenceClass.tags
             );
         }
         const isTopLevel = parentNode!.statement!.isTopLevel;
@@ -179,15 +178,15 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         const equivalenceClass = response.statements![token.title!];
         let classes = "mention statement-mention";
         if (!equivalenceClass) {
-          logger.log("error", "Mentioned statement not found: " + token.title);
+          logger.log("error", "Mentioned statement not found: " + (token.title ?? "untitled"));
         }
         if (equivalenceClass && equivalenceClass.tags) {
           classes +=
-            " " + $.getCssClassesFromTags(response, equivalenceClass.tags);
+            " " + this.getCssClassesFromTags(response, equivalenceClass.tags);
         }
-        let htmlId = getHtmlId("statement", token.title!);
+        const htmlId = getHtmlId("statement", token.title ?? "untitled");
         response.html += `<a href="#${htmlId}" class="${classes}">@[<span class="title statement-title">${escapeHtml(
-          token.title
+          token.title ?? "untitled"
         )}</span>]</a>${token.trailingWhitespace}`;
       },
       [TokenNames.ARGUMENT_REFERENCE]: (
@@ -196,29 +195,29 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        const argument = response.arguments![token.title!] || response.arguments![token.title!+" - 1"];// if argument was exploded, simply take argument generated from first step
-        let htmlId = "";
+        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"];// if argument was exploded, simply take argument generated from first step
+        const htmlId = "";
         if (argument.members.length == 0 && argument.pcs.length == 0) {
-          let htmlId = getHtmlId(
+          const htmlId = getHtmlId(
             "argument",
-            token!.title!,
-            response.htmlIds!
+            token.title ?? "untitled",
+            response.htmlIds ?? undefined
           );
           response.htmlIds![htmlId] = true;
         }
-        let htmlIdLink = getHtmlId("argument", token.title!);
+        const htmlIdLink = getHtmlId("argument", token.title ?? "untitled");
         let classes = "reference argument-reference";
         const isTopLevel = parentNode!.statement!.isTopLevel;
         if (isTopLevel) {
           classes += " top-level";
         }
-        if (argument!.tags) {
-          classes += " " + $.getCssClassesFromTags(response, argument!.tags!);
+        if (argument.tags) {
+          classes += " " + this.getCssClassesFromTags(response, argument.tags);
         }
         response.html += `<a id="${htmlId}" href="#${htmlIdLink}" data-line="${
           token.startLine
         }" class="has-line ${classes}">&lt;<span class="title argument-title">${escapeHtml(
-          token!.title
+          token.title
         )}</span>&gt; </a>`;
       },
       [TokenNames.ARGUMENT_DEFINITION]: (
@@ -227,12 +226,12 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        const argument = response.arguments![token.title!] || response.arguments![token.title!+" - 1"]; // if argument was exploded, simply take argument generated from first step
+        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"]; // if argument was exploded, simply take argument generated from first step
         let htmlId = "";
         if (argument.pcs.length == 0) {
-          htmlId = getHtmlId("argument", token.title!, response.htmlIds!);
+          htmlId = getHtmlId("argument", token.title ?? "untitled", response.htmlIds ?? undefined);
         }
-        let htmlIdLink = getHtmlId("argument", token.title!);
+        const htmlIdLink = getHtmlId("argument", token.title ?? "untitled");
         response.htmlIds![htmlId] = true;
         let classes = "definition argument-definition definiendum";
         const isTopLevel = parentNode!.statement!.isTopLevel;
@@ -240,11 +239,11 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           classes += " top-level";
         }
 
-        if (argument!.tags) {
-          classes += " " + $.getCssClassesFromTags(response, argument!.tags!);
+        if (argument.tags) {
+          classes += " " + this.getCssClassesFromTags(response, argument.tags);
         }
         response.html += `<a id="${htmlId}" href="#${htmlIdLink}" class="${classes}">&lt;<span class="title argument-title">${escapeHtml(
-          token!.title
+          token.title
         )}</span>&gt;: </a>`;
       },
       [TokenNames.ARGUMENT_MENTION]: (
@@ -255,22 +254,22 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         _childIndex,
         logger
       ) => {
-        let htmlId = getHtmlId("argument", token.title!);
+        const htmlId = getHtmlId("argument", token.title ?? "untitled");
         let classes = "mention argument-mention";
-        const argument = response.arguments![token.title!] || response.arguments![token.title!+" - 1"]; // if argument was exploded, simply take argument generated from first step
+        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"]; // if argument was exploded, simply take argument generated from first step
         if (!argument) {
-          logger.log("error", "Mentioned argument not found: " + token.title);
+          logger.log("error", "Mentioned argument not found: " + (token.title ?? "untitled"));
         }
         if (argument && argument.tags) {
-          classes += " " + $.getCssClassesFromTags(response, argument.tags);
+          classes += " " + this.getCssClassesFromTags(response, argument.tags);
         }
         response.html += `<a href="#${htmlId}" class="${classes}">@&lt;<span class="title argument-title">${escapeHtml(
-          token.title
+          token.title ?? "untitled"
         )}</span>&gt;</a>${token.trailingWhitespace}`;
       },
       [TokenNames.LINK]: (request, response, token) => {
-        let settings = $.getSettings(request);
-        let linkUrl = settings.normalizeLink!(token.url!);
+        const settings = this.getSettings(request);
+        let linkUrl = settings.normalizeLink!(token.url ?? "");
         let linkText = token.text;
         if (
           !settings.validateLink!(linkUrl, settings.allowFileProtocol || false)
@@ -281,9 +280,9 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         response.html += `<a href="${linkUrl}">${linkText}</a>${token.trailingWhitespace}`;
       },
       [TokenNames.TAG]: (_request, response, node) => {
-        const token = node as ITokenNode;
+        const token = node;
         if (token.text) {
-          response.html += `<span class="tag ${$.getCssClassesFromTags(
+          response.html += `<span class="tag ${this.getCssClassesFromTags(
             response,
             [token.tag!]
           )}">${escapeHtml(token.text)}</span>`;
@@ -308,7 +307,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       [RuleNames.ARGDOWN + "Entry"]: (request, response) => {
         response.html = "";
         response.htmlIds = {};
-        let settings = $.getSettings(request);
+        const settings = this.getSettings(request);
         let title = request.title || "Argdown Document";
         if (response.frontMatter && response.frontMatter.title) {
           title = response.frontMatter.title;
@@ -328,7 +327,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
               (!request.color || request.color.colorizeByTag !== false)
             ) {
               let tagColorCss = "";
-              for (let tag of Object.values(response.tags)) {
+              for (const tag of Object.values(response.tags)) {
                 if (
                   tag.cssClass &&
                   tag.color &&
@@ -361,7 +360,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
               authorData = [authorData];
             }
             let i = 0;
-            for (let authorStr of authorData) {
+            for (const authorStr of authorData) {
               if (i > 0) {
                 author += `<span class="separator">, </span>`;
               }
@@ -382,7 +381,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         }
       },
       [RuleNames.ARGDOWN + "Exit"]: (request, response) => {
-        let settings = $.getSettings(request);
+        const settings = this.getSettings(request);
         // Remove htmlIds, because other plugins might create their own ones.
         // Ids only need to be unique within one document, not across documents.
         response.htmlIds = null;
@@ -395,7 +394,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         let classes = "statement has-line";
         if (node.equivalenceClass && node.equivalenceClass.tags) {
           classes +=
-            " " + $.getCssClassesFromTags(response, node.equivalenceClass.tags);
+            " " + this.getCssClassesFromTags(response, node.equivalenceClass.tags);
         }
         if (node.statement && node.statement.isTopLevel) {
           classes += " top-level";
@@ -408,7 +407,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         let classes = "argument has-line";
         if (node.argument && node.argument.tags) {
           classes +=
-            " " + $.getCssClassesFromTags(response, node.argument.tags);
+            " " + this.getCssClassesFromTags(response, node.argument.tags);
         }
         if (node.statement && node.statement.isTopLevel) {
           classes += " top-level";
@@ -419,16 +418,16 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         (response.html += "</div>"),
       [RuleNames.PCS + "Entry"]: (_request, response, node) => {
         let classes = "pcs has-line";
-        let htmlId = getHtmlId(
+        const htmlId = getHtmlId(
           "argument",
-          node.argument!.title!,
-          response.htmlIds!
+          node.argument!.title ?? "untitled",
+          response.htmlIds ?? undefined
         );
         response.htmlIds![htmlId] = true;
 
         if (node.argument && node.argument.tags && node.argument.tags) {
           classes +=
-            " " + $.getCssClassesFromTags(response, node.argument.tags);
+            " " + this.getCssClassesFromTags(response, node.argument.tags);
         }
         response.html += `<div id="${htmlId}" data-line="${node.startLine}" class="${classes}">`;
       },
@@ -504,12 +503,12 @@ export class HtmlExportPlugin implements IArgdownPlugin {
             );
           }
         }
-        let htmlId = getHtmlId("heading", node.text!, response.htmlIds!);
+        const htmlId = getHtmlId("heading", node.text ?? "untitled", response.htmlIds ?? undefined);
         response.htmlIds![htmlId] = true;
         response.html += `<h${node.level} data-line="${node.startLine}" id="${htmlId}" class="has-line heading">`;
       },
       [RuleNames.HEADING + "Exit"]: (_request, response, node) =>
-        (response.html += "</h" + (<IRuleNode>node).level + ">"),
+        (response.html += "</h" + (node).level + ">"),
       [RuleNames.STATEMENT_CONTENT + "Entry"]: (
         _request,
         response,
@@ -518,7 +517,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       ) => {
         let classes = "statement-content";
         const isTopLevel =
-          parentNode!.statement && parentNode!.statement!.isTopLevel;
+          parentNode!.statement && parentNode!.statement.isTopLevel;
         if (isTopLevel) {
           classes += " top-level";
         }
@@ -533,7 +532,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         node,
         parentNode
       ) => {
-        if (parentNode && parentNode.name != "inferenceRules") {
+        if (parentNode && parentNode.name != RuleNames.INFERENCE_RULES) {
           response.html += escapeHtml(node.text) || "";
         }
       },
@@ -548,7 +547,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       [RuleNames.PCS_STATEMENT + "Entry"]: (_request, response, node) => {
         const statement = node.statement;
         if (statement && isConclusion(statement) && statement.inference) {
-          let inference = statement.inference;
+          const inference = statement.inference;
           if (
             !inference.inferenceRules ||
             inference.inferenceRules.length == 0
@@ -561,7 +560,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           response.html += `<span class="inference-rules">`;
           if (inference.inferenceRules && inference.inferenceRules.length > 0) {
             let i = 0;
-            for (let inferenceRule of inference.inferenceRules) {
+            for (const inferenceRule of inference.inferenceRules) {
               if (i > 0) response.html += ", ";
               response.html += `<span class="inference-rule">${inferenceRule}</span>`;
               i++;
