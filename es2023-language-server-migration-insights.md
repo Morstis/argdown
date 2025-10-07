@@ -1,4 +1,4 @@
-# ES2023 Migration: Architectural Insights and Platform-Specific Import Strategy
+# ES2023 Migration: Architectural Insights and Platform-Specific Import Strategy for argdown-language-server
 
 ## Overview
 
