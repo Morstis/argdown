@@ -51,7 +51,7 @@ export class SyncDotToSvgExportPlugin implements IArgdownPlugin {
     }
     response.svg = vizRenderStringSync(response.dot ?? "", settings);
     if (removeProlog) {
-      response.svg = response.svg!.replace(
+      response.svg = response.svg?.replace(
         /<\?[ ]*xml[\S ]+?\?>[\s]*<![ ]*DOCTYPE[\S\s]+?\.dtd"[ ]*>/,
         ""
       );
