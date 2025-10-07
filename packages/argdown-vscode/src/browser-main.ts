@@ -100,7 +100,7 @@ export function activate(context: ExtensionContext) {
   logger.log("language server started");
 
   context.subscriptions.push(client);
-  client.start();
+  void client.start();
   
   return {
     extendMarkdownIt(md: any) {

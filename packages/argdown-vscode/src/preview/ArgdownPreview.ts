@@ -40,7 +40,7 @@ export class PreviewDocumentVersion {
 }
 interface ArgdownPreviewDelegate {
   getTitle?(resource: vscode.Uri): string;
-  getAdditionalState(): {};
+  getAdditionalState(): Record<string, unknown>;
   openPreviewLinkToArgdownFile(argdownLink: vscode.Uri, fragment: string): void;
 }
 class StartingScrollLine {
@@ -117,7 +117,7 @@ export class ArgdownPreview extends Disposable
 
     switch (startingScroll?.type) {
       case "line":
-        if (!isNaN(startingScroll.line!)) {
+        if (!isNaN(startingScroll.line)) {
           this.line = startingScroll.line;
         }
         break;
@@ -126,7 +126,7 @@ export class ArgdownPreview extends Disposable
         this.scrollToFragment = startingScroll.fragment;
         break;
     }
-    this._previewConfigurations.refreshArgdownConfig(this._resource);
+    void this._previewConfigurations.refreshArgdownConfig(this._resource);
     this._register(
       this._contributionProvider.onContributionsChanged(() => {
         setTimeout(() => this.refresh(), 0);
@@ -212,7 +212,7 @@ export class ArgdownPreview extends Disposable
           return;
         }
         switch (e.type) {
-          case "command":
+          case "command": {
             const args = e.body.args;
             // Swap Uri for string, if first arg is our resource (needed for export commands)
             if (
@@ -224,6 +224,7 @@ export class ArgdownPreview extends Disposable
             }
             vscode.commands.executeCommand(e.body.command, ...args);
             break;
+          }
           case "revealLine":
             this.onDidScrollPreview(e.body.line);
             break;
@@ -245,7 +246,7 @@ export class ArgdownPreview extends Disposable
         }
       })
     );
-    this.updatePreview();
+    void this.updatePreview();
   }
 	override dispose(){
   		super.dispose();
@@ -371,6 +372,7 @@ export class ArgdownPreview extends Disposable
       });
     }
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async showFileNotFoundError() {
     this._webviewPanel.webview.html = this._contentProvider.provideFileNotFoundContent(
       this._resource
@@ -384,10 +386,10 @@ export class ArgdownPreview extends Disposable
     // Schedule update if none is pending
     if (!this.throttleTimer) {
       if (this.firstUpdate) {
-        this.updatePreview(true);
+        void this.updatePreview(true);
       } else {
         this.throttleTimer = setTimeout(
-          () => this.updatePreview(forceUpdate),
+          () => void this.updatePreview(forceUpdate),
           this.delay
         );
       }
@@ -516,6 +518,7 @@ export class ArgdownPreview extends Disposable
         );
       });
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async onDidChangeView(view: string) {
     if (
       view == PreviewViews.HTML ||
@@ -524,9 +527,9 @@ export class ArgdownPreview extends Disposable
     ) {
       if (view !== this._currentView) {
         // reload argdown config on view change
-        this._previewConfigurations.refreshArgdownConfig(this._resource);
+        void this._previewConfigurations.refreshArgdownConfig(this._resource);
         this._currentView = view;
-        this.updatePreview(true);
+        void this.updatePreview(true);
       }
     }
   }
@@ -540,12 +543,12 @@ export class ArgdownPreview extends Disposable
     const document = await vscode.workspace.openTextDocument(resource);
     const config = this._previewConfigurations.getConfiguration(this._resource);
     try {
-      const range = await this._argdownEngine.getRangeOfMapNode(
+      const range = this._argdownEngine.getRangeOfMapNode(
         document,
         config,
         id
       );
-      this.jumpToRange(range);
+      await this.jumpToRange(range);
     } catch (e) {
       if (e instanceof Error) {
         this._logger.log(e.message);
@@ -557,12 +560,12 @@ export class ArgdownPreview extends Disposable
     const document = await vscode.workspace.openTextDocument(resource);
     const config = this._previewConfigurations.getConfiguration(this._resource);
     try {
-      const range = await this._argdownEngine.getRangeOfHeading(
+      const range = this._argdownEngine.getRangeOfHeading(
         document,
         config,
         headingText
       );
-      this.jumpToRange(range);
+      await this.jumpToRange(range);
     } catch (e) {
       if (e instanceof Error) {
         this._logger.log(e.message);
@@ -587,7 +590,7 @@ export class ArgdownPreview extends Disposable
       .then(vscode.window.showTextDocument);
   }
   public refreshArgdownConfig(): void {
-    this._previewConfigurations.refreshArgdownConfig(this._resource);
+    void this._previewConfigurations.refreshArgdownConfig(this._resource);
     this.refresh(false);
   }
   //#region WebviewResourceProvider
@@ -688,7 +691,7 @@ export class StaticArgdownPreview extends Disposable
             link: vscode.Uri,
             fragment?: string
           ) => {
-            return vscode.commands.executeCommand(
+            void vscode.commands.executeCommand(
               "vscode.openWith",
               link.with({
                 fragment
@@ -747,8 +750,11 @@ export class StaticArgdownPreview extends Disposable
   }
 
   public matchesResource(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherResource: vscode.Uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherPosition: vscode.ViewColumn | undefined,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherLocked: boolean
   ): boolean {
     return false;
@@ -882,23 +888,25 @@ export class DynamicArgdownPreview extends Disposable
       })
     );
     this.throttledSelectionSync = throttle(
-      async (selection: vscode.Selection) => {
-        const resource = this._preview.resource;
-        const config = this._previewConfigurations.getConfiguration(resource);
-        const document = await vscode.workspace.openTextDocument(resource);
-        const id: string = await this._engine.getMapNodeId(
-          document,
-          config,
-          selection.active.line,
-          selection.active.character
-        );
-        if (id) {
-          this._preview.postMessage({
-            type: "didSelectMapNode",
-            source: resource.toString(),
-            id
-          });
-        }
+      (selection: vscode.Selection) => {
+        void (async () => {
+          const resource = this._preview.resource;
+          const config = this._previewConfigurations.getConfiguration(resource);
+          const document = await vscode.workspace.openTextDocument(resource);
+          const id: string = await this._engine.getMapNodeId(
+            document,
+            config,
+            selection.active.line,
+            selection.active.character
+          );
+          if (id) {
+            this._preview.postMessage({
+              type: "didSelectMapNode",
+              source: resource.toString(),
+              id
+            });
+          }
+        })();
       },
       this._preview.delay
     );
@@ -917,6 +925,7 @@ export class DynamicArgdownPreview extends Disposable
     );
 
     this._register(
+      // eslint-disable-next-line @typescript-eslint/require-await
       vscode.window.onDidChangeTextEditorSelection(async event => {
         if (this._preview.isPreviewOf(event.textEditor.document.uri)) {
           this._preview.postMessage({
@@ -926,7 +935,7 @@ export class DynamicArgdownPreview extends Disposable
             source: this._preview.resource.toString()
           });
           if (this._preview.currentView !== PreviewViews.HTML) {
-            await this.throttledSelectionSync(event.selections[0]);
+            this.throttledSelectionSync(event.selections[0]);
           }
         }
       })

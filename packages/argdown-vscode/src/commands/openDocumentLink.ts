@@ -28,7 +28,7 @@ export class OpenDocumentLinkCommand implements Command {
 
   public execute(args: OpenDocumentLinkArgs) {
     const p = decodeURIComponent(args.path);
-    return this.tryOpen(p).catch(() => {
+    void this.tryOpen(p).catch(() => {
       if (Utils.extname(vscode.Uri.parse(p)) === "") {
         return this.tryOpen(p + ".ad");
       }

@@ -66,7 +66,7 @@ export class Logger {
       if (isString(data.stack)) {
         return data.stack;
       }
-      return (data as Error).message;
+      return data.message;
     }
     if (isString(data)) {
       return data;

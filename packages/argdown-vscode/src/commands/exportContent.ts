@@ -55,7 +55,7 @@ const saveExportedFile = async (
   filters: { [name: string]: string[] },
   defaultExtension: string
 ) => {
-  var fileUri = await getTargetFileUri(resource, filters, defaultExtension);
+  const fileUri = await getTargetFileUri(resource, filters, defaultExtension);
   if (fileUri) {
     try {
       const buf = Buffer.from(content, "utf8");
@@ -66,7 +66,7 @@ const saveExportedFile = async (
   }
 };
 const savePng = async (resource: vscode.Uri, content: string) => {
-  var fileUri = await getTargetFileUri(resource, { PNG: ["png"] }, "png");
+  const fileUri = await getTargetFileUri(resource, { PNG: ["png"] }, "png");
   if (fileUri) {
     const data = content.replace(/^data:image\/\w+;base64,/, "");
     const buf = Buffer.from(data, "base64");
@@ -107,7 +107,7 @@ export class ExportContentToVizjsPngCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    savePng(resource, content);
+    void savePng(resource, content);
   }
 }
 export class ExportContentToDagreSvgCommand implements Command {
@@ -124,7 +124,7 @@ export class ExportContentToDagreSvgCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    saveExportedFile(resource, content, { SVG: ["svg"] }, "svg");
+    void saveExportedFile(resource, content, { SVG: ["svg"] }, "svg");
   }
 }
 export class ExportContentToDagrePngCommand implements Command {
@@ -139,7 +139,7 @@ export class ExportContentToDagrePngCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    savePng(resource, content);
+    void savePng(resource, content);
   }
 }
 export class ExportContentToDagrePdfCommand implements Command {
@@ -154,7 +154,7 @@ export class ExportContentToDagrePdfCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    sendToLanguageServer(
+    void sendToLanguageServer(
       resource,
       content,
       { PDF: ["pdf"] },

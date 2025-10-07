@@ -70,7 +70,7 @@ export class ExportDocumentToHtmlCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { HTML: ["html"] }, "html", "html");
+    void executeExport(resource, { HTML: ["html"] }, "html", "html");
   }
 }
 export class ExportDocumentToJsonCommand implements Command {
@@ -85,7 +85,7 @@ export class ExportDocumentToJsonCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { JSON: ["json"] }, "json", "json");
+    void executeExport(resource, { JSON: ["json"] }, "json", "json");
   }
 }
 export class ExportDocumentToDotCommand implements Command {
@@ -100,7 +100,7 @@ export class ExportDocumentToDotCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { Dot: ["dot"] }, "dot", "dot");
+    void executeExport(resource, { Dot: ["dot"] }, "dot", "dot");
   }
 }
 export class ExportDocumentToGraphMLCommand implements Command {
@@ -115,7 +115,7 @@ export class ExportDocumentToGraphMLCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { graphml: ["graphml"] }, "graphml", "graphml");
+    void executeExport(resource, { graphml: ["graphml"] }, "graphml", "graphml");
   }
 }
 export class ExportDocumentToVizjsSvgCommand implements Command {
@@ -130,7 +130,7 @@ export class ExportDocumentToVizjsSvgCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { SVG: ["svg"] }, "vizjs-to-svg", "svg");
+    void executeExport(resource, { SVG: ["svg"] }, "vizjs-to-svg", "svg");
   }
 }
 export class ExportDocumentToWebComponentCommand implements Command {
@@ -145,7 +145,7 @@ export class ExportDocumentToWebComponentCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(
+    void executeExport(
       resource,
       { HTML: ["component.html"] },
       "web-component-to-html",
@@ -165,6 +165,6 @@ export class ExportDocumentToVizjsPdfCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    executeExport(resource, { PDF: ["pdf"] }, "vizjs-to-pdf", "pdf");
+    void executeExport(resource, { PDF: ["pdf"] }, "vizjs-to-pdf", "pdf");
   }
 }

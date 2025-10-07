@@ -139,13 +139,14 @@ export class ArgdownPreviewManager extends Disposable implements vscode.WebviewP
 		}
 	}
 
+    // eslint-disable-next-line @typescript-eslint/require-await
 	public async deserializeWebviewPanel(
 		webview: vscode.WebviewPanel,
 		state: any
 	): Promise<void> {
 		const resource = vscode.Uri.parse(state.resource);
 
-		const preview = await DynamicArgdownPreview.revive(
+		const preview = DynamicArgdownPreview.revive(
 			{ ...state, resource },
 			webview,
 			this._contentProvider,
@@ -158,6 +159,7 @@ export class ArgdownPreviewManager extends Disposable implements vscode.WebviewP
 		this.registerDynamicPreview(preview);
 	}
 
+    // eslint-disable-next-line @typescript-eslint/require-await
 	public async resolveCustomTextEditor(
 		document: vscode.TextDocument,
 		webview: vscode.WebviewPanel

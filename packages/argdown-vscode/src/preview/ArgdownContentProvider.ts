@@ -54,7 +54,7 @@ export class ArgdownContentProvider {
     argdownDocument: vscode.TextDocument,
     previewConfigurations: ArgdownPreviewConfigurationManager
     // , initialLine: number | undefined = undefined
-  ): Promise<any> {
+  ): Promise<unknown> {
     const sourceUri = argdownDocument.uri;
     const config = previewConfigurations.getConfiguration(sourceUri);
     const viewProvider = this.viewProviders[currentView];
@@ -137,7 +137,7 @@ export class ArgdownContentProvider {
       jsonReplacer
     )};</script>
 				${this.getStyles(resourceProvider, sourceUri, config)}
-				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri)}">
+				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri).toString()}">
 			</head>
 			<body class="vscode-body argdown ${view}-active ${
       menuLocked ? "locked" : "unlocked"

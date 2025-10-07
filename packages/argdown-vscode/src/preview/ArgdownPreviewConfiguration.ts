@@ -70,7 +70,7 @@ export class ArgdownPreviewConfiguration {
       "configFile",
       undefined
     );
-    this.refreshArgdownConfig(resource, argdownEngine);
+    void this.refreshArgdownConfig(resource, argdownEngine);
 
     this.fontFamily = argdownConfig.get<string | undefined>(
       "preview.fontFamily",
@@ -89,7 +89,7 @@ export class ArgdownPreviewConfiguration {
   }
 
   public isEqualTo(otherConfig: ArgdownPreviewConfiguration) {
-    for (let key in this) {
+    for (const key in this) {
       if (
         this.hasOwnProperty(key) &&
         key !== "styles" &&

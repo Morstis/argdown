@@ -1,4 +1,5 @@
 import { AsyncArgdownApplication } from "@argdown/node";
+// @ts-expect-error - import-global has complex module system compatibility
 import importGlobal from "import-global";
 
 let triedToInstallImageExport = false;
@@ -11,7 +12,6 @@ export const tryToInstallImageExport = async (
   }
   triedToInstallImageExport = true;
   try {
-    //@ts-ignore
     const { installImageExport } = await import("@argdown/image-export");
     installImageExport(argdown);
     imageExportInstalled = true;

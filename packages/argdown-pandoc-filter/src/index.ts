@@ -14,7 +14,7 @@ import { argdown, IArgdownRequest } from "@argdown/node";
 import { IArgdownResponse } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
 import { mergeDefaults } from "@argdown/core";
-import { tryToInstallImageExport } from "./tryToInstallImageExport";
+import { tryToInstallImageExport } from "./tryToInstallImageExport.js";
 
 let imageCounter = 1;
 let webComponentCount = 0;
@@ -25,7 +25,7 @@ const getFilterSettings = (meta: PandocMetaMap) => {
     settings = {};
     const argdownMeta = meta["argdown"];
     if (argdownMeta && argdownMeta.t === "MetaMap") {
-      for (var entry of Object.entries(argdownMeta.c)) {
+      for (const entry of Object.entries(argdownMeta.c)) {
         const value = entry[1];
         if (
           value.t === "MetaInlines" &&
@@ -68,7 +68,7 @@ export interface IArgdownFilterSettings {
   config?: string;
   sourceHighlighter?: "web-component";
 }
-stdio(async (ele, _format, meta) => {
+void stdio(async (ele, _format, meta) => {
   if (ele.t === `CodeBlock`) {
     const [headers, content] = ele.c;
     const [, [language]] = headers;
@@ -120,7 +120,7 @@ stdio(async (ele, _format, meta) => {
           const response = await argdown.runAsync(request);
           settings.caption =
             request.webComponent?.figureCaption || settings.caption;
-          let inlineImage = getInlineImage(response, settings.format!)!;
+          const inlineImage = getInlineImage(response, settings.format!);
           return getPandocImage(settings, inlineImage, id);
         }
         case "file": {

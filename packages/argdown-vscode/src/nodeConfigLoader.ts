@@ -16,14 +16,13 @@ export const nodeConfigLoader: ArgdownConfigLoader = async (
   if (workspaceFolder) {
     configPath = Utils.resolvePath(workspaceFolder.uri, configFile);
   } else {
-    let rootPath = Utils.dirname(resource);
+    const rootPath = Utils.dirname(resource);
     configPath = Utils.resolvePath(rootPath, configFile);
   }
   const extName = Utils.extname(configPath);
   if (extName === ".json") {
     try {
-      const readFile = vscode.workspace.fs.readFile;
-      const data = await readFile(configPath);
+      const data = await vscode.workspace.fs.readFile(configPath);
       const str = Buffer.from(data).toString("utf8");
       return JSON.parse(str);
     } catch (e) {
@@ -37,10 +36,10 @@ export const nodeConfigLoader: ArgdownConfigLoader = async (
   } else if (extName === ".js" && configPath.scheme === "file") {
     // For Js config files we have to use loadJSFile which is synchronous
     try {
-      let jsModuleExports = loadJSFile(configPath.fsPath);
+      const jsModuleExports = loadJSFile(configPath.fsPath);
 
-      if (jsModuleExports.config) {
-        return jsModuleExports.config;
+      if (jsModuleExports && typeof jsModuleExports === 'object' && 'config' in jsModuleExports) {
+        return (jsModuleExports as { config: unknown }).config;
       } else {
         // let's try the default export
         return jsModuleExports;
@@ -64,9 +63,9 @@ export const nodeConfigLoader: ArgdownConfigLoader = async (
  * @throws {Error} If the file cannot be read.
  * @private
  */
-const loadJSFile = (filePath: string) => {
+const loadJSFile = (filePath: string): unknown => {
   try {
-    return importFresh(filePath) as any;
+    return importFresh(filePath);
   } catch (e) {
     if (e instanceof Error) {
       e.message = `Cannot read file: ${filePath}\nError: ${e.message}`;

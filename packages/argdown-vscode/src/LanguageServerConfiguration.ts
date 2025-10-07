@@ -15,14 +15,16 @@ export class LanguageServerConfiguration {
   // both client and server do use JSON the conversion is trivial.
   computeConfiguration(
     params: ConfigurationParams,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _token: CancellationToken,
-    _next: Function
-  ): any[] {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _next: (...args: unknown[]) => unknown
+  ): (IArgdownSettings | null)[] {
     if (!params.items) {
       return [];
     }
-    let result: (IArgdownSettings | null)[] = [];
-    for (let item of params.items) {
+    const result: (IArgdownSettings | null)[] = [];
+    for (const item of params.items) {
       // The server asks the client for configuration settings without a section
       // If a section is present we return null to indicate that the configuration
       // is not supported.
@@ -50,7 +52,7 @@ export class LanguageServerConfiguration {
     // listen to any change. However this will change in the near future.
     this.client = client;
     this.configurationListener = workspace.onDidChangeConfiguration(() => {
-      client.sendNotification(DidChangeConfigurationNotification.type, {
+      void client.sendNotification(DidChangeConfigurationNotification.type, {
         settings: null
       });
     });

@@ -132,11 +132,11 @@ export function activate(context: vscode.ExtensionContext) {
   
   // --- LANGUGAGE SERVER ---
   // The debug options for the server
-  let debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
+  const debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverPath = context.asAbsolutePath("dist/server/server-node.js");
-  let serverOptions: ServerOptions = {
+  const serverOptions: ServerOptions = {
     run: {
       module: serverPath,
       transport: TransportKind.ipc
@@ -148,7 +148,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   };
   // Options to control the language client
-  let clientOptions: LanguageClientOptions = {
+  const clientOptions: LanguageClientOptions = {
     // Register the server for plain text documents
     documentSelector: [
       { scheme: "untitled", language: "argdown" },
@@ -166,7 +166,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Register new proposed protocol if available.
   client.registerProposedFeatures();
   // Start the client. This will also launch the server
-  client.start();
+  void client.start();
   logger.log('Argdown extension: Language server started successfully');
 
   // ========================================

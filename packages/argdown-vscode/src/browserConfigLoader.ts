@@ -15,13 +15,12 @@ export const browserConfigLoader: ArgdownConfigLoader = async (
   if (workspaceFolder) {
     configPath = Utils.resolvePath(workspaceFolder.uri, configFile);
   } else {
-    let rootPath = Utils.dirname(resource);
+    const rootPath = Utils.dirname(resource);
     configPath = Utils.resolvePath(rootPath, configFile);
   }
 
-  const readFile = vscode.workspace.fs.readFile;
   try {
-    const data = await readFile(configPath);
+    const data = await vscode.workspace.fs.readFile(configPath);
     const str = Buffer.from(data).toString("utf8");
     return JSON.parse(str);
   } catch (e) {

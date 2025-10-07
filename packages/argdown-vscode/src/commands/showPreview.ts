@@ -56,7 +56,7 @@ export class ShowPreviewCommand implements Command {
     previewSettings?: DynamicPreviewSettings
   ) {
     for (const uri of Array.isArray(allUris) ? allUris : [mainUri]) {
-      showPreview(this.webviewManager, uri, {
+      void showPreview(this.webviewManager, uri, {
         sideBySide: false,
         locked: previewSettings && previewSettings.locked
       });
@@ -70,7 +70,7 @@ export class ShowPreviewToSideCommand implements Command {
   public constructor(private readonly webviewManager: ArgdownPreviewManager) {}
 
   public execute(uri?: vscode.Uri, previewSettings?: DynamicPreviewSettings) {
-    showPreview(this.webviewManager, uri, {
+    void showPreview(this.webviewManager, uri, {
       sideBySide: true,
       locked: previewSettings && previewSettings.locked
     });
@@ -83,7 +83,7 @@ export class ShowLockedPreviewToSideCommand implements Command {
   public constructor(private readonly webviewManager: ArgdownPreviewManager) {}
 
   public execute(uri?: vscode.Uri) {
-    showPreview(this.webviewManager, uri, {
+    void showPreview(this.webviewManager, uri, {
       sideBySide: true,
       locked: true
     });

@@ -11,7 +11,7 @@ export class ShowSourceCommand implements Command {
 
 	public execute() {
 		if (this.previewManager.activePreviewResource) {
-			return vscode.workspace.openTextDocument(this.previewManager.activePreviewResource)
+			void vscode.workspace.openTextDocument(this.previewManager.activePreviewResource)
 				.then(document => vscode.window.showTextDocument(document));
 		}
 		return undefined;
