@@ -1,9 +1,10 @@
 import { argdown, IAsyncArgdownPlugin } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
 import MarkdownIt from "markdown-it";
+// @ts-expect-error - dependency may not be built in monorepo
 import createArgdownPlugin from "@argdown/markdown-it-plugin";
-import { runArgdown } from "./runArgdown";
+import { runArgdown } from "./runArgdown.js";
 /**
  * This command uses the AsynArgdownApplication to load and export markdown files and save the exported html as html files.
  * It add a custom plugin that simply takes the markdown input and renders it with markdown-it
@@ -20,6 +21,7 @@ const markdownPlugin: IAsyncArgdownPlugin = {
     response.html = mdi.render(request.input || "", {
       argdownConfig: request
     });
+    return Promise.resolve();
   }
 };
 argdown.addPlugin(markdownPlugin, "render-markdown");
@@ -35,7 +37,7 @@ export interface IMarkdownCliOptions {
 export const handler = async function(
   args: Arguments<IGeneralCliOptions & IMarkdownCliOptions>
 ) {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   if (args.inputGlob) {
     config.inputPath = args.inputGlob;

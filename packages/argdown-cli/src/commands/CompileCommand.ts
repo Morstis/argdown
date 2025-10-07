@@ -1,7 +1,7 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "compile [inputGlob] [outputDir]";
 export const desc = "compile included Argdown files into main file";
@@ -14,7 +14,7 @@ export interface ICompileCliOptions {
 export const handler = async (
   args: Arguments<IGeneralCliOptions & ICompileCliOptions>
 ) => {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   if (args.inputGlob) {
     config.inputPath = args.inputGlob;
@@ -42,5 +42,5 @@ export const handler = async (
   if (args.stdout) {
     config.process.push("stdout-argdown");
   }
-  runArgdown(argdown, config, true, "Compilation failed", "compiled");
+  void runArgdown(argdown, config, true, "Compilation failed", "compiled");
 };

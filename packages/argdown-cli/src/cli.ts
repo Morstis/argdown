@@ -11,9 +11,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const packageJson = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf8'));
-const version = packageJson.version;
 
-yargs()
+void yargs()
   .showHelpOnFail(true)
   .scriptName("argdown")
   .options({
@@ -55,4 +54,4 @@ yargs()
   .commandDir("./commands")
   .demandCommand()
   .help()
-  .version(module.exports.version).argv;
+  .version(packageJson.version).argv;

@@ -1,9 +1,9 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
 import { StatementSelectionMode, LabelMode } from "@argdown/core";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { tryToInstallImageExport } from "../tryToInstallImageExport";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { tryToInstallImageExport } from "../tryToInstallImageExport.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "map [inputGlob] [outputDir]";
 export const desc = "export Argdown input as DOT files";
@@ -96,7 +96,7 @@ export interface IMapCliOptions {
 export const handler = async (
   args: Arguments<IGeneralCliOptions & IMapCliOptions>
 ) => {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   config.dot = config.dot || {};
   config.map = config.map || {};

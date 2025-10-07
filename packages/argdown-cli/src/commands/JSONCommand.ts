@@ -1,7 +1,7 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "json [inputGlob] [outputDir]";
 export const desc = "export Argdown input as JSON files";
@@ -34,7 +34,7 @@ export interface IJSONCliOptions {
 export const handler = async (
   args: Arguments<IGeneralCliOptions & IJSONCliOptions>
 ) => {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   config.json = config.json || {};
 

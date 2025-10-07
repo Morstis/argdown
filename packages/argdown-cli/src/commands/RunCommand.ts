@@ -1,7 +1,7 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "run [process]";
 export const desc = "run a process you have defined in your config file";
@@ -12,7 +12,7 @@ export const handler = async (
   args: Arguments<IGeneralCliOptions & IRunCliOptions>
 ) => {
   const processName = args.process || "default";
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
   config.process = processName;
   config.logLevel = args.verbose ? "verbose" : config.logLevel;
   config.logLevel = args.silent ? "silent" : config.logLevel;
