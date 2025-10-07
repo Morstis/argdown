@@ -6,7 +6,7 @@ import {
   TextEdit
 } from "vscode-languageserver";
 import { IArgument, IEquivalenceClass, IArgdownResponse } from "@argdown/core";
-const statementPattern = /\[([^\[]+?)\]$/;
+const statementPattern = /\[([^[]+?)\]$/;
 const argumentPattern = /<([^<]+?)>$/;
 export const provideCompletion = (
   response: IArgdownResponse,
@@ -25,7 +25,7 @@ export const provideCompletion = (
     return [];
   }
   if (char === "[") {
-    return Object.keys(response.statements!).map((k: any) => {
+    return Object.keys(response.statements).map((k: any) => {
       const eqClass = response.statements![k];
       const title = eqClass.title;
       const item = CompletionItem.create(`[${title}]`);
@@ -35,7 +35,7 @@ export const provideCompletion = (
       return item;
     });
   } else if (char === "<") {
-    return Object.keys(response.arguments!).map((k: any) => {
+    return Object.keys(response.arguments).map((k: any) => {
       const argument = response.arguments![k];
       const title = argument.title;
       const item = CompletionItem.create(`<${title}>`);
@@ -52,7 +52,7 @@ export const provideCompletion = (
     const statementMatch = textBefore.match(statementPattern);
     if (statementMatch && statementMatch.length > 1) {
       const title = statementMatch[1];
-      const eqClass = response.statements![title];
+      const eqClass = response.statements[title];
       if (!eqClass.members) {
         return [];
       }
@@ -70,7 +70,7 @@ export const provideCompletion = (
       const argumentMatch = textBefore.match(argumentPattern);
       if (argumentMatch && argumentMatch.length > 1) {
         const title = argumentMatch[1];
-        const argument = response.arguments![title];
+        const argument = response.arguments[title];
         if (argument.members) {
           return argument.members
             .filter(member => !member.isReference)

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { LanguageServerTestHelper } from "./LanguageServerTestHelper";
+import { LanguageServerTestHelper } from "./LanguageServerTestHelper.js";
 
 describe("Language Server Lifecycle", function() {
   this.timeout(15000); // Extended timeout for server operations

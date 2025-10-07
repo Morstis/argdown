@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { LanguageServerTestHelper } from "./LanguageServerTestHelper";
+import { LanguageServerTestHelper } from "./LanguageServerTestHelper.js";
 
 describe("LSP Integration", function() {
   this.timeout(20000); // Extended timeout for integration tests

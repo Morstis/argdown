@@ -1,5 +1,5 @@
-export { provideReferences } from "./provideReferences";
-export { provideDefinitions } from "./provideDefinitions";
-export { provideHover } from "./provideHover";
-export { provideCompletion } from "./provideCompletion";
-export { provideRenameWorkspaceEdit } from "./provideRenameWorkspaceEdit";
+export { provideReferences } from "./provideReferences.js";
+export { provideDefinitions } from "./provideDefinitions.js";
+export { provideHover } from "./provideHover.js";
+export { provideCompletion } from "./provideCompletion.js";
+export { provideRenameWorkspaceEdit } from "./provideRenameWorkspaceEdit.js";

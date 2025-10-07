@@ -17,7 +17,7 @@ const config = {
 
   entry: { "server-browser": "./src/server-browser.ts" }, // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   output: {
-    path: path.resolve(__dirname, "dist/web"),
+    path: path.resolve(__dirname, "dist/browser"),
     filename: "[name].js",
     devtoolModuleFilenameTemplate: "../[resource-path]"
   },
@@ -126,7 +126,10 @@ const config = {
   plugins: [
     ...optionalPlugins,
     new webpack.ProvidePlugin({
-      process: "process/browser" // provide a shim for the global `process` variable
+      process: "process/browser", // provide a shim for the global `process` variable
+      BrowserMessageReader: ["vscode-languageserver/browser", "BrowserMessageReader"],
+      BrowserMessageWriter: ["vscode-languageserver/browser", "BrowserMessageWriter"],
+      createConnection: ["vscode-languageserver/browser", "createConnection"]
     })
   ],
   performance: {

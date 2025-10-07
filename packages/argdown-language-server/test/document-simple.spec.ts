@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { LanguageServerTestHelper } from "./LanguageServerTestHelper";
+import { LanguageServerTestHelper } from "./LanguageServerTestHelper.js";
 
 describe("Document Processing (Simple)", function() {
   this.timeout(15000);

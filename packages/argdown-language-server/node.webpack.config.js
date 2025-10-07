@@ -4,7 +4,7 @@
 ("use strict");
 
 const path = require("path");
-const { IgnorePlugin } = require("webpack");
+const { IgnorePlugin, ProvidePlugin } = require("webpack");
 const optionalPlugins = [];
 if (process.platform !== "darwin") {
   optionalPlugins.push(new IgnorePlugin({ resourceRegExp: /^fsevents$/ }));
@@ -110,7 +110,12 @@ const config = {
       }
     }
   },
-  plugins: [...optionalPlugins],
+  plugins: [
+    ...optionalPlugins,
+    new ProvidePlugin({
+      createConnection: ["vscode-languageserver/node", "createConnection"]
+    })
+  ],
   experiments: { asyncWebAssembly: true }
 };
 

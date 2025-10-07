@@ -64,7 +64,7 @@ const onRelationEntry = (
   symbol.selectionRange = symbol.range;
   let relationMemberTitle = "";
   if (node.children && node.children.length > 1) {
-    const secondChild = node.children![1];
+    const secondChild = node.children[1];
     const firstGrandChild =
       isRuleNode(secondChild) &&
       secondChild.children &&
@@ -78,7 +78,7 @@ const onRelationEntry = (
       if (secondChild.argument) {
         relationMemberTitle = `<${secondChild.argument.title}>`;
       } else if (secondChild.statement) {
-        relationMemberTitle = `[${secondChild.statement!.title}]`;
+        relationMemberTitle = `[${secondChild.statement.title}]`;
       }
     }
   }
@@ -131,7 +131,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           parent.level! >= level
         ) {
           parentsStack.pop();
-          addSymbol(response, parent!, parentsStack);
+          addSymbol(response, parent, parentsStack);
           parent =
             parentsStack.length > 0
               ? parentsStack[parentsStack.length - 1]

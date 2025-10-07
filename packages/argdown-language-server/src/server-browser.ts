@@ -1,7 +1,21 @@
 "use strict";
+
+declare const self: any;
+
+// Declare browser-specific classes that webpack will provide
+declare class BrowserMessageReader {
+  constructor(worker: any);
+}
+
+declare class BrowserMessageWriter {
+  constructor(worker: any);
+}
+
+// Declare the browser-specific createConnection function
+declare function createConnection(reader: BrowserMessageReader, writer: BrowserMessageWriter): any;
+
 import * as path from "path";
 import {
-  createConnection,
   TextDocuments,
   TextDocumentPositionParams,
   TextDocumentSyncKind,
@@ -19,9 +33,8 @@ import {
   DocumentSymbolParams,
   FoldingRangeParams,
   DidChangeConfigurationNotification,
-  BrowserMessageReader,
-  BrowserMessageWriter
-} from "vscode-languageserver/browser";
+  ExecuteCommandParams
+} from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   provideDefinitions,
@@ -29,12 +42,12 @@ import {
   provideHover,
   provideCompletion,
   provideRenameWorkspaceEdit
-} from "./providers/index";
+} from "./providers/index.js";
 // import {argdown} from "@argdown/node";
-import { argdown } from "@argdown/core/dist/argdown";
+import { argdown } from "@argdown/core";
 import { IArgdownRequest, IArgdownResponse } from "@argdown/core";
-import { FoldingRangesPlugin } from "./providers/FoldingRangesPlugin";
-import { DocumentSymbolPlugin } from "./providers/DocumentSymbolPlugin";
+import { FoldingRangesPlugin } from "./providers/FoldingRangesPlugin.js";
+import { DocumentSymbolPlugin } from "./providers/DocumentSymbolPlugin.js";
 
 const RETURN_DOCUMENT_COMMAND = "argdown.server.returnDocument";
 const EXPORT_CONTENT_COMMAND = "argdown.server.exportContent";
@@ -44,7 +57,7 @@ const RUN_COMMAND = "argdown.run";
 const messageReader = new BrowserMessageReader(self);
 const messageWriter = new BrowserMessageWriter(self);
 // Create a connection for the server. The connection uses Node's IPC as a transport
-let connection = createConnection(messageReader, messageWriter);
+const connection = createConnection(messageReader, messageWriter);
 let logLevel = "verbose";
 argdown.logger = {
   setLevel: (level: string) => {
@@ -63,14 +76,14 @@ let hasWorkspaceFolderCapability = false;
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
-let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 let workspaceFolders: WorkspaceFolder[];
 
 // After the server has started the client sends an initilize request. The server receives
 // in the passed params the rootPath of the workspace plus the client capabilites.
 connection.onInitialize(
   (params: InitializeParams): InitializeResult => {
-    let capabilities = params.capabilities;
+    const capabilities = params.capabilities;
 
     // Does the client support the `workspace/configuration` request?
     // If not, we will fall back using global settings
@@ -133,7 +146,7 @@ connection.onInitialized(() => {
     );
   }
   if (hasWorkspaceFolderCapability) {
-    connection.workspace.onDidChangeWorkspaceFolders(event => {
+    connection.workspace.onDidChangeWorkspaceFolders((event: any) => {
       // Removed folders.
       for (const workspaceFolder of event.removed) {
         const index = workspaceFolders.findIndex(
@@ -203,7 +216,7 @@ function sortWorkspaceFolders() {
 // });
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
-documents.onDidChangeContent(change => {
+documents.onDidChangeContent((change: any) => {
   validateTextDocument(change.document);
 });
 // The settings interface describe the server relevant settings part
@@ -222,34 +235,34 @@ documents.onDidChangeContent(change => {
 // The settings have changed. Is send on server activation
 // as well.
 
-async function validateTextDocument(textDocument: TextDocument): Promise<void> {
+function validateTextDocument(textDocument: TextDocument): void {
   // let settings = await getDocumentSettings(textDocument.uri);
 
-  let text = textDocument.getText();
-  let result = argdown.run({
+  const text = textDocument.getText();
+  const result = argdown.run({
     process: ["parse-input", "build-model"],
     input: text
   });
-  let diagnostics: Diagnostic[] = [];
+  const diagnostics: Diagnostic[] = [];
   if (result.parserErrors && result.parserErrors.length > 0) {
-    for (var error of result.parserErrors) {
-      var start = {
+    for (const error of result.parserErrors) {
+      const start = {
         line: error.token.startLine! - 1,
         character: error.token.startColumn! - 1
       };
-      var end = {
+      const end = {
         line: error.token.endLine! - 1,
         character: error.token.endColumn!
       }; //end character is zero based, exclusive
-      var range = Range.create(start, end);
-      var message = error.message;
-      var severity = DiagnosticSeverity.Error;
-      var diagnostic = Diagnostic.create(range, message, severity, "argdown");
+      const range = Range.create(start, end);
+      const message = error.message;
+      const severity = DiagnosticSeverity.Error;
+      const diagnostic = Diagnostic.create(range, message, severity, "argdown");
       diagnostics.push(diagnostic);
     }
   }
   // Send the computed diagnostics to VSCode.
-  connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+  void connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 // connection.onDidChangeWatchedFiles(_change => {
@@ -266,7 +279,7 @@ const processDocForProviders = async (textDocument: TextDocumentIdentifier) => {
   return null;
 };
 const processTextForProviders = (text: string, path: string) => {
-  const request: IArgdownRequest = {
+  const request: IArgdownRequest & { inputPath?: string } = {
     input: text,
     inputPath: path,
     process: ["parse-input", "build-model"],
@@ -366,7 +379,7 @@ connection.onDocumentSymbol((params: DocumentSymbolParams) => {
   const path = params.textDocument.uri;
   const doc = documents.get(params.textDocument.uri);
   if (doc) {
-    const request: IArgdownRequest & { inputUri: string } = {
+    const request: IArgdownRequest & { inputUri: string; inputPath?: string } = {
       inputPath: path,
       input: doc.getText(),
       process: ["parse-input", "build-model", "add-document-symbols"],
@@ -406,7 +419,7 @@ connection.onFoldingRanges((params: FoldingRangeParams) => {
   }
   return null;
 });
-connection.onExecuteCommand(async params => {
+connection.onExecuteCommand((params: ExecuteCommandParams) => {
   if (params.command === EXPORT_CONTENT_COMMAND) {
     return; // not supported in browser
   } else if (params.command === EXPORT_DOCUMENT_COMMAND) {
