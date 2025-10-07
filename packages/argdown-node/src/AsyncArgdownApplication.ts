@@ -11,7 +11,7 @@ import {
   IArgdownResponse,
   ArgdownPluginError
 } from "@argdown/core";
-import { isAsyncPlugin } from "./IAsyncArgdownPlugin";
+import { isAsyncPlugin } from "./IAsyncArgdownPlugin.js";
 import path from "path";
 import * as chokidar from "chokidar";
 import * as glob from "glob";
@@ -29,7 +29,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
   ): Promise<IArgdownResponse> {
     let processorsToRun: string[] = [];
     this.logger.setLevel("error");
-    let resp: IArgdownResponse = response || {};
+    const resp: IArgdownResponse = response || {};
     let req = request;
 
     if (req) {
@@ -49,7 +49,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
           if (isString(req.process)) {
             processorsToRun = this.defaultProcesses[req.process];
           } else if (req.process && req.process.constructor === Array) {
-            processorsToRun = <string[]>req.process;
+            processorsToRun = req.process;
           }
         } else if (isString(req.process)) {
           processorsToRun = this.defaultProcesses[req.process];
@@ -67,9 +67,9 @@ export class AsyncArgdownApplication extends ArgdownApplication {
     const exceptions: Error[] = [];
     resp.exceptions = exceptions;
 
-    for (let processorId of processorsToRun) {
+    for (const processorId of processorsToRun) {
       let cancelProcessor = false;
-      let processor = this.processors[processorId];
+      const processor = this.processors[processorId];
       if (!processor) {
         this.logger.log(
           "error",
@@ -82,7 +82,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
         "[AsyncArgdownApplication]: Running processor: " + processorId
       );
 
-      for (let plugin of processor.plugins) {
+      for (const plugin of processor.plugins) {
         if (isFunction(plugin.prepare)) {
           this.logger.log(
             "verbose",
@@ -129,7 +129,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
         break;
       }
 
-      for (let plugin of processor.plugins) {
+      for (const plugin of processor.plugins) {
         this.logger.log(
           "verbose",
           "[AsyncArgdownApplication]: Running plugin: " + plugin.name
@@ -157,7 +157,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
       }
     }
     if (req.logExceptions === undefined || req.logExceptions) {
-      for (let exception of exceptions) {
+      for (const exception of exceptions) {
         let msg = exception.stack || exception.message;
         if (exception instanceof ArgdownPluginError) {
           msg = `[${exception.processor}/${exception.plugin}]: ${msg}`;
@@ -178,7 +178,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
     if (processObj) {
       req = defaultsDeep({}, processObj, req);
     }
-    let inputGlob = req.inputPath || "./*.argdown";
+    const inputGlob = req.inputPath || "./*.argdown";
     const ignoreFiles = req.ignore || [
       "**/_*", // Exclude files starting with '_'.
       "**/_*/**" // Exclude entire directories starting with '_'.
@@ -204,7 +204,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
       this.logger.setLevel(req.logLevel);
     }
     if (req.plugins) {
-      for (let pluginData of req.plugins) {
+      for (const pluginData of req.plugins) {
         if (isObject(pluginData.plugin) && isString(pluginData.processor)) {
           this.addPlugin(pluginData.plugin, pluginData.processor);
         }
@@ -215,12 +215,11 @@ export class AsyncArgdownApplication extends ArgdownApplication {
       return;
     }
 
-    const $ = this;
-    let absoluteInputGlob = path.resolve(req.rootPath, inputGlob);
+    const absoluteInputGlob = path.resolve(req.rootPath, inputGlob);
     const loadOptions: chokidar.ChokidarOptions = {};
     if (ignoreFiles) {
       // error in WatchOptions type declaration: option is called "ignore", not "ignored":
-      (<any>loadOptions).ignore = ignoreFiles;
+      (loadOptions as any).ignore = ignoreFiles;
     }
     if (req.watch) {
       const watcher = chokidar.watch(absoluteInputGlob, loadOptions);
@@ -231,18 +230,18 @@ export class AsyncArgdownApplication extends ArgdownApplication {
         .on("add", path => {
           this.logger.log("verbose", `File ${path} has been added.`);
           watcherRequest.inputPath = path;
-          $.load(watcherRequest);
+          void this.load(watcherRequest);
         })
         .on("change", path => {
           this.logger.log("verbose", `File ${path} has been changed.`);
           watcherRequest.inputPath = path;
-          $.load(watcherRequest);
+          void this.load(watcherRequest);
         })
         .on("unlink", path => {
           this.logger.log("verbose", `File ${path} has been removed.`);
         });
     } else {
-      let files: string[] = await globAsync(absoluteInputGlob, loadOptions);
+      const files: string[] = await globAsync(absoluteInputGlob, loadOptions);
       const promises = [];
       if (files.length == 0) {
         throw new ArgdownPluginError(
@@ -251,14 +250,14 @@ export class AsyncArgdownApplication extends ArgdownApplication {
           `No Argdown files found at: '${absoluteInputGlob}'`
         );
       }
-      for (let file of files) {
+      for (const file of files) {
         const requestForFile = cloneDeep(request);
         requestForFile.inputPath = file;
         promises.push(this.runAsync(requestForFile));
       }
       // Remove plugins added by request
       if (req.plugins) {
-        for (let pluginData of req.plugins) {
+        for (const pluginData of req.plugins) {
           this.removePlugin(pluginData.plugin, pluginData.processor);
         }
       }
@@ -287,7 +286,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
     } else if (extension === ".js") {
       // For Js config files we have to use loadJSFile which is synchronous
       try {
-        let jsModuleExports = loadJSFile(filePath);
+        const jsModuleExports = loadJSFile(filePath);
 
         if (jsModuleExports.config) {
           config = jsModuleExports.config;

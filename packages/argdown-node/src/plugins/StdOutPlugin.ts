@@ -33,7 +33,7 @@ export class StdOutPlugin implements IArgdownPlugin {
   run: IRequestHandler = (request, response) => {
     const settings = this.getSettings(request);
     if (settings.dataKey) {
-      let content = !settings.isRequestData
+      const content = !settings.isRequestData
         ? (<any>response)[settings.dataKey]
         : (<any>request)[settings.dataKey];
       if (content !== undefined) {

@@ -114,7 +114,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
       ...settings.pdf
     });
     if (settings.fonts) {
-      for (let font of settings.fonts) {
+      for (const font of settings.fonts) {
         try {
           const baseDir =
             request.inputPath && !!path.extname(request.inputPath)
@@ -142,7 +142,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
           if (bold) face = `${face} Bold`;
           if (italic) face = `${face} Italic`;
           const re = new RegExp(`${face}( Regular)?$`);
-          let match = settings.fonts!.find(fontObj => {
+          const match = settings.fonts!.find(fontObj => {
             return re.test(fontObj.name);
           });
           if (match !== undefined) {
@@ -192,13 +192,13 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
     });
   }
   getFileName(file: string): string {
-    let extension = path.extname(file);
+    const extension = path.extname(file);
     return path.basename(file, extension);
   }
   toArrayBuffer(buf: Buffer) {
-    var ab = new ArrayBuffer(buf.length);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buf.length; ++i) {
+    const ab = new ArrayBuffer(buf.length);
+    const view = new Uint8Array(ab);
+    for (let i = 0; i < buf.length; ++i) {
       view[i] = buf[i];
     }
     return ab;

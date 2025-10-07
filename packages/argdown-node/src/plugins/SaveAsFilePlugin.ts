@@ -65,9 +65,9 @@ export class SaveAsFilePlugin implements IAsyncArgdownPlugin {
         "No data key."
       );
     }
-    let fileContent: string | Buffer | undefined = !settings.isRequestData
-      ? (<any>response)[settings.dataKey!]
-      : (<any>request)[settings.dataKey!];
+    const fileContent: string | Buffer | undefined = !settings.isRequestData
+      ? (<any>response)[settings.dataKey]
+      : (<any>request)[settings.dataKey];
     if (fileContent === undefined) {
       throw new ArgdownPluginError(
         this.name,
@@ -126,7 +126,7 @@ export class SaveAsFilePlugin implements IAsyncArgdownPlugin {
     }
   };
   getFileName(file: string): string {
-    let extension = path.extname(file);
+    const extension = path.extname(file);
     return path.basename(file, extension);
   }
   async saveAsFile(
@@ -136,7 +136,7 @@ export class SaveAsFilePlugin implements IAsyncArgdownPlugin {
     extension: string,
     logger: IArgdownLogger
   ) {
-    let absoluteOutputDir = path.resolve(process.cwd(), outputDir);
+    const absoluteOutputDir = path.resolve(process.cwd(), outputDir);
     const outputPath = path.resolve(absoluteOutputDir, fileName + extension);
     await mkdirp(absoluteOutputDir);
     await new Promise<void>((resolve, reject) => {

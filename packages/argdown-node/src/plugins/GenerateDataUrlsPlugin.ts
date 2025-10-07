@@ -18,7 +18,7 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
     ) {
       return;
     }
-    for (let image of Object.values(request.images!.files!)) {
+    for (const image of Object.values(request.images!.files)) {
       if (!image.path) {
         return;
       }

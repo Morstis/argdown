@@ -1,13 +1,17 @@
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
-import imageSize from "image-size";
+} from "../IAsyncArgdownPlugin.js";
+import { imageSize } from "image-size";
 import { ArgdownPluginError } from "@argdown/core";
 import axios from "axios";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { constants, promises as fs } from "fs";
 import path from "path";
+
+interface ISizeCalculationResult {
+  width?: number;
+  height?: number;
+}
 
 export class ImageSizePlugin implements IAsyncArgdownPlugin {
   name = "ImageSizePlugin";
@@ -15,12 +19,12 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
     if (!request.images || !request.images.files) {
       return;
     }
-    for (let image of Object.values(request.images!.files!)) {
+    for (const image of Object.values(request.images.files)) {
       if (!image.path) {
         return;
       }
       try {
-        let dimensions: ISizeCalculationResult | undefined | any;
+        let dimensions: ISizeCalculationResult | undefined;
         if (image.width && image.height) {
           // do not overwrite values
           continue;
