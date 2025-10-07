@@ -17,14 +17,14 @@
     "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
     "docs:dev": "yarn workspace @argdown/docs run docs:dev",
     "lint": "eslint",
-    "lint:all": "eslint .",
+    "lint:all": "eslint packages/*/src",
     "lint:fix": "eslint --fix",
-    "lint:all:fix": "eslint . --fix"
+    "lint:all:fix": "eslint --fix packages/*/src"
   },
   "nyc": {
     "all": true,
     "include": [
-      "packages/**/src/**/*.ts"
+      "packages/*/src/**/*.ts"
     ],
     "extension": [
       ".ts"
