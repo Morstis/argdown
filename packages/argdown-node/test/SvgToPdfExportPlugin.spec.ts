@@ -1,11 +1,16 @@
-import { expect } from "chai";
-const chai = require("chai");
-chai.use(require("chai-fs"));
+import { expect, use } from "chai";
+import chaiFs from "chai-fs";
+use(chaiFs);
 import { describe, it } from "mocha";
-import { argdown } from "../src/index";
+import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
 import path from "path";
-import { rimraf } from "rimraf"
+import { rimraf } from "rimraf";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe("SvgToPdfExportPlugin", () => {
   it("can generate pdf from svg (sanity test)", async () => {

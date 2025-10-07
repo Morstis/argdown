@@ -49,7 +49,31 @@ export default [
     },
   })),
   
-  // Configuration for test files
+  // TypeScript configuration for test files (without type checking)
+  {
+    files: ['**/test/**/*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      ecmaVersion: 2023,
+      sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          modules: true
+        }
+      }
+    },
+    plugins: {
+      '@typescript-eslint': tseslint.plugin
+    },
+    rules: {
+      // Basic TypeScript rules without type checking
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+  
+  // Configuration for test files (non-TypeScript specific rules)
   {
     files: ['**/test/**/*.ts', '**/test/**/*.js'],
     rules: {
@@ -79,6 +103,7 @@ export default [
       '**/lib/**',
       '**/*.min.js',
       '**/docs/.vuepress/dist/**',
+      '**/test/**/*.d.ts', // Ignore declaration files in test directories
     ],
   },
 ];

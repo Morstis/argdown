@@ -286,9 +286,9 @@ export class AsyncArgdownApplication extends ArgdownApplication {
     } else if (extension === ".js") {
       // For Js config files we have to use loadJSFile which is synchronous
       try {
-        const jsModuleExports = loadJSFile(filePath);
+        const jsModuleExports = loadJSFile(filePath) as any;
 
-        if (jsModuleExports.config) {
+        if (jsModuleExports?.config) {
           config = jsModuleExports.config;
         } else {
           // let's try the default export

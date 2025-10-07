@@ -61,6 +61,21 @@ sed -i '' 's/Object\.keys(response\.arguments)/Object.keys(response.arguments ??
 
 # Fix Object.values patterns  
 sed -i '' 's/Object\.values(response\.statements)/Object.values(response.statements ?? {})/g' src/**/*.ts
+
+# Fix import extensions (CORRECTED PATTERN - avoids double .js)
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*\)\([^.]\)";|from "./\1\2.js";|g' {} \;
+# Alternative safer pattern for imports:
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*\)";|from "./\1.js";|g' {} \;
+# BUT CHECK: Only apply if files don't already have .js extensions!
+
+# BETTER APPROACH: Use negative lookahead to avoid double .js
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*[^s]\)";|from "./\1.js";|g' {} \;
+# This avoids matching paths ending in 's' (like .js)
+
+# SAFEST APPROACH: Two-step process
+# Step 1: Find files that need fixing
+grep -r 'from "\./[^"]*[^s]";' src --include="*.ts" 
+# Step 2: Apply manually or with specific targeting
 ```
 
 #### **Context-Aware Defaults**:
@@ -214,6 +229,38 @@ font: (settings.group!.font || "arial") as any
 
 ---
 
+### **Recipe 6: Module Export Issues**
+**Pattern**: `Cannot find module '@package/core/dist/plugins/SomePlugin'` or artificially restricted exports
+
+#### **Problem**: Plugin is not exported from main package index despite being needed by consumers
+
+#### **Solution**: Export properly from main index instead of workarounds
+```typescript
+// ❌ Before (in @argdown/core/src/index.ts)
+// SyncDotToSvgExportPlugin has to be exported explicitely as it is not needed everywhere and renderSync is too large
+// export * from "./plugins/SyncDotToSvgExportPlugin.js";
+
+// ✅ After 
+export * from "./plugins/SyncDotToSvgExportPlugin.js";
+```
+
+#### **Consumer Usage**:
+```typescript
+// ❌ Before (requires internal path knowledge)
+import { SyncDotToSvgExportPlugin } from "@argdown/core/dist/plugins/SyncDotToSvgExportPlugin.js";
+
+// ✅ After (clean public API)
+import { SyncDotToSvgExportPlugin } from "@argdown/core";
+```
+
+#### **Best Practices**:
+- Don't artificially restrict exports based on size concerns
+- If a plugin is needed by consumers, export it properly
+- Size optimization should happen at build/bundling level, not export level
+- Rebuild the exporting package after adding exports: `npm run build`
+
+---
+
 ## 🚀 Automation Strategies
 
 ### **Sed Command Patterns**
@@ -227,13 +274,32 @@ find src -name "*.ts" -exec sed -i '' 's/Object\.keys(\([^)]*arguments\))/Object
 find src -name "*.ts" -exec sed -i '' 's/Object\.values(\([^)]*statements\))/Object.values(\1 ?? {})/g' {} \;
 ```
 
-#### **Pattern 2: String Undefined Safety**
+#### **Pattern 2: Import Extensions (CORRECTED)**
+```bash
+# ❌ WRONG - Causes double .js extensions
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*\)";|from "./\1.js";|g' {} \;
+
+# ✅ BETTER - Avoids files already ending in .js
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*[^s]\)";|from "./\1.js";|g' {} \;
+
+# ✅ SAFEST - Manual verification approach
+# Step 1: Find imports needing .js extension
+grep -r 'from "\./[^"]*[^js]";' src --include="*.ts"
+# Step 2: Apply sed with verification
+grep -l 'from "\./[^"]*[^js]";' src/*.ts | xargs sed -i '' 's|from "\./\([^"]*\)";|from "./\1.js";|g'
+
+# ✅ RECOMMENDED - Check before applying
+find src -name "*.ts" -exec grep -l 'from "\./[^"]*[^s]";' {} \; | \
+  xargs sed -i '' 's|from "\./\([^"]*\)";|from "./\1.js";|g'
+```
+
+#### **Pattern 3: String Undefined Safety**
 ```bash
 # Fix token.title patterns
 find src -name "*.ts" -exec sed -i '' 's/token\.title/token.title ?? "untitled"/g' {} \;
 ```
 
-#### **Pattern 3: Response Property Access**
+#### **Pattern 4: Response Property Access**
 ```bash
 # Fix response.arguments access
 find src -name "*.ts" -exec sed -i '' 's/response\.arguments!/response.arguments ?? {}/g' {} \;
@@ -241,8 +307,10 @@ find src -name "*.ts" -exec sed -i '' 's/response\.arguments!/response.arguments
 
 ### **When to Use Automation vs Manual**:
 - **Use sed**: For highly repetitive, simple patterns (>10 occurrences)
-- **Use manual**: For complex type issues, context-dependent defaults
+- **Use manual**: For complex type issues, context-dependent defaults, import paths with mixed extensions
 - **Validate**: Always check a few results manually before bulk application
+- **Test first**: Run sed on a single file to verify pattern works correctly
+- **Git safety**: Commit before bulk sed operations for easy rollback
 
 ---
 
@@ -276,8 +344,15 @@ npx tsc --noEmit --skipLibCheck 2>&1 | grep "string | undefined" | wc -l
 # ❌ Dangerous - might break valid code
 sed 's/title/title ?? "untitled"/g' 
 
+# ❌ CRITICAL - adds .js to files that already have .js
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*\)";|from "./\1.js";|g' {} \;
+# Results in: from "./file.js.js"
+
 # ✅ Safe - target specific patterns
 sed 's/token\.title/token.title ?? "untitled"/g'
+
+# ✅ Safe - avoid double extensions
+find src -name "*.ts" -exec sed -i '' 's|from "\./\([^"]*[^s]\)";|from "./\1.js";|g' {} \;
 ```
 
 ### **Pitfall 2: Wrong Default Values**
@@ -397,10 +472,14 @@ git checkout HEAD~1 -- src/specific/file.ts
 1. **Nullish Coalescing (??) is Superior**: More predictable than `||` for undefined handling
 2. **Context Matters for Defaults**: Different use cases need different fallback values  
 3. **Automation + Manual = Optimal**: Use both strategies strategically
-4. **Incremental Progress**: Small, validated steps prevent large rollbacks
-5. **Type System is Usually Right**: Errors often indicate real potential runtime issues
-6. **External Libraries Need Attention**: Type declarations often need manual fixes
-7. **Test Early, Test Often**: Catch regressions immediately
+4. **sed Patterns Need Careful Testing**: Always test on single files first, beware of double-application
+5. **Import Extensions Are Tricky**: Mixed .js/.ts files require careful regex patterns
+6. **Incremental Progress**: Small, validated steps prevent large rollbacks
+7. **Type System is Usually Right**: Errors often indicate real potential runtime issues
+8. **External Libraries Need Attention**: Type declarations often need manual fixes
+9. **Test Early, Test Often**: Catch regressions immediately
+10. **Git is Your Safety Net**: Commit before bulk operations, checkout for rollbacks
+11. **Module Exports Should Be Consistent**: Don't artificially restrict exports - if a plugin is needed by consumers, export it properly from the main index rather than creating workarounds
 
 ---
 

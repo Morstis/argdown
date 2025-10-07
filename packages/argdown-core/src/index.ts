@@ -157,8 +157,7 @@ export * from "./plugins/HighlightSourcePlugin.js";
 export * from "./plugins/WebComponentExportPlugin.js";
 export * from "./plugins/ExplodeArgumentsPlugin.js";
 export * from "./plugins/MapNodeImagesPlugin.js";
-// SyncDotToSvgExportPlugin has to be exported explicitely as it is not needed everywhere and renderSync is too large
-// export * from "./plugins/SyncDotToSvgExportPlugin.js";
+export * from "./plugins/SyncDotToSvgExportPlugin.js";
 export * from "./plugins/VizJsSettings.js";
 export * from "./plugins/SaysWhoPlugin.js";
 export * from "./plugins/shortcodes.js";

@@ -1,8 +1,13 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { AsyncArgdownApplication } from "../src/index";
+import { AsyncArgdownApplication } from "../src/index.js";
 import { IArgdownRequest, IArgdownResponse } from "@argdown/core";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = new AsyncArgdownApplication();
 

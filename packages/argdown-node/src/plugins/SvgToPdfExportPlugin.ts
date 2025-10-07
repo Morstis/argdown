@@ -106,7 +106,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
     if (request.outputSuffix) {
       fileName = fileName + request.outputSuffix;
     }
-    const absoluteOutputDir = path.resolve(process.cwd(), outputDir);
+    const absoluteOutputDir = path.resolve(process.cwd(), outputDir ?? "");
     const filePath = absoluteOutputDir + "/" + fileName + ".pdf";
     await mkdirp(absoluteOutputDir);
     const doc = new PDFDocument({

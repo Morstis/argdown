@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { argdown } from "../src/index";
+import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
 describe("DotToSvgExportPlugin", () => {
   it("can generate svg from dot (sanity test)", async () => {

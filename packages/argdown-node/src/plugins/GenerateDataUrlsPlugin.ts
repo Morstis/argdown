@@ -1,16 +1,16 @@
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
-import { ArgdownPluginError } from "@argdown/core";
+} from "../IAsyncArgdownPlugin.js";
+import { ArgdownPluginError, IArgdownRequest, IArgdownResponse, IArgdownLogger } from "@argdown/core";
 import isSvg from "is-svg";
 import imageType from "image-type";
-import { imageUtils } from "./utils";
+import { imageUtils } from "./utils.js";
 import path from "path";
 
 export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
   name = "GenerateDataUrlsPlugin";
-  runAsync: IAsyncRequestHandler = async (request, _response, _logger) => {
+  runAsync: IAsyncRequestHandler = async (request: IArgdownRequest, _response: IArgdownResponse, _logger: IArgdownLogger) => {
     if (
       !request.images ||
       !request.images.files ||
@@ -18,16 +18,18 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
     ) {
       return;
     }
-    for (const image of Object.values(request.images!.files)) {
-      if (!image.path) {
+    for (const image of Object.values(request.images.files)) {
+      // Access properties with proper null checking for unknown object structure
+      if (!image || typeof image !== 'object' || !('path' in image) || !(image as { path?: string }).path) {
         return;
       }
+      const imageObj = image as { path: string; dataUrl?: string };
       try {
         const baseDir =
           request.inputPath && !!path.extname(request.inputPath)
             ? path.dirname(request.inputPath)
             : request.inputPath || "";
-        const buffer = await imageUtils.getImage(image.path, baseDir);
+        const buffer = await imageUtils.getImage(imageObj.path, baseDir);
         let mimeType = "";
         if (buffer) {
           const bufferString = buffer.toString("utf-8"); 
@@ -44,18 +46,18 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
           const dataUrl = `data:${mimeType};base64,${buffer.toString(
             "base64"
           )}`;
-          // const stringToReplace = new RegExp(image.path, "g");
+          // const stringToReplace = new RegExp(imageObj.path, "g");
           // response.svg = response.svg?.replace(stringToReplace, dataUrl);
           // logger.log("verbose", `dataUrl: ${dataUrl}`);
-          image.dataUrl = dataUrl;
-          // image.path = dataUrl;
+          imageObj.dataUrl = dataUrl;
+          // imageObj.path = dataUrl;
         }
       } catch (err) {
         if (err instanceof Error) {
           throw new ArgdownPluginError(
             this.name,
             "inline-image-generation-failed",
-            `'Generating inline image of '${image.path}' failed. ${err.message}`
+            `'Generating inline image of '${imageObj.path}' failed. ${err.message}`
           );
         }
       }
