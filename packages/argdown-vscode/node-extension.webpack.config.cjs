@@ -34,15 +34,9 @@ module.exports = {
     vscode: "commonjs vscode" // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
   },
   resolve: {
-    alias: {
-      "unicode-properties": "unicode-properties/unicode-properties.cjs.js",
-      pdfkit: "pdfkit/js/pdfkit.standalone.js"
-    },
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: [".ts", ".js"]
-    // alias: {
-    //     pdfkit: path.resolve(__dirname, 'node_modules/pdfkit/js/pdfkit.standalone.js')
-    // }
+    extensions: [".ts", ".js", ".mjs"],
+    mainFields: ["module", "main"]
   },
   module: {
     rules: [
@@ -53,6 +47,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
+              configFile: "tsconfig.json",
               compilerOptions: {
                 sourceMap: true
               }
@@ -64,35 +59,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
-      },
-      {
-        enforce: "pre",
-        test: /unicode-properties[\/\\]unicode-properties/,
-        loader: "string-replace-loader",
-        options: {
-          search: "var fs = _interopDefault(require('fs'));",
-          replace: "var fs = require('fs');"
-        }
-      },
-      {
-        enforce: "pre",
-        test: /import-fresh[\/\\]index\.js/,
-        loader: "string-replace-loader",
-        options: {
-          search:
-            "return parent === undefined ? require(filePath) : parent.require(filePath);",
-          replace:
-            "return parent === undefined ? require(/* webpackIgnore: true */ filePath) : parent.require(/* webpackIgnore: true */ filePath);"
-        }
-      },
-      {
-        enforce: "post",
-        test: /unicode-properties[\/\\]unicode-properties/,
-        use: [
-          {
-            loader: "transform-loader?brfs"
-          }
-        ]
       }
     ],
     parser: {

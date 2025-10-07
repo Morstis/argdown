@@ -31,8 +31,8 @@
   "scripts": {
     "build": "npm run clean && npm run build-node && npm run build-browser",
     "build-ts": "tsc -p .",
-    "build-node": "webpack --config node.webpack.config.js --mode production",
-    "build-browser": "webpack --config browser.webpack.config.js --mode production",
+    "build-node": "webpack --config node.webpack.config.cjs --mode production",
+    "build-browser": "webpack --config browser.webpack.config.cjs --mode production",
     "clean": "rimraf \"dist/*\" --glob",
     "watch": "tsc -w -p .",
     "prepublishOnly": "npm run build",
