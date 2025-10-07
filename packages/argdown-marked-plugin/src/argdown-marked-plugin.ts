@@ -1,10 +1,10 @@
 import {
   IArgdownRequest,
   WebComponentExportPlugin,
-  IWebComponentExportSettings
+  IWebComponentExportSettings,
+  argdown as defaultArgdownApplication
 } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
-import { argdown } from "@argdown/core/dist/argdown";
 import {Renderer, MarkedOptions, Tokens } from "marked";
 
 export const addArgdownSupportToMarked = (
@@ -12,7 +12,7 @@ export const addArgdownSupportToMarked = (
   renderer: Renderer,
   config?: ((options: any) => IArgdownRequest) | IArgdownRequest
 ) => {
-  const webComponentPlugin = argdown.getPlugin(
+  const webComponentPlugin = defaultArgdownApplication.getPlugin(
     WebComponentExportPlugin.name,
     "export-web-component"
   ) as WebComponentExportPlugin;
@@ -45,7 +45,7 @@ export const addArgdownSupportToMarked = (
       },
       currentConfig
     );
-    const response = argdown.run(request);
+    const response = defaultArgdownApplication.run(request);
     return response.webComponent;
   };
   const tempCode = renderer.code.bind(renderer as any);
@@ -59,7 +59,7 @@ export const addArgdownSupportToMarked = (
     }
     return tempCode(token);
   };
-  return (src: string, options?: MarkedOptions | undefined) => {
+  return (src: string, options?: MarkedOptions  ) => {
     if (typeof config === "function") {
       currentConfig = config(options);
     }
