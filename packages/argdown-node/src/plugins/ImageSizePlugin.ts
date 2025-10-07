@@ -63,7 +63,7 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
       }
     }
   };
-  getSizeFromRemoteFile = async (path: string) => {
+  getSizeFromRemoteFile = async (path: string): Promise<ISizeCalculationResult> => {
     const response = await axios.get(path, {
       responseType: "arraybuffer"
     });
