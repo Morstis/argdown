@@ -7,10 +7,8 @@ import throttle = require("lodash.throttle");
 import { initMenu } from "./menu";
 import { getPngAsString } from "./export";
 import { openScaleDialog } from "./scaleDialog";
-import { VizJsMap } from "@argdown/map-views";
-import { OnZoomChangedHandler } from "@argdown/map-views/dist/ZoomManager";
+import { VizJsMap, OnZoomChangedHandler, OnSelectionChangedHandler } from "@argdown/map-views";
 import { ArgdownPreviewStore } from "./state";
-import { OnSelectionChangedHandler } from "@argdown/map-views/dist/CanSelectNode";
 
 declare var acquireVsCodeApi: any;
 const vscode = acquireVsCodeApi();

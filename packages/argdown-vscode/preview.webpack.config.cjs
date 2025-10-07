@@ -19,12 +19,29 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: "tsconfig.json",
+              compilerOptions: {
+                sourceMap: true
+              }
+            }
+          }
+        ]
       }
     ]
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+      ".cjs": [".cjs", ".cts"],
+      ".mjs": [".mjs", ".mts"]
+    },
+    mainFields: ["module", "main"],
     fallback: {
       fs: false,
       stream: false,

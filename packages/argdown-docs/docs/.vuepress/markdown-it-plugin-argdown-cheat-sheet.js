@@ -1,6 +1,7 @@
-var argdown = require("@argdown/core/dist/argdown.js").argdown;
-var SaysWhoPlugin = require("@argdown/core/dist/plugins/SaysWhoPlugin.js")
-  .SaysWhoPlugin;
+//var argdown = require("@argdown/core/dist/argdown.js").argdown;
+//var SaysWhoPlugin = require("@argdown/core/dist/plugins/SaysWhoPlugin.js")
+//  .SaysWhoPlugin;
+var { argdown, SaysWhoPlugin } = require("@argdown/core");  
 argdown.addPlugin(new SaysWhoPlugin(), "add-proponents");
 argdown.defaultProcesses["says-who-map"] = [
   "parse-input",

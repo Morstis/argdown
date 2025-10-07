@@ -1,7 +1,9 @@
-var argdown = require("@argdown/core/dist/argdown.js").argdown;
+//var argdown = require("@argdown/core/dist/argdown.js").argdown;
+// var createArgdownPlugin = require("@argdown/markdown-it-plugin/dist/argdown-markdown-it-plugin.js")
+//   .default;
+var { argdown } = require("@argdown/core");
 var cheatSheetPlugin = require("./markdown-it-plugin-argdown-cheat-sheet");
-var createArgdownPlugin = require("@argdown/markdown-it-plugin/dist/argdown-markdown-it-plugin.js")
-  .default;
+var { default: createArgdownPlugin } = require("@argdown/markdown-it-plugin");
 var container = require("markdown-it-container");
 function createContainer(klass, defaultTitle) {
   return [

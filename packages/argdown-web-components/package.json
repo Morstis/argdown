@@ -3,19 +3,19 @@
   "version": "1.7.12",
   "description": "Components that help to embed Argdown in the browser",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/argdown-map.js",
+  "types": "./dist/argdown-map.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/argdown-map.js",
+      "types": "./dist/argdown-map.d.ts"
     }
   },
-  "browser": "./dist/index.js",
+  "browser": "./dist/argdown-map.js",
   "targets": {
     "browser": false,
     "dist": {
-      "source": "src/index.ts",
+      "source": "src/argdown-map.ts",
       "context": "browser",
       "outputFormat": "global",
       "isLibrary": false,

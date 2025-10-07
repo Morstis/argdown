@@ -1,5 +1,5 @@
-import { IDagreSettings, IVizJsSettings } from "@argdown/map-views";
-import { IMap } from "@argdown/core";
+import { IDagreSettings } from "@argdown/map-views";
+import { IMap, IVizJsSettings } from "@argdown/core";
 export interface IArgdownPreviewState {
   resource?: string;
   currentView?: string;

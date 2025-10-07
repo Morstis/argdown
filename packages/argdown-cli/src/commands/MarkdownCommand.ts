@@ -2,7 +2,6 @@ import { argdown, IAsyncArgdownPlugin } from "@argdown/node";
 import { Arguments } from "yargs";
 import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
 import MarkdownIt from "markdown-it";
-// @ts-expect-error - dependency may not be built in monorepo
 import createArgdownPlugin from "@argdown/markdown-it-plugin";
 import { runArgdown } from "./runArgdown.js";
 /**

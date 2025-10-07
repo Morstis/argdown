@@ -29,6 +29,11 @@ const config = {
     mainFields: ["browser", "module", "main"],
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: [".ts", ".js", ".mjs", ".cjs"],
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+      ".cjs": [".cjs", ".cts"],
+      ".mjs": [".mjs", ".mts"]
+    },
     alias: {
       "unicode-properties/dist/main.cjs": "unicode-properties",
       "unicode-properties/unicode-properties.cjs.js": "unicode-properties",
