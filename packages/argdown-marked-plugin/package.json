@@ -3,12 +3,12 @@
   "version": "1.7.7",
   "description": "Turns Argdown code fences into svg argument maps",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/argdown-marked-plugin.js",
+  "types": "./dist/argdown-marked-plugin.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/argdown-marked-plugin.js",
+      "types": "./dist/argdown-marked-plugin.d.ts"
     }
   },
   "scripts": {

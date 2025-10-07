@@ -11,11 +11,11 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "browser": "./dist/argdown-map.js",
+  "browser": "./dist/index.js",
   "targets": {
     "browser": false,
     "dist": {
-      "source": "src/argdown-map.ts",
+      "source": "src/index.ts",
       "context": "browser",
       "outputFormat": "global",
       "isLibrary": false,
