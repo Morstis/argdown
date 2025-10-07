@@ -269,12 +269,13 @@ function validateTextDocument(textDocument: TextDocument): void {
 //   // Monitored files have change in VSCode
 //   connection.console.log("We recevied an file change event");
 // });
+// eslint-disable-next-line @typescript-eslint/require-await
 const processDocForProviders = async (textDocument: TextDocumentIdentifier) => {
   const doc = documents.get(textDocument.uri);
   if (doc) {
     const text = doc.getText();
     const path = textDocument.uri;
-    return await processTextForProviders(text, path);
+    return processTextForProviders(text, path);
   }
   return null;
 };
@@ -313,6 +314,7 @@ connection.onHover(async (params: TextDocumentPositionParams) => {
 });
 
 const onlyWhitespacePattern = /^\s*$/;
+// eslint-disable-next-line @typescript-eslint/require-await
 connection.onCompletion(async (params: TextDocumentPositionParams) => {
   const { textDocument, position } = params;
   const path = textDocument.uri;
@@ -334,7 +336,7 @@ connection.onCompletion(async (params: TextDocumentPositionParams) => {
         input = txt.substr(0, offset - 1) + txtAfter;
       }
     }
-    const response = await processTextForProviders(input, path);
+    const response = processTextForProviders(input, path);
     if (response) {
       return provideCompletion(response, char, position, txt, offset);
     } else {
