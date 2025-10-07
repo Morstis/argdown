@@ -137,6 +137,7 @@ export * from "./TokenNames.js";
 export * from "./parser.js";
 export * from "./ArgdownTreeWalker.js";
 export * from "./ArgdownApplication.js";
+export * from "./argdown.js";
 export * from "./Logger.js";
 export * from "./plugins/ModelPlugin.js";
 export * from "./plugins/ParserPlugin.js";
