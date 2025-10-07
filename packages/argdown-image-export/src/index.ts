@@ -1,7 +1,6 @@
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler,
-  IArgdownRequest,
   AsyncArgdownApplication,
   SaveAsFilePlugin,
   StdOutPlugin
@@ -10,7 +9,9 @@ import {
   isObject,
   mergeDefaults,
   IRequestHandler,
-  checkResponseFields
+  checkResponseFields,
+  IArgdownRequest,
+  IArgdownResponse
 } from "@argdown/core";
 import { from } from "svg-to-img";
 import defaultsDeep from "lodash.defaultsdeep";
@@ -35,9 +36,9 @@ declare module "@argdown/core" {
     /**
      * Data of the [[ImageExportPlugin]]
      **/
-    png?: String | Buffer;
-    jpg?: String | Buffer;
-    webp?: String | Buffer;
+    png?: string | Buffer;
+    jpg?: string | Buffer;
+    webp?: string | Buffer;
   }
 }
 const defaultSettings: IImageExportPluginSettings = {
@@ -63,14 +64,14 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
 
-  runAsync: IAsyncRequestHandler = async (request, response) => {
+  runAsync: IAsyncRequestHandler = async (request: IArgdownRequest, response: IArgdownResponse) => {
     const settings = this.getSettings(request);
     if (settings.format == "png") {
-      response.png = await from(response.svg!).toPng(settings);
+      response.png = await from(response.svg ?? "").toPng(settings);
     } else if (settings.format == "jpg") {
-      response.jpg = await from(response.svg!).toJpeg(settings);
+      response.jpg = await from(response.svg ?? "").toJpeg(settings);
     } else if (settings.format == "webp") {
-      response.webp = await from(response.svg!).toWebp(settings);
+      response.webp = await from(response.svg ?? "").toWebp(settings);
     }
   };
 }

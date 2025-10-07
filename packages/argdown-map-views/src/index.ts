@@ -1,2 +1,2 @@
-export * from "./DagreMap";
-export * from "./VizJsMap";
+export * from "./DagreMap.js";
+export * from "./VizJsMap.js";

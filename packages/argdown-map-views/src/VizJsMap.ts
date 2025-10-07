@@ -1,14 +1,13 @@
-/* tslint:disable-next-line */
-import Viz from "@aduh95/viz.js";
+import Viz, { VizConstructorOptions } from "@aduh95/viz.js";
 
-import { VizConstructorOptions } from "@aduh95/viz.js";
 import { select } from "d3-selection";
 import "d3-transition";
 // import { Module, render } from "viz.js/full.render";
 // import * as d3 from "d3";
-import { ZoomManager, OnZoomChangedHandler } from "./ZoomManager";
-import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode";
+import { ZoomManager, OnZoomChangedHandler } from "./ZoomManager.js";
+import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode.js";
 import { mergeDefaults, isObject } from "@argdown/core";
+import { IVizJsSettings } from "@argdown/core";
 
 export enum GraphvizEngine {
   CIRCO = "circo",
@@ -18,15 +17,23 @@ export enum GraphvizEngine {
   OSAGE = "osage",
   TWOPI = "twopi"
 }
-export interface IVizJsSettings {
-  removeProlog?: boolean;
-  engine?: GraphvizEngine;
-  nop?: number;
-  images?: [{ path: string; width: number; height: number }];
+
+// old:
+// export interface IVizJsSettings {
+//   removeProlog?: boolean;
+//   engine?: GraphvizEngine;
+//   nop?: number;
+//   images?: [{ path: string; width: number; height: number }];
+// }
+
+// Extended interface to support additional features
+export interface IVizJsSettingsExtended extends IVizJsSettings {
+  images?: Array<{ path: string; width: number; height: number }>;
 }
+
 export interface VizJsMapProps {
   dot: string;
-  settings?: IVizJsSettings;
+  settings?: IVizJsSettingsExtended;
   scale?: number;
   position?: { x?: number; y?: number };
   selectedNode?: string | null;
@@ -48,13 +55,13 @@ export class VizJsMap implements CanSelectNode {
   constructor(
     svgContainer: HTMLElement,
     renderSync: ((str: string, settings: IVizJsSettings) => string) | null, // sync render mode still needed for vscode as long as webviews do not support web workers, set vizjsConfig to null if renderSync is used.
-    config: VizConstructorOptions | null, // should be used if web workers are supported, renderSync should be set null in that case
+    config: any, // VizConstructorOptions | null, // should be used if web workers are supported, renderSync should be set null in that case
     onZoomChanged?: OnZoomChangedHandler,
     onSelectionChanged?: OnSelectionChangedHandler
   ) {
     if (!renderSync && config) {
       this.vizJsConfig = config;
-      this.viz = new Viz(this.vizJsConfig);
+      this.viz = new Viz(config);
     } else if (renderSync) {
       this.renderSync = renderSync;
     }
@@ -66,7 +73,7 @@ export class VizJsMap implements CanSelectNode {
     if (this.viz === undefined && this.vizJsConfig) {
       this.viz = new Viz(this.vizJsConfig);
     }
-    return this.viz.renderString(dot, options);
+    return await this.viz.renderString(dot, options);
   }
   async render(props: VizJsMapProps) {
     const settings = isObject(props.settings) ? props.settings : {};
@@ -79,12 +86,12 @@ export class VizJsMap implements CanSelectNode {
     }
     if (settings.removeProlog) {
       svgString = svgString.replace(
-        /<\?[ ]*xml[\S ]+?\?>[\s]*<\![ ]*DOCTYPE[\S\s]+?\.dtd\"[ ]*>/,
+        /<\?[ ]*xml[\S ]+?\?>[\s]*<![ ]*DOCTYPE[\S\s]+?\.dtd"[ ]*>/,
         ""
       );
     }
     if (settings.images) {
-      for (let image of settings.images) {
+      for (const image of settings.images) {
         if ((image as any).dataUrl) {
           const stringToReplace = new RegExp(image.path, "g");
           svgString = svgString.replace(
@@ -104,7 +111,7 @@ export class VizJsMap implements CanSelectNode {
     svg.attr("viewBox", null);
 
     const svgGraph = svg.select<SVGGraphicsElement>("g");
-    const groupNode: SVGGraphicsElement = svgGraph!.node() as SVGGraphicsElement;
+    const groupNode: SVGGraphicsElement = svgGraph.node() as SVGGraphicsElement;
     const bBox = groupNode.getBBox();
     const width = bBox.width;
     const height = bBox.height;
@@ -120,7 +127,7 @@ export class VizJsMap implements CanSelectNode {
         0
       );
     }
-    svgGraph!.attr(
+    svgGraph.attr(
       "height",
       this.zoomManager.state.size.height * this.zoomManager.state.scale + 40
     );
@@ -132,8 +139,7 @@ export class VizJsMap implements CanSelectNode {
     const nodes = this.zoomManager
       .svgGraph!.selectAll("g.node")
       .nodes() as SVGGraphicsElement[];
-    const self = this;
-    return nodes.find(n => self.getArgdownId(n) === id);
+    return nodes.find(n => this.getArgdownId(n) === id);
   }
   getArgdownId(node: SVGGraphicsElement): string {
     const title = select(node)
