@@ -104,6 +104,7 @@ export default [
       '**/*.min.js',
       '**/docs/.vuepress/dist/**',
       '**/test/**/*.d.ts', // Ignore declaration files in test directories
+      'packages/argdown-sandbox/**', // Has its own .eslintrc.js for Vue.js
     ],
   },
 ];
