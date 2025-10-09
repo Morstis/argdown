@@ -53,8 +53,8 @@
 - [x] Update all build scripts to remove CommonJS targets
 - [x] Simplify build process (single ESM output instead of dual)
 - [x] Update test configurations for ESM
-- [ ] Update bundling/packaging for VS Code extension
-- [ ] Verify all development tools work with ESM
+- [x] Update bundling/packaging for VS Code extension
+- [x] Verify all development tools work with ESM
 
 ## Phase 6: Testing & Validation
 - [ ] Run comprehensive test suite
