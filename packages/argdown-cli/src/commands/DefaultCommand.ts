@@ -3,8 +3,14 @@ import { Arguments } from "yargs";
 import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
 import { runArgdown } from "./runArgdown.js";
 
-export const command = "* [inputGlob]";
+export const command = "process [inputGlob]";
 export const desc = "load config file and run parser";
+export const builder = {
+  inputGlob: {
+    describe: "Input file pattern",
+    type: "string" as const
+  }
+};
 export const handler = async (
   args: Arguments<IGeneralCliOptions> & { inputGlob?: string }
 ) => {

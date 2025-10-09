@@ -1,6 +1,5 @@
 import { AsyncArgdownApplication } from "@argdown/node";
-// @ts-expect-error - import-global has complex module system compatibility
-import importGlobal from "import-global";
+import { importGlobal } from "import-global";
 
 let triedToInstallImageExport = false;
 let imageExportInstalled = false;
