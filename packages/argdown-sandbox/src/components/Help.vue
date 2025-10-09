@@ -5,6 +5,6 @@
 </template>
 <script>
 export default {
-  name: "help",
+  name: "HelpPage",
 };
 </script>

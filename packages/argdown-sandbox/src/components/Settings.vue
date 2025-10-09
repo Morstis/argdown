@@ -95,7 +95,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "settings",
+  name: "SettingsPage",
   setup() {
     const store = useArgdownStore();
     const config = computed(() => store.configData);
