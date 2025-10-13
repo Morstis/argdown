@@ -1,6 +1,6 @@
 # @argdown/pandoc-filter
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 [Argdown](https://argdown.org) is a simple syntax for analyzing complex argumentation, inspired by Markdown.
 
