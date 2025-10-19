@@ -71,8 +71,14 @@ module.exports = defineConfig({
 
     // Enforce consistent version for typescript
     for (const dep of Yarn.dependencies({ ident: 'typescript' })) {
-      dep.update('5.8.3');
+      dep.update('5.9.3');
     }    
+
+    // Enforce consistent version for typedoc
+    for (const dep of Yarn.dependencies({ ident: 'typedoc' })) {
+      dep.update('0.28.14');
+    }
+
 
     // Enforce consistent versions for @types packages
     const typesConstraints = [

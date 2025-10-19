@@ -61,7 +61,7 @@
     "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
     "source-map-support": "0.5.21",
-    "typescript": "5.8.3"
+    "typescript": "5.9.3"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",

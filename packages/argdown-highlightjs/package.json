@@ -52,7 +52,7 @@
     "parcel": "^2.14.4",
     "postcss": "8.5.3",
     "rimraf": "^6.0.1",
-    "typescript": "5.8.3"
+    "typescript": "5.9.3"
   },
   "packageManager": "yarn@4.9.4"
 }
