@@ -4,7 +4,7 @@ var testPlugin = {
     console.log("Hallo World!");
   }
 };
-module.exports = {
+export default {
   input: "Hallo Welt!",
   plugins: [{ plugin: testPlugin, processor: "test-processor" }],
   processes: {

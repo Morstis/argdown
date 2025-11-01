@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   config: {
     inputPath: "./test/test.argdown",
     process: ["load-file", "parse-input", "build-model", "export-html", "stdout-html"],
