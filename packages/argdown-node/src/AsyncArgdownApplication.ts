@@ -18,6 +18,7 @@ import * as glob from "glob";
 import { promisify } from "util";
 import importFresh from "import-fresh";
 import { readFile } from "fs";
+import { file } from "pdfkit";
 
 const readFileAsync = promisify(readFile);
 const globAsync = glob.glob;
@@ -287,12 +288,15 @@ export class AsyncArgdownApplication extends ArgdownApplication {
       // For Js config files we have to use loadJSFile which is synchronous
       try {
         const jsModuleExports = loadJSFile(filePath) as any;
-
+        
         if (jsModuleExports?.config) {
+          // If exported as a named export with name config
           config = jsModuleExports.config;
+        } else if (jsModuleExports.default?.config) {
+          // If exported as default export containing config
+          config = jsModuleExports.default.config;
         } else {
-          // let's try the default export
-          config = jsModuleExports;
+          config = jsModuleExports.default;
         }
       } catch (e) {
         if (e instanceof Error) {
