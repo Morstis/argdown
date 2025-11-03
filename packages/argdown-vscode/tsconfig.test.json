@@ -4,6 +4,7 @@
     "outDir": "./dist/test",
     "rootDir": "./test",
     "module": "Node16",  // Use Node16 to match moduleResolution
+    "types": ["mocha", "vscode", "node"]
   },
   "include": [
     "test/**/*.ts"

@@ -8747,6 +8747,7 @@ __metadata:
     "@types/dagre-d3": "npm:0.6.6"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/lodash.throttle": "npm:^4.1.9"
+    "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/vscode": "npm:^1.99.1"
     "@vscode/test-cli": "npm:^0.0.11"
