@@ -1,9 +1,6 @@
 import { html } from "lit-html";
-import component from "haunted";
-import useState from "haunted";
-import useEffect from "haunted";
-import useRef from "haunted";
-import useLayoutEffect from "haunted";
+// @ts-expect-error - haunted exports these as named exports despite TypeScript error
+import { component, useState, useEffect, useRef, useLayoutEffect } from "haunted";
 import { ArgdownMark } from "./ArgdownMark.js";
 import { ExpandIcon } from "./ExpandIcon.js";
 import { MinimizeIcon } from "./MinimizeIcon.js";
