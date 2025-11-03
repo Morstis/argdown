@@ -23,12 +23,13 @@ import * as MapCommand from './commands/MapCommand.js';
 import * as MarkdownCommand from './commands/MarkdownCommand.js';
 import * as RunCommand from './commands/RunCommand.js';
 import * as WebComponentCommand from './commands/WebComponentCommand.js';
+import { hideBin } from 'yargs/helpers';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
 
-void yargs()
+void yargs(hideBin(process.argv))
   .showHelpOnFail(true)
   .scriptName("argdown")
   .options({
@@ -68,7 +69,6 @@ void yargs()
     }
   })
   // Manual command registration (ES modules compatibility - commandDir doesn't work)
-  .command(DefaultCommand as CommandModule<any, any>)  // Re-enabled with modified pattern
   .command(CompileCommand as CommandModule<any, any>)
   .command(HtmlCommand as CommandModule<any, any>)
   .command(JSONCommand as CommandModule<any, any>)
@@ -76,6 +76,8 @@ void yargs()
   .command(MarkdownCommand as CommandModule<any, any>)
   .command(RunCommand as CommandModule<any, any>)
   .command(WebComponentCommand as CommandModule<any, any>)
+  .command(DefaultCommand as CommandModule<any, any>)  // Re-enabled with modified pattern
   .demandCommand()
   .help()
-  .version(packageJson.version).argv;
+  .version(packageJson.version)
+  .parse();

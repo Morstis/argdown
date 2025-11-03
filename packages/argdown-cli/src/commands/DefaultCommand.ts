@@ -3,7 +3,7 @@ import { Arguments } from "yargs";
 import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
 import { runArgdown } from "./runArgdown.js";
 
-export const command = "process [inputGlob]";
+export const command = "* [inputGlob]";
 export const desc = "load config file and run parser";
 export const builder = {
   inputGlob: {

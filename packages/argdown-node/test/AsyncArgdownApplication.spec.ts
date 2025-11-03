@@ -58,4 +58,10 @@ describe("AsyncArgdownApplication", function() {
     );
     expect(config.input).to.equal("Hallo World!");
   });
+  it("can load js config exported as a named export", async () => {
+    const config = await app.loadConfig(
+      path.resolve(__dirname + "/argdown3.config.js")
+    );
+    expect(config.input).to.equal("Hallo World!");
+  });
 });

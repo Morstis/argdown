@@ -289,10 +289,13 @@ export class AsyncArgdownApplication extends ArgdownApplication {
         const jsModuleExports = loadJSFile(filePath) as any;
 
         if (jsModuleExports?.config) {
+          // If exported as a named export with name config
           config = jsModuleExports.config;
+        } else if (jsModuleExports.default?.config) {
+          // If exported as default export containing config
+          config = jsModuleExports.default.config;
         } else {
-          // let's try the default export
-          config = jsModuleExports;
+          config = jsModuleExports.default;
         }
       } catch (e) {
         if (e instanceof Error) {
