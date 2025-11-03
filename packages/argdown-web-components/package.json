@@ -30,8 +30,8 @@
     "dist/"
   ],
   "scripts": {
-    "example": "parcel test/index.html --open",
-    "example-dist": "parcel test/index-dist.html --open",
+    "example": "esbuild --serve=8000 --servedir=.",
+    "example-dist": "parcel test/index.html --open",
     "build": "yarn run clean && parcel build",
     "clean": "rimraf \"dist/\" --glob",
     "prepublishOnly": "yarn run build",
@@ -54,10 +54,15 @@
     "lit-html": "^3.2.1"
   },
   "devDependencies": {
-    "@parcel/transformer-typescript-tsc": "2.14.4",
+    "@parcel/core": "^2.16.0",
+    "@parcel/transformer-css": "^2.16.0",
+    "@parcel/transformer-html": "^2.16.0",
+    "@parcel/transformer-js": "^2.16.0",
+    "@parcel/transformer-typescript-tsc": "^2.16.0",
     "@types/d3": "7.4.3",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "parcel": "2.14.4",
+    "esbuild": "^0.25.12",
+    "parcel": "^2.16.0",
     "parcel-plugin-static-files-copy": "^2.5.1",
     "rimraf": "^6.0.1",
     "typescript": "5.9.3"
