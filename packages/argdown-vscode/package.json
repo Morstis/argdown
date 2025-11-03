@@ -50,8 +50,8 @@
     "onWebviewPanel:argdown.preview",
     "workspaceContains:**/*.{argdown,ad,argdn,adown}"
   ],
-  "main": "./dist/node/node-main.js",
-  "browser": "./dist/web/browser-main.js",
+  "main": "./dist/node/node-main.cjs",
+  "browser": "./dist/web/browser-main.cjs",
   "contributes": {
     "languages": [
       {
@@ -526,9 +526,9 @@
     "package-web": "webpack --mode production --devtool hidden-source-map",
     "watch": "tsc -w -p ./",
     "build-extension-tsc": "npm run clean && tsc -p ./",
-    "build-node-extension": "webpack --config node-extension.webpack.config.cjs --mode development",
-    "build-web-extension": "webpack --config web-extension.webpack.config.cjs --mode development",
-    "build-preview": "webpack --config preview.webpack.config.cjs --mode development",
+    "build-node-extension": "webpack --config node-extension.webpack.config.cjs",
+    "build-web-extension": "webpack --config web-extension.webpack.config.cjs",
+    "build-preview": "webpack --config preview.webpack.config.cjs",
     "dev-build": "npm run dev-build-extension && npm run dev-build-preview && npm run copy-changelog",
     "dev-build-extension": "tsc -p ./",
     "clean": "rimraf \"dist/\"",

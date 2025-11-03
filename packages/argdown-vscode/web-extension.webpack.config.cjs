@@ -26,7 +26,7 @@ const webExtensionConfig = {
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.join(__dirname, "./dist/web"),
-    filename: "[name].js",
+    filename: "[name].cjs",
     libraryTarget: "commonjs"
   },
   devtool: "nosources-source-map",
