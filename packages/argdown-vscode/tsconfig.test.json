@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist/test",
     "rootDir": "./test",
-    "module": "commonjs",  // Force CommonJS for tests
+    "module": "Node16",  // Use Node16 to match moduleResolution
   },
   "include": [
     "test/**/*.ts"
