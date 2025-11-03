@@ -4,5 +4,6 @@
     "import=tsx"
   ],
   "full-trace": true,
-  "bail": true
+  "bail": true,
+  "spec": "test/**/*.spec.ts"
 }
