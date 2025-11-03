@@ -3,7 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 const path = require("path");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const webpack = require("webpack");
+
+
 
 module.exports = {
   target: "web",
@@ -48,7 +51,6 @@ module.exports = {
       stream: false,
       crypto: require.resolve("crypto-browserify"),
       path: require.resolve("path-browserify"),
-      process: require.resolve("process"),
       vm: require.resolve("vm-browserify")
     }
   },
@@ -60,13 +62,9 @@ module.exports = {
     global: false
   },
   plugins: [
-    new webpack.DefinePlugin({
-      global: "window" // Placeholder for global used in any node_modules
-    }),
-    // fix "process is not defined" error:
-    new webpack.ProvidePlugin({
-      process: "process"
-    }),
+		new NodePolyfillPlugin({
+			additionalAliases: ['process'],
+		}),
     new webpack.ProvidePlugin({
       path: "path-browserify"
     })

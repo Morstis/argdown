@@ -554,7 +554,6 @@
     "lodash.throttle": "^4.1.1",
     "pdfkit": "^0.16.0",
     "string-replace-loader": "^3.1.0",
-    "viz.js": "^2.1.2",
     "vscode-languageclient": "9.0.1",
     "vscode-uri": "^3.0.7"
   },
@@ -575,6 +574,7 @@
     "crypto-browserify": "^3.12.1",
     "css-loader": "^7.1.2",
     "glob": "^11.0.1",
+    "node-polyfill-webpack-plugin": "4.1.0",
     "path-browserify": "^1.0.1",
     "process": "git+https://github.com/argdown/node-process",
     "raw-loader": "^4.0.1",
