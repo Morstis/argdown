@@ -26,7 +26,8 @@ module.exports = {
             options: {
               configFile: "tsconfig.json",
               compilerOptions: {
-                sourceMap: true
+                sourceMap: true,
+                declaration: false
               }
             }
           }
