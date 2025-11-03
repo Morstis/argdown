@@ -18,7 +18,7 @@ const config = {
   entry: { "server-browser": "./src/server-browser.ts" }, // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   output: {
     path: path.resolve(__dirname, "dist/browser"),
-    filename: "[name].js",
+    filename: "[name].cjs",
     devtoolModuleFilenameTemplate: "../[resource-path]"
   },
   devtool: "nosources-source-map",

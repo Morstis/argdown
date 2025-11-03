@@ -156,7 +156,7 @@ function createWorkerLanguageClient(
   // Create a worker. The worker main file implements the language server.
   const serverMain = Uri.joinPath(
     context.extensionUri,
-    "node_modules/@argdown/language-server/dist/browser/server-browser.js"
+    "node_modules/@argdown/language-server/dist/browser/server-browser.cjs"
   );
   const worker = new Worker(serverMain.toString());
 

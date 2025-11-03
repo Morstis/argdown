@@ -537,7 +537,7 @@
     "dev-build-preview": "webpack --config preview.webpack.config.cjs --mode development",
     "copy-changelog": "node ./copy-changelog.js",
     "copy-web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
-    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.js dist/server/server-node.js"
+    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.cjs dist/server/server-node.cjs"
   },
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
