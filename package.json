@@ -39,6 +39,7 @@
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "@eslint/js": "^9.15.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
