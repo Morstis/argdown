@@ -1,5 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
 const webpack = require("webpack");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 //   .BundleAnalyzerPlugin;
 
@@ -21,6 +23,9 @@ module.exports = defineConfig({
       },
     },
     plugins: [
+      new NodePolyfillPlugin({
+        additionalAliases: ['process'],
+      }),
       new webpack.DefinePlugin({
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
       }),
