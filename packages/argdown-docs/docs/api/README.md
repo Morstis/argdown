@@ -90,12 +90,6 @@ Marked plugin that converts Argdown codeblocks to the web-component
 
 Remark plugin that converts Argdown codeblocks to the web-component
 
-## @argdown/gatsby-plugin
-
-[README](https://github.com/argdown/argdown/blob/master/packages/argdown-gatsby-plugin/README.md)
-
-Gatsby plugin that converts Argdown codeblocks to the web-component. Uses the remark plugin.
-
 ## @argdown/highlightjs
 
 [README](https://github.com/argdown/argdown/blob/master/packages/argdown-highlightjs/README.md)

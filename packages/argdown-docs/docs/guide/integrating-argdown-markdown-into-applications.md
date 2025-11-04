@@ -3,14 +3,13 @@
 Advanced users that want to integrate the Argdown-Markdown export into existing applications or want to have direct access to the markdown parser have five options:
 
 - [remark](https://github.com/remarkjs/remark) with `@argdown/remark-plugin`
-- [Gatsby](https://www.gatsbyjs.org/) with `@argdown/gatsby-remark-plugin`
 - [markdown-it](https://github.com/markdown-it/markdown-it) with `@argdown/markdown-it-plugin`
 - [eleventy](https://github.com/11ty/eleventy) with `@argdown/markdown-it-plugin`
 - [marked](https://github.com/markedjs/marked) with `@argdown/marked-plugin`
 
-Any application that uses one of these parsers and gives you the option to configure it, can be extended with Argdown support. For example,`the static site generators [Gatsby](https://www.gatsbyjs.org/), [Eleventy](https://www.11ty.dev/) or [Vuepress](https://vuepress.vuejs.org/) can be configured to support the Argdown web component.
+Any application that uses one of these parsers and gives you the option to configure it, can be extended with Argdown support. For example,`the static site generators [Eleventy](https://www.11ty.dev/) or [Vuepress](https://vuepress.vuejs.org/) can be configured to support the Argdown web component.
 
-### How to add Argdown support to Remark
+## How to add Argdown support to Remark
 
 Install `remark`, `remark-html` and `@argdown/remark-plugin` in your package:
 
@@ -59,65 +58,6 @@ Note that this example uses `import` instead of `require`. If you want to use `r
 const argdownPlugin = require("@argdown/remark-plugin").default;
 ```
 
-## How to add Argdown support to Gatsby
-
-Adding Argdown support to Gatsby is even easier:
-
-```sh
-npm install @argdown/gatsby-remark-plugin
-```
-
-[`gatsby-plugin-mdx`](https://www.gatsbyjs.org/docs/mdx/plugins/#remark-plugins)
-
-```js
-module.exports = {
-  plugins: [
-    {
-      resolve: "gatsby-plugin-mdx",
-      options: {
-        gatsbyRemarkPlugins: [
-          {
-            resolve: "@argdown/gatsby-remark-plugin",
-            options: {
-              argdownConfig: {
-                webComponent: {
-                  withoutHeader: true
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  ]
-};
-```
-
-[`gatsby-transformer-remark`](https://www.gatsbyjs.org/packages/gatsby-transformer-remark)
-
-```js
-module.exports = {
-  plugins: [
-    {
-      resolve: "gatsby-transformer-remark",
-      options: {
-        plugins: [
-          {
-            resolve: "@argdown/gatsby-remark-plugin",
-            options: {
-              argdownConfig: {
-                webComponent: {
-                  withoutHeader: true
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  ]
-};
-```
 
 ## How to add Argdown support to Markdown-It
 

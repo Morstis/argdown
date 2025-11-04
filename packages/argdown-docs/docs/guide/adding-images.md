@@ -47,7 +47,7 @@ Some other tools have no access to the filesystem and do _not_ support these fea
 - `@argdown/cli`: Argdown-in-Markdown html export
 - `@argdown/markdown-it-plugin`
 - `@argdown/marked-plugin`
-- `@argdown/remark-plugin` and `@argdown/gatsby-remark-plugin`
+- `@argdown/remark-plugin`
 - the Argdown sandbox
   :::
 
