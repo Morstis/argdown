@@ -164,7 +164,8 @@ suite('Argdown Extension Test Suite', () => {
                 assert.ok(true, 'Export to JSON command executed');
             } catch (error) {
                 // Some export commands might fail in test environment, that's ok
-                console.log('Export command failed (expected in test):', error);
+                console.log('Export command failed:', error);
+                throw error;
             }
         });
     });
@@ -184,7 +185,8 @@ suite('Argdown Extension Test Suite', () => {
                 await vscode.commands.executeCommand('argdown.showPreview');
                 assert.ok(true, 'Preview command executed');
             } catch (error) {
-                console.log('Preview command failed (might be expected in test):', error);
+                console.log('Preview command failed:', error);
+                throw error;
             }
         });
     });

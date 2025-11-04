@@ -2,6 +2,7 @@
 .yarn
 .vscode
 .vscode-test
+.vscode-test-web
 node_modules
 coverage
 
