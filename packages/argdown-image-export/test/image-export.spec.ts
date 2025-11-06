@@ -94,7 +94,7 @@ describe("ExportImagePlugin", async function() {
       "export-dot",
       "export-svg",
       "export-jpg"
-      //"save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
+      // "save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
     ];
     const input = `
 ===
