@@ -12,7 +12,7 @@ Now let's add our toy plugin from the [previous section](/guide/writing-custom-p
 ```Javascript
 import {SaysWhoPlugin} from "@argdown/core";
 
-module.exports{
+export default{
     plugins: [{plugin: new SaysWhoPlugin(), processor: "add-proponents"}],
     processes: {
         "says-who-map": {

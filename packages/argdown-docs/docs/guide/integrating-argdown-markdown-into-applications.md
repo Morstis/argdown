@@ -108,7 +108,7 @@ const argdownConfig = {logLevel: "verbose"};
 const createArgdownPlugin = require("@argdown/markdown-it-plugin").default;
 const markdownItArgdown = createArgdownPlugin(argdownConfig);
 const mdiInstance = mdi().use(markdownItArgdown);
-module.exports = function(eleventyConfig) {
+export default = function(eleventyConfig) {
 	eleventyConfig.setTemplateFormats([
 		"html",
 	  "md",

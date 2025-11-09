@@ -22,7 +22,7 @@ A custom process contains
 Here is an example of a config file that defines two different custom processes for an Argdown document containing four headings **Section 1**, **Section 2**, **Section 3** and **Section 4**:
 
 ```javascript
-module.exports{
+export default {
     model: {
         removeTagsFromText: true
     },
@@ -68,7 +68,7 @@ The run command in the VS Code extension currently will not take a process name 
 Let us look at how this works. First, we have to change the config file:
 
 ```javascript
-module.exports = {
+export default {
   model: {
     removeTagsFromText: true
   },

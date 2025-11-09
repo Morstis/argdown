@@ -36,7 +36,7 @@ The VSCode extension will help you write `argdown.config.json` files with code c
 Here is an example of the same configuration in a `argdown.config.js` Javascript file:
 
 ```javascript
-module.exports = {
+export default {
   selection: {
     excludeDisconnected: false,
     selectedSections: ["H1"],
@@ -51,10 +51,10 @@ module.exports = {
 };
 ```
 
-Instead of putting the settings directly into the module exports, you can also export a config object containing the settings (in this example we are using ES6 Javascript syntax, so make sure it is supported):
+Instead of putting the settings directly into the default export, you can also export a config object containing the settings (in this example we are using ES6 Javascript ESM syntax, so make sure it is supported):
 
 ```javascript
-module.exports = {
+export default {
   config: {
     selection: {
       excludeDisconnected: false,
@@ -70,6 +70,25 @@ module.exports = {
   }
 };
 ```
+
+Additionally, the configuration settings can also be exported as an ES6 named export as shown below:
+
+```javascript
+export const config = {
+  selection: {
+    excludeDisconnected: false,
+    selectedSections: ["H1"],
+    statementSelectionMode: "with-relations"
+  },
+  map: {
+    statementSelectionMode: "text"
+  },
+  model: {
+    removeTagsFromText: true
+  }
+};
+```
+
 
 Using Javascript instead of JSON brings you all the power of a full programming language.
 You can use this for example to add custom plugins and [processes](/guide/running-custom-processes.html) on the fly to your Argdown application.
