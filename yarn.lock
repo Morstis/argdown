@@ -149,7 +149,7 @@ __metadata:
   resolution: "@argdown/highlightjs@workspace:packages/argdown-highlightjs"
   dependencies:
     "@parcel/config-default": "npm:^2.14.4"
-    "@parcel/core": "npm:^2.14.4"
+    "@parcel/core": "npm:^2.16.0"
     "@parcel/optimizer-cssnano": "npm:^2.14.4"
     "@parcel/optimizer-htmlnano": "npm:^2.14.4"
     "@parcel/packager-css": "npm:^2.14.4"
@@ -227,7 +227,7 @@ __metadata:
     "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
     "@parcel/config-default": "npm:^2.15.4"
-    "@parcel/core": "npm:^2.14.4"
+    "@parcel/core": "npm:^2.16.0"
     "@parcel/transformer-typescript-tsc": "npm:^2.15.4"
     "@types/d3": "npm:7.4.3"
     "@types/dagre-d3": "npm:0.6.6"
@@ -289,7 +289,7 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
-    "@parcel/core": "npm:^2.14.4"
+    "@parcel/core": "npm:^2.16.0"
     "@parcel/transformer-typescript-tsc": "npm:^2.13.3"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
@@ -350,7 +350,7 @@ __metadata:
     mkdirp: "npm:^2.1.6"
     mocha: "npm:^11.1.0"
     nyc: "npm:^17.1.0"
-    pdfkit: "npm:^0.16.0"
+    pdfkit: "npm:^0.17.2"
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.21"
     svg-to-pdfkit: "npm:^0.1.8"
@@ -400,7 +400,7 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
-    "@parcel/core": "npm:^2.14.4"
+    "@parcel/core": "npm:^2.16.0"
     "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
@@ -3315,7 +3315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/core@npm:2.15.4, @parcel/core@npm:^2.14.4":
+"@parcel/core@npm:2.15.4":
   version: 2.15.4
   resolution: "@parcel/core@npm:2.15.4"
   dependencies:
@@ -9397,7 +9397,7 @@ __metadata:
     lodash.throttle: "npm:^4.1.1"
     node-polyfill-webpack-plugin: "npm:4.1.0"
     path-browserify: "npm:^1.0.1"
-    pdfkit: "npm:^0.16.0"
+    pdfkit: "npm:^0.17.2"
     process: "git+https://github.com/argdown/node-process"
     raw-loader: "npm:^4.0.1"
     rimraf: "npm:^6.0.1"
@@ -21617,7 +21617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pdfkit@npm:>=0.8.1":
+"pdfkit@npm:>=0.8.1, pdfkit@npm:^0.17.2":
   version: 0.17.2
   resolution: "pdfkit@npm:0.17.2"
   dependencies:
@@ -21627,19 +21627,6 @@ __metadata:
     linebreak: "npm:^1.1.0"
     png-js: "npm:^1.0.0"
   checksum: 10c0/d6344391fb882613e7e71afd369a1bb06264de4c38d56ae727e043895c3711b5d563f5d1e408ea766a196677d156502bf7baf94ddd011a57927c59c8c36f09ba
-  languageName: node
-  linkType: hard
-
-"pdfkit@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "pdfkit@npm:0.16.0"
-  dependencies:
-    crypto-js: "npm:^4.2.0"
-    fontkit: "npm:^2.0.4"
-    jpeg-exif: "npm:^1.1.4"
-    linebreak: "npm:^1.1.0"
-    png-js: "npm:^1.0.0"
-  checksum: 10c0/7238451e0638589ea544463f4e2a1d7f0cd2f02560cb9edad85fe74d13935bcfdfc57b7d390165a92336e5e26a91533b69b5e35b34f63143f6608efd3f556e9f
   languageName: node
   linkType: hard
 

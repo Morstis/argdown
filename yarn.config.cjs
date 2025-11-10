@@ -119,7 +119,7 @@ module.exports = defineConfig({
 
     // Enforce consistent version for pdfkit
     for (const dep of Yarn.dependencies({ ident: 'pdfkit' })) {
-      dep.update('^0.16.0');
+      dep.update('^0.17.2');
     }
 
     // Enforce consistent version for punycode (userland alternative to deprecated Node.js module)
@@ -137,7 +137,7 @@ module.exports = defineConfig({
       { ident: 'chai', version: '^4.3.10' },
       { ident: 'chalk', version: '^2.4.2' }, // Compatible with vuepress-plugin-sitemap
       { ident: 'commander', version: '^2.20.3' }, // Compatible with vuepress-plugin-sitemap
-      { ident: '@parcel/core', version: '^2.14.4' },
+      { ident: '@parcel/core', version: '^2.16.0' },
       { ident: '@babel/core', version: '^7.24.1' }
     ];
 
