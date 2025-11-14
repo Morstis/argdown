@@ -27,11 +27,11 @@ export const provideHover = (
     } else if (tokenName.startsWith("Tag") && nodeAtPosition.tag) {
       const tag = nodeAtPosition.tag;
       const statementsStr = Object.keys(response.statements!)
-        .map(k => response.statements![k])
+        .map((k) => response.statements![k])
         .filter((s: any) => s.tags && s.tags.includes(tag))
         .reduce((acc, val) => `${acc} * [${val.title}]\n`, "");
       const argumentsStr = Object.keys(response.arguments!)
-        .map(k => response.arguments![k])
+        .map((k) => response.arguments![k])
         .filter((a: any) => a.tags && a.tags.includes(tag))
         .reduce((acc, val) => `${acc} * <${val.title}>\n`, "");
       const contents = `**#(${tag}**)

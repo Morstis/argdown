@@ -33,7 +33,7 @@ export interface IMarkdownCliOptions {
   inputGlob?: string;
   outputDir?: string;
 }
-export const handler = async function(
+export const handler = async function (
   args: Arguments<IGeneralCliOptions & IMarkdownCliOptions>
 ) {
   const config = await argdown.loadConfig(args.config);

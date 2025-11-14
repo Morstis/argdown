@@ -171,7 +171,7 @@ export const deriveImplicitRelations = (
             )
           ];
           acc.push(
-            ...inferenceRelations.map(inferenceRelation => ({
+            ...inferenceRelations.map((inferenceRelation) => ({
               ...inferenceRelation,
               to: member
             }))

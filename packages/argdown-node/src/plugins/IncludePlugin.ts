@@ -38,10 +38,10 @@ export class IncludePlugin implements IAsyncArgdownPlugin {
     request.include = request.include || {};
     return request.include;
   };
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     defaultsDeep(this.getSettings(request), this.defaults);
   };
-  runAsync: IAsyncRequestHandler = async request => {
+  runAsync: IAsyncRequestHandler = async (request) => {
     if (!request.input) {
       throw new ArgdownPluginError(
         this.name,

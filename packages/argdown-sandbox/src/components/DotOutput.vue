@@ -15,7 +15,7 @@ export default {
     const dot = computed(() => store.dot);
 
     return { dot };
-  },
+  }
 };
 </script>
 

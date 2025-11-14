@@ -23,7 +23,7 @@ import {
   tokensToString,
   astToString,
   GraphMLExportPlugin,
-  ExplodeArgumentsPlugin,
+  ExplodeArgumentsPlugin
 } from "@argdown/core";
 import axios from "axios";
 
@@ -36,7 +36,7 @@ const regroupPlugin = new RegroupPlugin();
 const colorPlugin = new ColorPlugin();
 
 const htmlExport = new HtmlExportPlugin({
-  headless: true,
+  headless: true
 });
 const jsonExport = new JSONExportPlugin({ removeEmbeddedRelations: true });
 const preselectionPlugin = new PreselectionPlugin();
@@ -70,36 +70,36 @@ var examples = {
     id: "argdown-primer",
     title: "Argdown Primer",
     url: "/sandbox/examples/argdown-primer.argdown",
-    cachedContent: primer,
+    cachedContent: primer
   },
   greenspan: {
     id: "greenspan",
     title:
       "Why the Fed didn't Intervene to Prevent the 2008 Financial Crisis -- An Analysis of Alan Greenspan's Arguments",
-    url: "/sandbox/examples/greenspan-schefczyk_hardwrap.argdown",
+    url: "/sandbox/examples/greenspan-schefczyk_hardwrap.argdown"
   },
   softdrugs: {
     id: "softdrugs",
     title: "Pros and Cons Legalisation of Soft Drugs -- A Simple Analysis",
-    url: "/sandbox/examples/legalisation-softdrugs.argdown",
+    url: "/sandbox/examples/legalisation-softdrugs.argdown"
   },
   semmelweis: {
     id: "semmelweis",
     title:
       "A Stylized Reconstruction of the Scientific Debate That led Ignaz Semmelweis to Understand Childbed Fever",
-    url: "/sandbox/examples/semmelweis_betz.argdown",
+    url: "/sandbox/examples/semmelweis_betz.argdown"
   },
   "state-censorship": {
     id: "state-censorship",
     title:
       "Censorship from the State -- Some Pros and Cons Reconstructed in Detail",
-    url: "/sandbox/examples/state-censorship.argdown",
+    url: "/sandbox/examples/state-censorship.argdown"
   },
   populism: {
     id: "populism",
     title: "The Core Argument of Populism",
-    url: "/sandbox/examples/Populism-Core-Argument-Argdown-Example.argdown",
-  },
+    url: "/sandbox/examples/Populism-Core-Argument-Argdown-Example.argdown"
+  }
 };
 
 export const useArgdownStore = defineStore("argdown", () => {
@@ -110,29 +110,29 @@ export const useArgdownStore = defineStore("argdown", () => {
   const config = ref({
     selection: {
       excludeDisconnected: true,
-      statementSelectionMode: StatementSelectionMode.WITH_TITLE,
+      statementSelectionMode: StatementSelectionMode.WITH_TITLE
     },
     map: {
       statementLabelMode: LabelMode.HIDE_UNTITLED,
-      argumentLabelMode: LabelMode.HIDE_UNTITLED,
+      argumentLabelMode: LabelMode.HIDE_UNTITLED
     },
     group: {
-      groupDepth: 2,
+      groupDepth: 2
     },
     dot: {
       graphVizSettings: {
         rankdir: "BT",
         concentrate: "false",
         ratio: "auto",
-        size: "10,10",
-      },
+        size: "10,10"
+      }
     },
     vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
     dagre: _.defaultsDeep({}, dagreDefaultSettings),
     model: {
-      removeTagsFromText: false,
+      removeTagsFromText: false
     },
-    logLevel: "error",
+    logLevel: "error"
   });
   const viewState = ref("default");
   const showSettings = ref(false);
@@ -149,9 +149,9 @@ export const useArgdownStore = defineStore("argdown", () => {
     const request = _.defaultsDeep(
       {
         input: inputVal,
-        process: ["parse-input", "build-model"],
+        process: ["parse-input", "build-model"]
       },
-      config.value,
+      config.value
     );
     try {
       const result = app.run(request);
@@ -182,9 +182,9 @@ export const useArgdownStore = defineStore("argdown", () => {
     const request = _.defaultsDeep(
       {
         input: input,
-        process: ["parse-input", "build-model", "colorize", "export-html"],
+        process: ["parse-input", "build-model", "colorize", "export-html"]
       },
-      config.value,
+      config.value
     );
     try {
       const response = app.run(request);
@@ -208,11 +208,11 @@ export const useArgdownStore = defineStore("argdown", () => {
           "build-map",
           "transform-closed-groups",
           "colorize",
-          "export-dot",
-        ],
+          "export-dot"
+        ]
       },
       data.frontMatter,
-      configData.value,
+      configData.value
     );
     const response = app.run(request, data);
     return response.dot;
@@ -225,10 +225,10 @@ export const useArgdownStore = defineStore("argdown", () => {
     }
     const request = _.defaultsDeep(
       {
-        process: ["build-map", "colorize", "export-graphml"],
+        process: ["build-map", "colorize", "export-graphml"]
       },
       data.frontMatter,
-      configData.value,
+      configData.value
     );
     const response = app.run(request, data);
     return response.graphml;
@@ -241,10 +241,10 @@ export const useArgdownStore = defineStore("argdown", () => {
     }
     const request = _.defaultsDeep(
       {
-        process: ["build-map", "colorize", "export-json"],
+        process: ["build-map", "colorize", "export-json"]
       },
       data.frontMatter,
-      configData.value,
+      configData.value
     );
     const response = app.run(request, data);
     return response.json;
@@ -286,10 +286,10 @@ export const useArgdownStore = defineStore("argdown", () => {
     }
     const request = _.defaultsDeep(
       {
-        process: ["build-map", "colorize", "transform-closed-groups"],
+        process: ["build-map", "colorize", "transform-closed-groups"]
       },
       data.frontMatter,
-      configData.value,
+      configData.value
     );
     const response = app.run(request, data);
     return response.map;
@@ -408,6 +408,6 @@ export const useArgdownStore = defineStore("argdown", () => {
     toggleSettings,
     openSaveAsPngDialog,
     closeSaveAsPngDialog,
-    loadExample,
+    loadExample
   };
 });

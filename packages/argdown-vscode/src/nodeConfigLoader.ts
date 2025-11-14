@@ -38,7 +38,11 @@ export const nodeConfigLoader: ArgdownConfigLoader = async (
     try {
       const jsModuleExports = loadJSFile(configPath.fsPath);
 
-      if (jsModuleExports && typeof jsModuleExports === 'object' && 'config' in jsModuleExports) {
+      if (
+        jsModuleExports &&
+        typeof jsModuleExports === "object" &&
+        "config" in jsModuleExports
+      ) {
         return (jsModuleExports as { config: unknown }).config;
       } else {
         // let's try the default export

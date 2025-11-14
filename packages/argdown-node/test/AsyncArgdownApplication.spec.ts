@@ -11,12 +11,12 @@ const __dirname = dirname(__filename);
 
 const app = new AsyncArgdownApplication();
 
-describe("AsyncArgdownApplication", function() {
-  it("can run async", async function() {
+describe("AsyncArgdownApplication", function () {
+  it("can run async", async function () {
     let plugin1 = {
       name: "TestPlugin2",
       runAsync: (_request: IArgdownRequest, response: IArgdownResponse) => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             (<any>response).asyncRunCompleted = true;
             resolve(response);
@@ -35,8 +35,10 @@ describe("AsyncArgdownApplication", function() {
     };
     app.addPlugin(plugin1, "test");
     app.addPlugin(plugin2, "test");
-    const response_2 = await app
-      .runAsync({ process: ["test"], input: "Hallo Welt!" });
+    const response_2 = await app.runAsync({
+      process: ["test"],
+      input: "Hallo Welt!"
+    });
     expect((<any>response_2).asyncRunCompleted).to.be.true;
     expect((<any>response_2).syncRunCompleted).to.be.true;
   });

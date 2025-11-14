@@ -34,8 +34,8 @@ app.addPlugin(mapPlugin, "build-map");
 const groupPlugin = new GroupPlugin();
 app.addPlugin(groupPlugin, "build-map");
 
-describe("GroupPlugin", function() {
-  it("can create groups from sections", function() {
+describe("GroupPlugin", function () {
+  it("can create groups from sections", function () {
     let source = `
 # Section 1
   
@@ -74,7 +74,7 @@ describe("GroupPlugin", function() {
     expect(section3.children!.length).to.equal(1);
     expect(section3.children![0].title).to.equal("C");
   });
-  it("can create groups with only other groups as children", function() {
+  it("can create groups with only other groups as children", function () {
     let source = `
 # Section 1
 
@@ -105,7 +105,7 @@ describe("GroupPlugin", function() {
     expect(section3.children![0].title).to.equal("A");
     expect(section3.children![1].title).to.equal("B");
   });
-  it("puts argument into the group of its first definition", function() {
+  it("puts argument into the group of its first definition", function () {
     let source = `
 # h1
 
@@ -148,7 +148,7 @@ describe("GroupPlugin", function() {
     expect(result.map!.nodes[0].title).to.equal("h2");
     expect(result.map!.nodes[1].title).to.equal("a");
   });
-  it("ignores sections with isGroup === false", function() {
+  it("ignores sections with isGroup === false", function () {
     let source = `
 # h1
 

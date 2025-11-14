@@ -381,7 +381,7 @@ export const addLineBreaks = (
       ];
       for (const range of options.applyRanges) {
         if (range.start >= start && range.start <= end) {
-          const nodeIndex = nodes.findIndex(n =>
+          const nodeIndex = nodes.findIndex((n) =>
             "text" in n ? false : n.start <= range.start && n.end >= range.start
           );
           const oldTextNode = nodes[nodeIndex] as {
@@ -404,7 +404,7 @@ export const addLineBreaks = (
           }
         }
         if (range.stop >= start && range.stop <= end) {
-          const nodeIndex = nodes.findIndex(n =>
+          const nodeIndex = nodes.findIndex((n) =>
             "text" in n ? false : n.start <= range.stop && n.end >= range.stop
           );
           const oldNode = nodes[nodeIndex] as { start: number; end: number };
@@ -424,7 +424,7 @@ export const addLineBreaks = (
         }
       }
       lineArray[i] = nodes
-        .map(n =>
+        .map((n) =>
           "text" in n
             ? n.text
             : escapeAsHtmlEntities(
@@ -504,7 +504,7 @@ const escapeOverrides: { [key: number]: string } = {
 };
 // see https://stackoverflow.com/questions/1354064/how-to-convert-characters-to-html-entities-using-plain-javascript/23831239
 export const escapeAsHtmlEntities = (s: string): string => {
-  return s.replace(/([\u0020-\uD799]|[\uD800-\uDBFF][\uDC00-\uFFFF])/g, c => {
+  return s.replace(/([\u0020-\uD799]|[\uD800-\uDBFF][\uDC00-\uFFFF])/g, (c) => {
     const c1 = c.charCodeAt(0);
     const c1s = escapeOverrides[c1];
     // ascii character, use override or escape

@@ -210,7 +210,7 @@ export class ColorPlugin implements IArgdownPlugin {
       if (ec.relations) {
         ec.relations
           // .filter(r => r.from == ec)
-          .forEach(r => {
+          .forEach((r) => {
             r.color = getColor(
               colorScheme,
               settings.relationColors![r.relationType] ?? "default"
@@ -236,7 +236,7 @@ export class ColorPlugin implements IArgdownPlugin {
       if (a.relations) {
         a.relations
           // .filter(r => r.from == a)
-          .forEach(r => {
+          .forEach((r) => {
             r.color = getColor(
               colorScheme,
               settings.relationColors![r.relationType] ?? "default"

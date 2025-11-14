@@ -45,7 +45,7 @@ import appModal from "./modal.vue";
 export default {
   name: "input-navigation",
   components: {
-    appModal: appModal,
+    appModal: appModal
   },
   setup() {
     const store = useArgdownStore();
@@ -95,8 +95,8 @@ export default {
       copyLink,
       showModal,
       closeModal,
-      toggleArgVu,
+      toggleArgVu
     };
-  },
+  }
 };
 </script>

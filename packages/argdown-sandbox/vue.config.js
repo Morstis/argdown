@@ -19,26 +19,26 @@ module.exports = defineConfig({
       fallback: {
         path: require.resolve("path-browserify"),
         fs: false,
-        crypto: false,
-      },
+        crypto: false
+      }
     },
     plugins: [
       new NodePolyfillPlugin({
-        additionalAliases: ["process"],
+        additionalAliases: ["process"]
       }),
       new webpack.DefinePlugin({
-        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
-      }),
-    ],
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false"
+      })
+    ]
   },
   css: {
     loaderOptions: {
       sass: {
         implementation: require("sass"),
         sassOptions: {
-          api: "modern-compiler",
-        },
-      },
-    },
-  },
+          api: "modern-compiler"
+        }
+      }
+    }
+  }
 });

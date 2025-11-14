@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
-describe("ImageSizePlugin", function(){
-    this.timeout(20000);
+describe("ImageSizePlugin", function () {
+  this.timeout(20000);
 
   it("can set image size from local file", async () => {
     const input = `
@@ -12,12 +12,7 @@ describe("ImageSizePlugin", function(){
         `;
     const request: IArgdownRequest = {
       input,
-      process: [
-        "parse-input",
-        "build-model",
-        "build-map",
-        "add-images"
-      ],
+      process: ["parse-input", "build-model", "build-map", "add-images"],
       logLevel: "error"
     };
 
@@ -29,7 +24,8 @@ describe("ImageSizePlugin", function(){
     expect(request.images!.files!["./argdown-mark.svg"].height).to.equal(128);
   });
   it("can set image size from url", async () => {
-    const url = "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
+    const url =
+      "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
 
     const input = `
         <A>: test {images: ["${url}"]}
@@ -37,12 +33,7 @@ describe("ImageSizePlugin", function(){
         `;
     const request: IArgdownRequest = {
       input,
-      process: [
-        "parse-input",
-        "build-model",
-        "build-map",
-        "add-images"
-      ],
+      process: ["parse-input", "build-model", "build-map", "add-images"],
       logLevel: "error"
     };
 

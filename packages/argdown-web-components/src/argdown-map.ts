@@ -1,6 +1,12 @@
 import { html } from "lit-html";
 // @ts-expect-error - haunted exports these as named exports despite TypeScript error
-import { component, useState, useEffect, useRef, useLayoutEffect } from "haunted";
+import {
+  component,
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect
+} from "haunted";
 import { ArgdownMark } from "./ArgdownMark.js";
 import { ExpandIcon } from "./ExpandIcon.js";
 import { MinimizeIcon } from "./MinimizeIcon.js";
@@ -15,7 +21,7 @@ const getId = () => {
   idCounter++;
   return id;
 };
-const ArgdownMap = function(
+const ArgdownMap = function (
   el: HTMLElement & {
     initialView: string;
     withoutZoom: string;
@@ -51,7 +57,9 @@ const ArgdownMap = function(
     setHasMap(el.querySelector<HTMLElement>(`[slot="map"]`) !== null);
     setHasSource(el.querySelector<HTMLElement>(`[slot="source"]`) !== null);
     if (el.shadowRoot) {
-      const componentEl = el.shadowRoot.querySelector(".component") as HTMLElement;
+      const componentEl = el.shadowRoot.querySelector(
+        ".component"
+      ) as HTMLElement;
       if (componentEl) {
         initialHeight.current = componentEl.getBoundingClientRect().height;
       }
@@ -63,7 +71,9 @@ const ArgdownMap = function(
       return;
     }
     if (el.shadowRoot) {
-      const componentEl = el.shadowRoot.querySelector(".component") as HTMLElement;
+      const componentEl = el.shadowRoot.querySelector(
+        ".component"
+      ) as HTMLElement;
       if (componentEl) {
         initialHeight.current = componentEl.getBoundingClientRect().height;
       }
@@ -114,7 +124,7 @@ const ArgdownMap = function(
     if (zoomIsActive && assignedNodes.length > 0) {
       const svgElement = (assignedNodes[0] as HTMLElement).querySelector("svg");
       if (!svgElement) return;
-      
+
       const svg = select<SVGSVGElement, any>(svgElement);
       const g = svg.select<SVGGraphicsElement>("g");
       const mapViewEl = el.shadowRoot?.querySelector(".map-view");
@@ -193,9 +203,7 @@ const ArgdownMap = function(
               ${el.withoutLogo !== "true" ? ArgdownMark() : null}
               <nav>
                 ${zoomMessage && zoomMessage !== ""
-                  ? html`
-                      <div class="zoom-message">${zoomMessage}</div>
-                    `
+                  ? html` <div class="zoom-message">${zoomMessage}</div> `
                   : null}
                 <ul class="flat">
                   <li>
@@ -211,15 +219,15 @@ const ArgdownMap = function(
                           `
                         : null
                       : hasMap
-                      ? html`
-                          <button
-                            title="Map"
-                            @click=${() => setActiveView("map")}
-                          >
-                            Map
-                          </button>
-                        `
-                      : null}
+                        ? html`
+                            <button
+                              title="Map"
+                              @click=${() => setActiveView("map")}
+                            >
+                              Map
+                            </button>
+                          `
+                        : null}
                   </li>
                   <li>
                     ${el.withoutMaximize !== "true"
@@ -286,8 +294,18 @@ const styles = html`
       position: relative;
       width: 100%;
       height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        Segoe UI,
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        Fira Sans,
+        Droid Sans,
+        Helvetica Neue,
+        sans-serif;
     }
     ::slotted([slot="map"]) {
       width: 100%;
@@ -385,8 +403,18 @@ const styles = html`
       display: flex;
     }
     button {
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        Segoe UI,
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        Fira Sans,
+        Droid Sans,
+        Helvetica Neue,
+        sans-serif;
       display: inline-block;
       font-size: 0.8rem;
       color: var(--argdown-button-font-color, #fff);

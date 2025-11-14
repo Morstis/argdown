@@ -15,7 +15,7 @@ export default {
     const json = computed(() => store.json);
 
     return { json };
-  },
+  }
 };
 </script>
 

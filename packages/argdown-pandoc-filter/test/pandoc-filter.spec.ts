@@ -12,7 +12,7 @@ use(chaiSnapshot);
 
 // Normalize line endings for cross-platform compatibility
 function normalizeLineEndings(text: string): string {
-  return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 }
 
 // Normalize file paths in HTML output for cross-platform compatibility
@@ -36,42 +36,53 @@ async function execPandocOnFile(
   return normalizeFilePaths(normalized);
 }
 
-describe("Argdown Pandoc Filter", function() {
+describe("Argdown Pandoc Filter", function () {
   this.timeout(100000);
-  
-  before(async function() {
+
+  before(async function () {
     // Check pandoc version
     try {
       const { stdout: pandocVersion } = await exec("pandoc --version");
       const versionMatch = pandocVersion.match(/pandoc (\d+\.\d+(?:\.\d+)?)/);
       if (!versionMatch) {
-        console.error("Error executing pandoc --version. Output: ", pandocVersion);
+        console.error(
+          "Error executing pandoc --version. Output: ",
+          pandocVersion
+        );
         throw new Error("Could not detect pandoc version");
       }
       const version = versionMatch[1];
       console.log(`Using pandoc version: ${version}`);
-      
+
       // We're testing against snapshots generated with pandoc 3.6.4 - warn if different
       if (version !== "3.6.4") {
-        console.warn(`Warning: Tests were designed for pandoc 3.6.4, but found ${version}. Snapshots may not match.`);
+        console.warn(
+          `Warning: Tests were designed for pandoc 3.6.4, but found ${version}. Snapshots may not match.`
+        );
       }
     } catch (error) {
-      throw new Error("pandoc is required for tests. Please install pandoc first.");
+      throw new Error(
+        "pandoc is required for tests. Please install pandoc first."
+      );
     }
-    
+
     // Check rsvg-convert version (required for PDF tests)
     try {
       const { stdout: rsvgVersion } = await exec("rsvg-convert --version");
-      const versionMatch = rsvgVersion.match(/rsvg-convert version (\d+\.\d+(?:\.\d+)?)/);
+      const versionMatch = rsvgVersion.match(
+        /rsvg-convert version (\d+\.\d+(?:\.\d+)?)/
+      );
       if (!versionMatch) {
         throw new Error("Could not detect rsvg-convert version");
       }
       const version = versionMatch[1];
       console.log(`Using rsvg-convert version: ${version}`);
-      
+
       // We're testing with rsvg-convert 2.61.1 - warn if different
       if (version !== "2.61.1") {
-        console.warn(`Warning: Tests were designed for rsvg-convert 2.61.1, but found ${version}. PDF tests may behave differently.`);
+        console.warn(
+          `Warning: Tests were designed for rsvg-convert 2.61.1, but found ${version}. PDF tests may behave differently.`
+        );
       }
     } catch (error) {
       console.warn("rsvg-convert not found - PDF tests will be skipped");
@@ -79,13 +90,16 @@ describe("Argdown Pandoc Filter", function() {
   });
   it("generates html with web-component", async () => {
     const output = await execPandocOnFile(`example-web-component.md`, "html");
-    
+
     try {
       (expect(output) as any).to.matchSnapshot(this);
     } catch (error) {
       // Write current output to file for inspection when test fails
-      const outputPath = path.resolve(__dirname, "current-output-web-component.html");
-      fs.writeFileSync(outputPath, output, 'utf8');
+      const outputPath = path.resolve(
+        __dirname,
+        "current-output-web-component.html"
+      );
+      fs.writeFileSync(outputPath, output, "utf8");
       console.log(`Test failed - current output written to: ${outputPath}`);
       throw error;
     }

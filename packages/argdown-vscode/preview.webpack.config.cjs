@@ -3,10 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 const path = require("path");
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
-
-
 
 module.exports = {
   target: "web",
@@ -62,9 +60,9 @@ module.exports = {
     global: false
   },
   plugins: [
-		new NodePolyfillPlugin({
-			additionalAliases: ['process'],
-		}),
+    new NodePolyfillPlugin({
+      additionalAliases: ["process"]
+    }),
     new webpack.ProvidePlugin({
       path: "path-browserify"
     })

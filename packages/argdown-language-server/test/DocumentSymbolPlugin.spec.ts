@@ -4,14 +4,14 @@ import { DocumentSymbolPlugin } from "../src/providers/DocumentSymbolPlugin";
 
 let app = new ArgdownApplication();
 
-describe("DocumentSymbolPlugin", function() {
+describe("DocumentSymbolPlugin", function () {
   const parserPlugin = new ParserPlugin();
   const modelPlugin = new ModelPlugin();
   const documentSymbolPlugin = new DocumentSymbolPlugin();
   app.addPlugin(parserPlugin, "parse-input");
   app.addPlugin(modelPlugin, "build-model");
   app.addPlugin(documentSymbolPlugin, "export-symbols");
-  it("sanity test", function() {
+  it("sanity test", function () {
     const source = `[T1]: Hello World`;
     const result = app.run({
       process: ["parse-input", "build-model", "export-symbols"],
@@ -22,7 +22,7 @@ describe("DocumentSymbolPlugin", function() {
     expect(result.documentSymbols!.length).to.equal(1);
     expect(result.documentSymbols![0].name).to.equal("[T1]");
   });
-  it("can create document symbols for relations", function() {
+  it("can create document symbols for relations", function () {
     const source = `
 A
   - B
@@ -37,7 +37,7 @@ A
     expect(result.documentSymbols!.length).to.equal(1);
     expect(result.documentSymbols![0].name).to.equal("[Untitled 1]");
   });
-  it("can create list of document symbols for headings, statements, arguments, relations and pcss", function() {
+  it("can create list of document symbols for headings, statements, arguments, relations and pcss", function () {
     const source = `
     # Heading 1
 
@@ -68,17 +68,33 @@ A
     expect(result.documentSymbols).to.exist;
     expect(result.documentSymbols!.length).to.equal(2);
     expect(result.documentSymbols![0].name).to.equal("# Heading 1");
-    expect(result.documentSymbols![0].children![0].name).to.equal("[Untitled 1]");
+    expect(result.documentSymbols![0].children![0].name).to.equal(
+      "[Untitled 1]"
+    );
     expect(result.documentSymbols![0].children![1].name).to.equal("[S1]");
-    expect(result.documentSymbols![0].children![2].name).to.equal("## Heading 1.2");
-    expect(result.documentSymbols![0].children![2].children![0].name).to.equal("<A1>");
-    expect(result.documentSymbols![0].children![2].children![0].children![0].name).to.equal("<- <A2>");
+    expect(result.documentSymbols![0].children![2].name).to.equal(
+      "## Heading 1.2"
+    );
+    expect(result.documentSymbols![0].children![2].children![0].name).to.equal(
+      "<A1>"
+    );
+    expect(
+      result.documentSymbols![0].children![2].children![0].children![0].name
+    ).to.equal("<- <A2>");
     expect(result.documentSymbols![1].name).to.equal("# Heading 2");
     expect(result.documentSymbols![1].children![0].name).to.equal("<A1>");
     expect(result.documentSymbols![1].children![1].name).to.equal("PCS <A1>");
-    expect(result.documentSymbols![1].children![1].children![0].name).to.equal("(1) [Untitled 2]");
-    expect(result.documentSymbols![1].children![1].children![1].name).to.equal("(2) [Untitled 3]");
-    expect(result.documentSymbols![1].children![1].children![2].name).to.equal("----");
-    expect(result.documentSymbols![1].children![1].children![3].name).to.equal("(3) [Untitled 4]");
+    expect(result.documentSymbols![1].children![1].children![0].name).to.equal(
+      "(1) [Untitled 2]"
+    );
+    expect(result.documentSymbols![1].children![1].children![1].name).to.equal(
+      "(2) [Untitled 3]"
+    );
+    expect(result.documentSymbols![1].children![1].children![2].name).to.equal(
+      "----"
+    );
+    expect(result.documentSymbols![1].children![1].children![3].name).to.equal(
+      "(3) [Untitled 4]"
+    );
   });
 });

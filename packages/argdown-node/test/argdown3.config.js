@@ -1,3 +1,3 @@
 export const config = {
-    input: "Hallo World!"
-}
+  input: "Hallo World!"
+};

@@ -102,9 +102,9 @@ export class VizJsMap implements CanSelectNode {
       }
     }
     this.svgContainer.innerHTML = svgString;
-    const svg = select<HTMLElement, null>(this.svgContainer).select<
-      SVGSVGElement
-    >("svg");
+    const svg = select<HTMLElement, null>(
+      this.svgContainer
+    ).select<SVGSVGElement>("svg");
     svg.attr("class", "map-svg");
     svg.attr("width", "100%");
     svg.attr("height", "100%");
@@ -139,12 +139,10 @@ export class VizJsMap implements CanSelectNode {
     const nodes = this.zoomManager
       .svgGraph!.selectAll("g.node")
       .nodes() as SVGGraphicsElement[];
-    return nodes.find(n => this.getArgdownId(n) === id);
+    return nodes.find((n) => this.getArgdownId(n) === id);
   }
   getArgdownId(node: SVGGraphicsElement): string {
-    const title = select(node)
-      .select<SVGTitleElement>("title")
-      .node();
+    const title = select(node).select<SVGTitleElement>("title").node();
     if (title) {
       return title.textContent || "";
     }

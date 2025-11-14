@@ -17,7 +17,7 @@ export interface ExportDocumentArgs {
   process: string;
 }
 const requestProviders: IDictionary<(r: any) => any> = {
-  "vizjs-to-svg": r => {
+  "vizjs-to-svg": (r) => {
     return {
       ...r,
       process: [
@@ -33,7 +33,7 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  "web-component-to-html": r => {
+  "web-component-to-html": (r) => {
     return {
       ...r,
       process: [
@@ -51,7 +51,7 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  "vizjs-to-pdf": r => {
+  "vizjs-to-pdf": (r) => {
     return {
       ...r,
       process: [
@@ -67,13 +67,13 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  "dagre-to-pdf": r => {
+  "dagre-to-pdf": (r) => {
     return {
       ...r,
       process: ["save-svg-as-pdf"]
     };
   },
-  dot: r => {
+  dot: (r) => {
     return {
       ...r,
       process: [
@@ -88,7 +88,7 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  graphml: r => {
+  graphml: (r) => {
     return {
       ...r,
       process: [
@@ -102,7 +102,7 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  html: r => {
+  html: (r) => {
     return {
       ...r,
       process: [
@@ -115,7 +115,7 @@ const requestProviders: IDictionary<(r: any) => any> = {
       ]
     };
   },
-  json: r => {
+  json: (r) => {
     return {
       ...r,
       process: [

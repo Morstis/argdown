@@ -31,8 +31,8 @@ app.addPlugin(argumentSelectionPlugin, "build-map");
 const mapPlugin = new MapPlugin();
 app.addPlugin(mapPlugin, "build-map");
 
-describe("MapPlugin", function() {
-  it("can create map from one statement and two argument definitions", function() {
+describe("MapPlugin", function () {
+  it("can create map from one statement and two argument definitions", function () {
     let source = `
     <Argument 1>
       + [Statement 1]: Hello World!
@@ -53,7 +53,7 @@ describe("MapPlugin", function() {
     expect(result.map!.nodes[2].title).to.equal("Argument 2");
     expect(result.map!.edges.length).to.equal(2);
   });
-  it("can create a map from two argument reconstructions", function() {
+  it("can create a map from two argument reconstructions", function () {
     let source = `<Argument 1>
 
 (1)[Statement 1]: A
@@ -96,7 +96,7 @@ describe("MapPlugin", function() {
     expect(result.map!.edges[2].from.title).to.equals("Statement 1");
     expect(result.map!.edges[2].to.title).to.equals("Argument 1");
   });
-  it("adds arguments a, b and support to map if a's conclusion is b's premise ", function() {
+  it("adds arguments a, b and support to map if a's conclusion is b's premise ", function () {
     let source = `<Argument 1>
 
 (1)[Statement 1]: A
@@ -130,7 +130,7 @@ describe("MapPlugin", function() {
     expect(result.map!.edges[0].from.title).to.equals("Argument 1");
     expect(result.map!.edges[0].to.title).to.equals("Argument 2");
   });
-  it("adds attack edges if statement is contradictory to premise", function() {
+  it("adds attack edges if statement is contradictory to premise", function () {
     let source = `
 [T1]: T1
 
@@ -156,7 +156,7 @@ describe("MapPlugin", function() {
     expect(result.map!.nodes.length).to.equal(3);
     expect(result.map!.edges.length).to.equal(2);
   });
-  it("does not add duplicate arrows for contradictions", function() {
+  it("does not add duplicate arrows for contradictions", function () {
     let source = `<A>
 
 (1) A
@@ -177,7 +177,7 @@ describe("MapPlugin", function() {
     expect(result.map!.edges.length).to.equal(2);
     expect(result.map!.nodes.length).to.equal(3);
   });
-  it("can create edges from undercuts", function() {
+  it("can create edges from undercuts", function () {
     let source = `
 <A>: text
     <_ [B]: text
@@ -232,7 +232,7 @@ describe("MapPlugin", function() {
     // expect(section3.children![0].title).to.equal("A");
     // expect(section3.children![1].title).to.equal("B");
   });
-  it("does not add duplicate arrows for contradictions", function() {
+  it("does not add duplicate arrows for contradictions", function () {
     let source = `<A>
 
 (1) A
@@ -253,7 +253,7 @@ describe("MapPlugin", function() {
     expect(result.map!.edges.length).to.equal(2);
     expect(result.map!.nodes.length).to.equal(3);
   });
-  it("does not add c2c attacks in strict mode", function() {
+  it("does not add c2c attacks in strict mode", function () {
     let source = `
     ===
     model:
@@ -289,7 +289,7 @@ describe("MapPlugin", function() {
     });
     expect(result.map!.edges.length).to.equal(2);
   });
-  it("does not add redundant edges from equivalence classes", function() {
+  it("does not add redundant edges from equivalence classes", function () {
     let source = `
 ===
 model:
@@ -320,7 +320,7 @@ selection:
     });
     expect(result.map!.edges.length).to.equal(1);
   });
-  it("does not add redundant edges from ec2ec contrary and ec2a attack relations", function() {
+  it("does not add redundant edges from ec2ec contrary and ec2a attack relations", function () {
     let source = `
   ===
   selection:
@@ -354,7 +354,7 @@ selection:
     });
     expect(result.map!.edges.length).to.equal(1);
   });
-it("can create labels without text", function() {
+  it("can create labels without text", function () {
     let source = `
 ===
 selection:

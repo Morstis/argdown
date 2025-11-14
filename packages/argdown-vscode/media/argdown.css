@@ -4,7 +4,10 @@ body {
   background-color: var(--vscode-editor-background);
   /* font-size: var(--vscode-editor-font-size); */
   /* font-family: var(--vscode-editor-font-family); */
-  font-family: Segoe WPC, Segoe UI, sans-serif;
+  font-family:
+    Segoe WPC,
+    Segoe UI,
+    sans-serif;
   font-weight: var(--vscode-editor-font-weight);
 }
 .main-menu-hover-field {

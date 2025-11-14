@@ -49,7 +49,7 @@ export class HighlightSourcePlugin implements IArgdownPlugin {
       return request.sourceHighlighter;
     }
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
 
@@ -57,7 +57,7 @@ export class HighlightSourcePlugin implements IArgdownPlugin {
     const settings = this.getSettings(request);
     const code = settings.removeFrontMatter
       ? this.removeFrontMatter(request.input ?? "")
-      : request.input ?? "";
+      : (request.input ?? "");
     response.highlightedSource = `<pre class="language-argdown"><code class="language-argdown">${
       hljs.highlight(code ?? "", { language: "argdown" }).value
     }</code></pre>`;

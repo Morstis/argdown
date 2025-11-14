@@ -28,53 +28,52 @@ import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
 let client: LanguageClient | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
-
   // ========================================
   // CORE FUNCTIONALITY
   // ========================================
-  
+
   // -- PREVIEW --
   const logger = new Logger();
-  logger.log('Argdown extension: Starting core functionality initialization');
-  
-  logger.log('Argdown extension: Creating logger');
-  
-  logger.log('Argdown extension: Creating argdown engine');
+  logger.log("Argdown extension: Starting core functionality initialization");
+
+  logger.log("Argdown extension: Creating logger");
+
+  logger.log("Argdown extension: Creating argdown engine");
   const argdownEngine = new ArgdownEngine(logger, nodeConfigLoader);
-  
-  logger.log('Argdown extension: Creating CSP arbiter');
+
+  logger.log("Argdown extension: Creating CSP arbiter");
   const cspArbiter = new ExtensionContentSecurityPolicyArbiter(
     context.globalState,
     context.workspaceState
   );
-  
-  logger.log('Argdown extension: Getting contributions');
+
+  logger.log("Argdown extension: Getting contributions");
   const contributions = getArgdownExtensionContributions(context);
-  
-  logger.log('Argdown extension: Creating content provider');
+
+  logger.log("Argdown extension: Creating content provider");
   const contentProvider = new ArgdownContentProvider(
     argdownEngine,
     context,
     cspArbiter,
     contributions
   );
-  
-  logger.log('Argdown extension: Creating preview manager');
+
+  logger.log("Argdown extension: Creating preview manager");
   const previewManager = new ArgdownPreviewManager(
     contentProvider,
     logger,
     contributions,
     argdownEngine
   );
-  
-  logger.log('Argdown extension: Creating preview security selector');
+
+  logger.log("Argdown extension: Creating preview security selector");
   const previewSecuritySelector = new PreviewSecuritySelector(
     cspArbiter,
     previewManager
   );
 
   // -- COMMANDS --
-  logger.log('Argdown extension: Starting command registration');
+  logger.log("Argdown extension: Starting command registration");
   const commandManager = new CommandManager();
   context.subscriptions.push(commandManager);
   commandManager.register(new commands.ShowPreviewCommand(previewManager));
@@ -107,17 +106,17 @@ export function activate(context: vscode.ExtensionContext) {
   commandManager.register(new commands.ExportContentToDagreSvgCommand());
   commandManager.register(new commands.ExportContentToDagrePngCommand());
   commandManager.register(new commands.ExportContentToDagrePdfCommand());
-  
-  logger.log('Argdown extension: Command registration completed');
+
+  logger.log("Argdown extension: Command registration completed");
 
   // ========================================
   // CONFIGURATION WATCHERS (Always Initialize)
   // ========================================
-  
-  logger.log('Argdown extension: Setting up configuration watchers');
-  
+
+  logger.log("Argdown extension: Setting up configuration watchers");
+
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(e => {
+    vscode.workspace.onDidChangeConfiguration((e) => {
       logger.updateConfiguration();
       previewManager.updateConfiguration();
       if (e.affectsConfiguration("argdown.markdownWebComponent")) {
@@ -129,10 +128,12 @@ export function activate(context: vscode.ExtensionContext) {
   // ========================================
   // LANGUAGE SERVER (Always Initialize)
   // ========================================
-  
+
   // --- LANGUGAGE SERVER ---
   // The debug options for the server
-  const debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
+  const debugOptions: ForkOptions = {
+    execArgv: ["--nolazy", "--inspect=6009"]
+  };
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverPath = context.asAbsolutePath("dist/server/server-node.cjs");
@@ -167,12 +168,12 @@ export function activate(context: vscode.ExtensionContext) {
   client.registerProposedFeatures();
   // Start the client. This will also launch the server
   void client.start();
-  logger.log('Argdown extension: Language server started successfully');
+  logger.log("Argdown extension: Language server started successfully");
 
   // ========================================
   // RETURN EXTENSION API
   // ========================================
-  
+
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
@@ -187,13 +188,11 @@ export function activate(context: vscode.ExtensionContext) {
               "argdown.markdownWebComponent",
               null
             );
-            const withoutHeader = webComponentConfig.get<boolean>(
-              "withoutHeader"
-            );
+            const withoutHeader =
+              webComponentConfig.get<boolean>("withoutHeader");
             const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
-            const withoutMaximize = webComponentConfig.get<boolean>(
-              "withoutMaximize"
-            );
+            const withoutMaximize =
+              webComponentConfig.get<boolean>("withoutMaximize");
             // const withoutHeader = false;
             // const withoutLogo = false;
             // const withoutMaximize = false;
@@ -217,12 +216,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate(): Thenable<void> {
   const logger = new Logger();
-  
+
   if (!client) {
-    logger.log('Argdown extension: No language server client to deactivate (test mode or initialization failed)');
+    logger.log(
+      "Argdown extension: No language server client to deactivate (test mode or initialization failed)"
+    );
     return Promise.resolve();
   }
-  
-  logger.log('Argdown extension: Stopping language server client');
+
+  logger.log("Argdown extension: Stopping language server client");
   return client.stop();
 }

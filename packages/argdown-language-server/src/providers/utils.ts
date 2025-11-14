@@ -51,7 +51,7 @@ const getRelationSymbol = (
   }
   return symbol;
 };
-const generateArgdownRelationString = function(
+const generateArgdownRelationString = function (
   relationType: RelationType,
   isOutgoing: boolean,
   title: string,
@@ -63,7 +63,7 @@ const generateArgdownRelationString = function(
   return `
   ${relationSymbol} ${relationPartnerStr}`;
 };
-const generateArgdownRelationStringFromRelation = function(
+const generateArgdownRelationStringFromRelation = function (
   relation: IRelation,
   member: RelationMember
 ) {

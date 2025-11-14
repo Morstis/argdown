@@ -165,7 +165,7 @@ export const prepareForJSON = (obj: any): any => {
 };
 export const stringifyArgdownData = (
   obj: object,
-  replacer?: ((key: string, value: any) => any)   | null,
+  replacer?: ((key: string, value: any) => any) | null,
   space?: number
 ): string => {
   const wrapper = (key: string, value: any) => {

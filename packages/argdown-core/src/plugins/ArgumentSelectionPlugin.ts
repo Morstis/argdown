@@ -72,11 +72,11 @@ export class ArgumentSelectionPlugin implements IArgdownPlugin {
     const settings = this.getSettings(request);
     const selectedArgumentsMap = reduceToMap(
       response.selection!.arguments,
-      curr => curr.title!
+      (curr) => curr.title!
     );
     const selectedStatementsMap = reduceToMap(
       response.selection!.statements,
-      curr => curr.title!
+      (curr) => curr.title!
     );
 
     response.selection!.arguments = response.selection!.arguments.filter(
@@ -100,104 +100,105 @@ export class ArgumentSelectionPlugin implements IArgdownPlugin {
  *    - implicit support: a premise is equivalent with a main conclusion of another argument or a selected statement
  *    - implicit support: the main conclusion is equivalent with a premise of another argument or a selected statement
  */
-const isArgumentSelected = (
-  settings: ISelectionSettings,
-  response: IArgdownResponse,
-  selectedStatements: Map<string, IEquivalenceClass>,
-  selectedArguments: Map<string, IArgument>
-) => (argument: IArgument) => {
-  if (
-    !settings.excludeDisconnected ||
-    (!settings.ignoreIsInMap && argument.data && argument.data.isInMap === true)
-  ) {
-    return true;
-  }
-  let hasConnections = false;
-  if (argument.relations && argument.relations.length > 0) {
-    hasConnections =
-      undefined !==
-      argument.relations.find(r =>
-        otherRelationMemberIsInSelection(
-          r,
-          argument,
-          selectedStatements,
-          selectedArguments
-        )
-      );
-  }
-  if (hasConnections) {
-    return true;
-  }
-  if (argument.pcs && argument.pcs.length > 0) {
-    hasConnections =
-      undefined !==
-      argument.pcs.find(s => {
-        let hasConnections = false;
-        // find incoming undercuts
-        if (
-          isConclusion(s) &&
-          (s).inference!.relations!.length > 0
-        ) {
-          const inference = (s).inference!;
-          hasConnections =
-            undefined !==
-            inference.relations!.find(r =>
-              otherRelationMemberIsInSelection(
-                r,
-                inference,
-                selectedStatements,
-                selectedArguments
-              )
-            );
-        }
-        if (hasConnections) {
-          return true;
-        }
-        const equivalenceClass = response.statements![s.title!];
-        if (equivalenceClass.relations) {
-          hasConnections =
-            undefined !==
-            equivalenceClass.relations.find(r => {
-              const isSymmetric = IRelation.isSymmetric(r);
-              if (s.role === StatementRole.INTERMEDIARY_CONCLUSION) {
-                return false;
-              } else if (
-                !isSymmetric &&
-                s.role === StatementRole.PREMISE &&
-                r.from! === equivalenceClass
-              ) {
-                return false;
-              } else if (
-                !isSymmetric &&
-                s.role === StatementRole.MAIN_CONCLUSION &&
-                r.to === equivalenceClass
-              ) {
-                return false;
-              }
-              return otherRelationMemberIsInSelection(
-                r,
-                equivalenceClass,
-                selectedStatements,
-                selectedArguments
+const isArgumentSelected =
+  (
+    settings: ISelectionSettings,
+    response: IArgdownResponse,
+    selectedStatements: Map<string, IEquivalenceClass>,
+    selectedArguments: Map<string, IArgument>
+  ) =>
+  (argument: IArgument) => {
+    if (
+      !settings.excludeDisconnected ||
+      (!settings.ignoreIsInMap &&
+        argument.data &&
+        argument.data.isInMap === true)
+    ) {
+      return true;
+    }
+    let hasConnections = false;
+    if (argument.relations && argument.relations.length > 0) {
+      hasConnections =
+        undefined !==
+        argument.relations.find((r) =>
+          otherRelationMemberIsInSelection(
+            r,
+            argument,
+            selectedStatements,
+            selectedArguments
+          )
+        );
+    }
+    if (hasConnections) {
+      return true;
+    }
+    if (argument.pcs && argument.pcs.length > 0) {
+      hasConnections =
+        undefined !==
+        argument.pcs.find((s) => {
+          let hasConnections = false;
+          // find incoming undercuts
+          if (isConclusion(s) && s.inference!.relations!.length > 0) {
+            const inference = s.inference!;
+            hasConnections =
+              undefined !==
+              inference.relations!.find((r) =>
+                otherRelationMemberIsInSelection(
+                  r,
+                  inference,
+                  selectedStatements,
+                  selectedArguments
+                )
               );
-            });
+          }
           if (hasConnections) {
             return true;
           }
-        }
-        if (hasConnections) {
-          return true;
-        }
-        return isPCSStatementConnectedByEquivalence(
-          response,
-          s,
-          selectedStatements,
-          selectedArguments
-        );
-      });
-  }
-  return hasConnections;
-};
+          const equivalenceClass = response.statements![s.title!];
+          if (equivalenceClass.relations) {
+            hasConnections =
+              undefined !==
+              equivalenceClass.relations.find((r) => {
+                const isSymmetric = IRelation.isSymmetric(r);
+                if (s.role === StatementRole.INTERMEDIARY_CONCLUSION) {
+                  return false;
+                } else if (
+                  !isSymmetric &&
+                  s.role === StatementRole.PREMISE &&
+                  r.from! === equivalenceClass
+                ) {
+                  return false;
+                } else if (
+                  !isSymmetric &&
+                  s.role === StatementRole.MAIN_CONCLUSION &&
+                  r.to === equivalenceClass
+                ) {
+                  return false;
+                }
+                return otherRelationMemberIsInSelection(
+                  r,
+                  equivalenceClass,
+                  selectedStatements,
+                  selectedArguments
+                );
+              });
+            if (hasConnections) {
+              return true;
+            }
+          }
+          if (hasConnections) {
+            return true;
+          }
+          return isPCSStatementConnectedByEquivalence(
+            response,
+            s,
+            selectedStatements,
+            selectedArguments
+          );
+        });
+    }
+    return hasConnections;
+  };
 const isPCSStatementConnectedByEquivalence = (
   response: IArgdownResponse,
   s: IPCSStatement,
@@ -219,9 +220,10 @@ const isPCSStatementConnectedByEquivalence = (
     return (
       undefined !==
       ec.members.find(
-        s =>
+        (s) =>
           s.role === requiredRole &&
-          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !== undefined
+          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !==
+            undefined
       )
     );
   }

@@ -23,8 +23,8 @@ app.addPlugin(new GroupPlugin(), "create-map");
 app.addPlugin(new ColorPlugin(), "add-colors");
 app.addPlugin(new GraphMLExportPlugin(), "export-graphml");
 
-describe("GraphMLExport", function() {
-  it("sanity test", function() {
+describe("GraphMLExport", function () {
+  it("sanity test", function () {
     let source = `
     # Section 1
     
@@ -62,7 +62,7 @@ describe("GraphMLExport", function() {
     //console.log(result.graphml);
     expect(result.graphml).to.exist;
   });
-  it("can generate bold and italic html ranges in label text", function() {
+  it("can generate bold and italic html ranges in label text", function () {
     let source = `
 [s1]: test *test* **test**
   - <s2>: test

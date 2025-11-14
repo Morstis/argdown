@@ -45,9 +45,10 @@ const closeGroupsRecursively = (
   }
 };
 const closeGroup = (node: IGroupMapNode, response: IArgdownResponse) => {
-  const descendantsMap = node.children!.reduce(reduceToDescendantsMap, <
-    { [key: string]: IMapNode }
-  >{});
+  const descendantsMap = node.children!.reduce(
+    reduceToDescendantsMap,
+    <{ [key: string]: IMapNode }>{}
+  );
   node.children = [];
   // filter out internal edges (where source and target are group descendants)
   // transform edges that cross the group border (where either source or target are a group descendant) to relations of the group node

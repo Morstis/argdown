@@ -116,13 +116,14 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        const htmlId = getHtmlId("statement", token.title ?? "untitled", response.htmlIds ?? undefined);
+        const htmlId = getHtmlId(
+          "statement",
+          token.title ?? "untitled",
+          response.htmlIds ?? undefined
+        );
         response.htmlIds![htmlId] = true;
         let classes = "definition statement-definition definiendum";
-        if (
-          parentNode!.equivalenceClass &&
-          parentNode!.equivalenceClass.tags
-        ) {
+        if (parentNode!.equivalenceClass && parentNode!.equivalenceClass.tags) {
           classes +=
             " " +
             this.getCssClassesFromTags(
@@ -147,10 +148,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       ) => {
         const htmlId = getHtmlId("statement", token.title ?? "untitled");
         let classes = "reference statement-reference";
-        if (
-          parentNode!.equivalenceClass &&
-          parentNode!.equivalenceClass.tags
-        ) {
+        if (parentNode!.equivalenceClass && parentNode!.equivalenceClass.tags) {
           classes +=
             " " +
             this.getCssClassesFromTags(
@@ -178,7 +176,10 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         const equivalenceClass = response.statements![token.title!];
         let classes = "mention statement-mention";
         if (!equivalenceClass) {
-          logger.log("error", "Mentioned statement not found: " + (token.title ?? "untitled"));
+          logger.log(
+            "error",
+            "Mentioned statement not found: " + (token.title ?? "untitled")
+          );
         }
         if (equivalenceClass && equivalenceClass.tags) {
           classes +=
@@ -195,7 +196,9 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"];// if argument was exploded, simply take argument generated from first step
+        const argument =
+          response.arguments![token.title ?? "untitled"] ||
+          response.arguments![(token.title ?? "untitled") + " - 1"]; // if argument was exploded, simply take argument generated from first step
         const htmlId = "";
         if (argument.members.length == 0 && argument.pcs.length == 0) {
           const htmlId = getHtmlId(
@@ -226,10 +229,16 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"]; // if argument was exploded, simply take argument generated from first step
+        const argument =
+          response.arguments![token.title ?? "untitled"] ||
+          response.arguments![(token.title ?? "untitled") + " - 1"]; // if argument was exploded, simply take argument generated from first step
         let htmlId = "";
         if (argument.pcs.length == 0) {
-          htmlId = getHtmlId("argument", token.title ?? "untitled", response.htmlIds ?? undefined);
+          htmlId = getHtmlId(
+            "argument",
+            token.title ?? "untitled",
+            response.htmlIds ?? undefined
+          );
         }
         const htmlIdLink = getHtmlId("argument", token.title ?? "untitled");
         response.htmlIds![htmlId] = true;
@@ -256,9 +265,14 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       ) => {
         const htmlId = getHtmlId("argument", token.title ?? "untitled");
         let classes = "mention argument-mention";
-        const argument = response.arguments![token.title ?? "untitled"] || response.arguments![(token.title ?? "untitled")+" - 1"]; // if argument was exploded, simply take argument generated from first step
+        const argument =
+          response.arguments![token.title ?? "untitled"] ||
+          response.arguments![(token.title ?? "untitled") + " - 1"]; // if argument was exploded, simply take argument generated from first step
         if (!argument) {
-          logger.log("error", "Mentioned argument not found: " + (token.title ?? "untitled"));
+          logger.log(
+            "error",
+            "Mentioned argument not found: " + (token.title ?? "untitled")
+          );
         }
         if (argument && argument.tags) {
           classes += " " + this.getCssClassesFromTags(response, argument.tags);
@@ -394,7 +408,8 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         let classes = "statement has-line";
         if (node.equivalenceClass && node.equivalenceClass.tags) {
           classes +=
-            " " + this.getCssClassesFromTags(response, node.equivalenceClass.tags);
+            " " +
+            this.getCssClassesFromTags(response, node.equivalenceClass.tags);
         }
         if (node.statement && node.statement.isTopLevel) {
           classes += " top-level";
@@ -503,12 +518,16 @@ export class HtmlExportPlugin implements IArgdownPlugin {
             );
           }
         }
-        const htmlId = getHtmlId("heading", node.text ?? "untitled", response.htmlIds ?? undefined);
+        const htmlId = getHtmlId(
+          "heading",
+          node.text ?? "untitled",
+          response.htmlIds ?? undefined
+        );
         response.htmlIds![htmlId] = true;
         response.html += `<h${node.level} data-line="${node.startLine}" id="${htmlId}" class="has-line heading">`;
       },
       [RuleNames.HEADING + "Exit"]: (_request, response, node) =>
-        (response.html += "</h" + (node).level + ">"),
+        (response.html += "</h" + node.level + ">"),
       [RuleNames.STATEMENT_CONTENT + "Entry"]: (
         _request,
         response,
@@ -590,14 +609,14 @@ export class HtmlExportPlugin implements IArgdownPlugin {
         const bTagData = response.tags![b];
         return (aTagData.priority || 0) - (bTagData.priority || 0);
       })
-      .map(t => {
+      .map((t) => {
         const tagData = response.tags![t];
         if (tagData) {
           return tagData.cssClass;
         }
         return undefined;
       })
-      .filter(cssClass => cssClass !== undefined)
+      .filter((cssClass) => cssClass !== undefined)
       .join(" ");
     return classes;
   }

@@ -76,60 +76,58 @@ let workspaceFolders: WorkspaceFolder[];
 
 // After the server has started the client sends an initilize request. The server receives
 // in the passed params the rootPath of the workspace plus the client capabilites.
-connection.onInitialize(
-  (params: InitializeParams): InitializeResult => {
-    const capabilities = params.capabilities;
+connection.onInitialize((params: InitializeParams): InitializeResult => {
+  const capabilities = params.capabilities;
 
-    // Does the client support the `workspace/configuration` request?
-    // If not, we will fall back using global settings
-    hasWorkspaceFolderCapability = !!(
-      capabilities.workspace && !!capabilities.workspace.workspaceFolders
-    );
-    hasConfigurationCapability = !!(
-      capabilities.workspace && !!capabilities.workspace.configuration
-    );
-    // hasDiagnosticRelatedInformationCapability = !!(
-    //   capabilities.textDocument &&
-    //   capabilities.textDocument.publishDiagnostics &&
-    //   capabilities.textDocument.publishDiagnostics.relatedInformation
-    // );
-    if (params.workspaceFolders) {
-      workspaceFolders = params.workspaceFolders;
+  // Does the client support the `workspace/configuration` request?
+  // If not, we will fall back using global settings
+  hasWorkspaceFolderCapability = !!(
+    capabilities.workspace && !!capabilities.workspace.workspaceFolders
+  );
+  hasConfigurationCapability = !!(
+    capabilities.workspace && !!capabilities.workspace.configuration
+  );
+  // hasDiagnosticRelatedInformationCapability = !!(
+  //   capabilities.textDocument &&
+  //   capabilities.textDocument.publishDiagnostics &&
+  //   capabilities.textDocument.publishDiagnostics.relatedInformation
+  // );
+  if (params.workspaceFolders) {
+    workspaceFolders = params.workspaceFolders;
 
-      // Sort folders.
-      sortWorkspaceFolders();
-    }
-    return {
-      capabilities: {
-        // Tell the client that the server works in FULL text document sync mode
-        textDocumentSync: TextDocumentSyncKind.Full,
-        // Tell the client that the server support code complete
-        // completionProvider: {
-        // 	resolveProvider: true,
-        // },
-        documentSymbolProvider: true,
-        foldingRangeProvider: true,
-        // workspaceSymbolProvider: true,
-        definitionProvider: true,
-        referencesProvider: true,
-        documentHighlightProvider: true,
-        hoverProvider: true,
-        renameProvider: true,
-        completionProvider: {
-          triggerCharacters: ["[", "<", ":", "#"]
-        },
-        executeCommandProvider: {
-          commands: [
-            EXPORT_DOCUMENT_COMMAND,
-            EXPORT_CONTENT_COMMAND,
-            RETURN_DOCUMENT_COMMAND,
-            RUN_COMMAND
-          ]
-        }
-      }
-    };
+    // Sort folders.
+    sortWorkspaceFolders();
   }
-);
+  return {
+    capabilities: {
+      // Tell the client that the server works in FULL text document sync mode
+      textDocumentSync: TextDocumentSyncKind.Full,
+      // Tell the client that the server support code complete
+      // completionProvider: {
+      // 	resolveProvider: true,
+      // },
+      documentSymbolProvider: true,
+      foldingRangeProvider: true,
+      // workspaceSymbolProvider: true,
+      definitionProvider: true,
+      referencesProvider: true,
+      documentHighlightProvider: true,
+      hoverProvider: true,
+      renameProvider: true,
+      completionProvider: {
+        triggerCharacters: ["[", "<", ":", "#"]
+      },
+      executeCommandProvider: {
+        commands: [
+          EXPORT_DOCUMENT_COMMAND,
+          EXPORT_CONTENT_COMMAND,
+          RETURN_DOCUMENT_COMMAND,
+          RUN_COMMAND
+        ]
+      }
+    }
+  };
+});
 
 connection.onInitialized(() => {
   connection.console.log("Argdown language server initialized.");
@@ -145,7 +143,7 @@ connection.onInitialized(() => {
       // Removed folders.
       for (const workspaceFolder of event.removed) {
         const index = workspaceFolders.findIndex(
-          folder => folder.uri === workspaceFolder.uri
+          (folder) => folder.uri === workspaceFolder.uri
         );
 
         if (index !== -1) {
@@ -223,12 +221,12 @@ function getDocumentSettings(resource: string): Thenable<IArgdownSettings> {
 }
 
 // Only keep settings for open documents
-documents.onDidClose(e => {
+documents.onDidClose((e) => {
   documentSettings.delete(e.document.uri);
 });
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
-documents.onDidChangeContent(change => {
+documents.onDidChangeContent((change) => {
   validateTextDocument(change.document);
 });
 // The settings interface describe the server relevant settings part
@@ -359,11 +357,9 @@ connection.onDocumentHighlight(async (params: TextDocumentPositionParams) => {
   const { textDocument, position } = params;
   const response = await processDocForProviders(textDocument);
   if (response) {
-    return provideReferences(
-      response,
-      textDocument.uri,
-      position
-    ).map((l: Location) => DocumentHighlight.create(l.range, 1));
+    return provideReferences(response, textDocument.uri, position).map(
+      (l: Location) => DocumentHighlight.create(l.range, 1)
+    );
   }
   return null;
 });
@@ -457,7 +453,7 @@ const getConfigPath = async (doc: TextDocument | undefined) => {
     const settings = await getDocumentSettings(doc.uri);
     const docPath = URI.parse(doc.uri).fsPath;
     if (workspaceFolders && workspaceFolders.length > 0 && settings) {
-      const workspaceFolder = workspaceFolders.find(f =>
+      const workspaceFolder = workspaceFolders.find((f) =>
         docPath.startsWith(URI.parse(f.uri).fsPath)
       );
       configPath = workspaceFolder

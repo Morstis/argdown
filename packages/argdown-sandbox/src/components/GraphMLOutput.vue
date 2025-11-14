@@ -15,7 +15,7 @@ export default {
     const graphml = computed(() => store.graphml);
 
     return { graphml };
-  },
+  }
 };
 </script>
 

@@ -132,8 +132,14 @@ const config = {
     ...optionalPlugins,
     new webpack.ProvidePlugin({
       process: "process/browser", // provide a shim for the global `process` variable
-      BrowserMessageReader: ["vscode-languageserver/browser", "BrowserMessageReader"],
-      BrowserMessageWriter: ["vscode-languageserver/browser", "BrowserMessageWriter"],
+      BrowserMessageReader: [
+        "vscode-languageserver/browser",
+        "BrowserMessageReader"
+      ],
+      BrowserMessageWriter: [
+        "vscode-languageserver/browser",
+        "BrowserMessageWriter"
+      ],
       createConnection: ["vscode-languageserver/browser", "createConnection"]
     })
   ],

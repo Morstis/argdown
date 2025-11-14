@@ -80,7 +80,7 @@ export class JSONExportPlugin implements IArgdownPlugin {
       return request.json;
     }
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
   run: IRequestHandler = (request, response) => {
@@ -116,7 +116,7 @@ export class JSONExportPlugin implements IArgdownPlugin {
     }
     response.json = stringifyArgdownData(
       argdown,
-      function(this: any, key, value) {
+      function (this: any, key, value) {
         if (!settings.exportData && key === "data") {
           return undefined;
         }

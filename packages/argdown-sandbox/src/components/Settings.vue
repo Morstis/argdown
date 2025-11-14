@@ -101,7 +101,7 @@ export default {
     const config = computed(() => store.configData);
 
     return { config };
-  },
+  }
 };
 </script>
 

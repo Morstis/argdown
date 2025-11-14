@@ -78,9 +78,9 @@
 
 <script>
 /* eslint-disable */
-import { computed, onMounted } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useArgdownStore } from './store.js';
+import { computed, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useArgdownStore } from "./store.js";
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
 import AppNavigation from "@/components/AppNavigation";
@@ -95,7 +95,7 @@ export default {
     AppHeader,
     ArgdownInput,
     AppNavigation,
-    InputNavigation,
+    InputNavigation
     // ,
     // Settings
   },
@@ -103,11 +103,11 @@ export default {
     const store = useArgdownStore();
     const { viewState, argdownInput } = storeToRefs(store);
     const viewStateClass = computed(() => viewState.value);
-    
+
     onMounted(() => {
       store.setArgdownInput(argdownInput.value); // ensure that the initial input is parsed
     });
-    
+
     return {
       viewStateClass,
       viewState,
@@ -125,8 +125,8 @@ $border-color: #eee;
 $accent-color: #3e8eaf;
 
 @font-face {
-  font-family: 'ArgVu Sans Mono Regular';
-  src: url('./assets/ArgVuSansMono-Regular-8.2.otf') format('opentype');
+  font-family: "ArgVu Sans Mono Regular";
+  src: url("./assets/ArgVuSansMono-Regular-8.2.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -306,7 +306,7 @@ button .icon {
   .main-window {
     max-height: 100vh !important;
     height: 100vh !important;
-    
+
     #left-slot {
       display: none;
     }
@@ -339,7 +339,7 @@ button .icon {
   height: calc(100vh - 3.5em);
   max-height: calc(100vh - 3.5em);
   overflow: hidden;
-  
+
   .input-header,
   .output-header {
     height: 2.5em;
@@ -382,7 +382,7 @@ button .icon {
     min-height: 0;
     max-height: 100%;
     overflow: hidden;
-    
+
     .output {
       border-top: 1px solid $border-color;
       flex: 1;
