@@ -39,7 +39,6 @@
     "lodash.partialright": "^4.2.1",
     "lodash.union": "^4.6.0",
     "mdurl": "^2.0.0",
-    "punycode": "^2.3.1",
     "string-pixel-width": "^1.10.0",
     "xmlbuilder": "^15.1.0"
   },
@@ -94,7 +93,6 @@
     "@types/lodash.union": "^4.6.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
-    "@types/punycode": "^2.1.4",
     "@types/string-pixel-width": "^1.10.3",
     "@yarnpkg/pnpify": "^4.1.4",
     "chai": "^4.3.10",
