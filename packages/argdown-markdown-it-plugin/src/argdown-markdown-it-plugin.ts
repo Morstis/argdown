@@ -2,15 +2,16 @@ import {
   IArgdownRequest,
   WebComponentExportPlugin,
   IWebComponentExportSettings,
-  ArgdownApplication
+  ArgdownApplication,
+  argdown as defaultArgdownApplication
 } from "@argdown/core";
-import { argdown as defaultArgdownApplication } from "@argdown/core/dist/argdown";
-import type MarkdownIt from "markdown-it"; 
+import MarkdownIt from "markdown-it"; 
+import Token from "markdown-it/lib/token.mjs";
 import defaultsDeep from "lodash.defaultsdeep";
-import Token from "markdown-it/lib/token";
 
 const createArgdownPlugin = (config?: ((env:any)=>IArgdownRequest) | IArgdownRequest, customArgdownApplication?: ArgdownApplication) => {
   const argdown = customArgdownApplication || defaultArgdownApplication;
+  
   const webComponentPlugin = argdown.getPlugin(
     WebComponentExportPlugin.name,
     "export-web-component"
@@ -40,7 +41,7 @@ const createArgdownPlugin = (config?: ((env:any)=>IArgdownRequest) | IArgdownReq
     };
     (md as any).argdown = argdown;
 
-    const tempFence = md.renderer.rules.fence!.bind(md.renderer.rules)!;
+    const tempFence = md.renderer.rules.fence!.bind(md.renderer.rules);
     md.renderer.rules.fence = (tokens, idx, options, env, slf) => {
       const token = tokens[idx];
       const chunks = (token.info || ``).match(/^(\S+)(\s+(.+))?/);

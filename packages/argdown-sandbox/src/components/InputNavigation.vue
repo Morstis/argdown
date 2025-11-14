@@ -5,7 +5,7 @@
         <div class="dropdown">
           <button class="text-button dropdown-button">Examples</button>
           <ul class="dropdown-content">
-            <li v-for="example in $store.getters.examples" :key="example.id">
+            <li v-for="example in examplesList" :key="example.id">
               <a href="#" v-on:click.prevent="loadExample(example.id)">{{
                 example.title
               }}</a>
@@ -19,8 +19,8 @@
       <li>
         <div class="input-container argvu-font">
           <input
-            v-model="useArgVu"
-            v-bind:value="useArgVu"
+            :checked="useArgVu"
+            @change="toggleArgVu"
             type="checkbox"
             id="use-argvu"
           />
@@ -28,57 +28,75 @@
         </div>
       </li>
     </ul>
-    <modal v-show="isModalVisible" @close="closeModal">
-      <div slot="header">Successfully copied shareable link</div>
-      <div slot="body">
+    <app-modal v-show="isModalVisible" @close="closeModal">
+      <template #header>Successfully copied shareable link</template>
+      <template #body>
         <input type="text" v-bind:value="link" style="width: 100%" /><br />
         <p>Show other people your Argdown code directly in the Sandbox!</p>
-      </div>
-    </modal>
+      </template>
+    </app-modal>
   </nav>
 </template>
 <script>
-import modal from "./modal.vue";
+import { ref, computed } from "vue";
+import { useArgdownStore } from "../store.js";
+import appModal from "./modal.vue";
+
 export default {
   name: "input-navigation",
   components: {
-    modal: modal,
+    appModal: appModal,
   },
-  methods: {
-    loadExample: function (example) {
-      this.$store.dispatch("loadExample", { id: example }).then(() => {
+  setup() {
+    const store = useArgdownStore();
+    const isModalVisible = ref(false);
+    const link = ref("");
+
+    const useArgVu = computed(() => store.useArgVu);
+    const examplesList = computed(() => store.examplesList);
+    const argdownInput = computed(() => store.argdownInput);
+
+    async function loadExample(example) {
+      try {
+        await store.loadExample({ id: example });
         // do stuff
-      });
-    },
-    copyLink: function () {
-      const input = encodeURIComponent(this.$store.state.argdownInput);
-      const link = `https://argdown.org/sandbox/map/?argdown=${input}`;
-      navigator.clipboard.writeText(link);
-      this.link = link;
-      this.showModal();
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-  },
-  data: () => {
+      } catch (error) {
+        console.error("Failed to load example:", error);
+      }
+    }
+
+    function copyLink() {
+      const input = encodeURIComponent(argdownInput.value);
+      const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
+      navigator.clipboard.writeText(linkText);
+      link.value = linkText;
+      showModal();
+    }
+
+    function showModal() {
+      isModalVisible.value = true;
+    }
+
+    function closeModal() {
+      isModalVisible.value = false;
+    }
+
+    function toggleArgVu(event) {
+      store.setUseArgVu(event.target.checked);
+    }
+
     return {
-      isModalVisible: false,
-      link: "",
+      isModalVisible,
+      link,
+      useArgVu,
+      examplesList,
+      argdownInput,
+      loadExample,
+      copyLink,
+      showModal,
+      closeModal,
+      toggleArgVu,
     };
-  },
-  computed: {
-    useArgVu: {
-      set(value) {
-        this.$store.commit("setUseArgVu", value);
-      },
-      get() {
-        return this.$store.state.useArgVu;
-      },
-    },
   },
 };
 </script>

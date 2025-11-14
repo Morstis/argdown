@@ -1,4 +1,4 @@
-import { IMapState, defaultMapState } from "./IMapState";
+import { IMapState, defaultMapState } from "./IMapState.js";
 import { zoom, ZoomBehavior, zoomIdentity } from "d3-zoom";
 import { Selection } from "d3-selection";
 import defaultsDeep from "lodash.defaultsdeep";
@@ -9,9 +9,9 @@ export type OnZoomChangedHandler = (data: {
   position: { x: number; y: number };
 }) => void;
 export class ZoomManager {
-  zoom?: ZoomBehavior<SVGSVGElement, {}>;
-  svg?: Selection<SVGSVGElement, {}, null | HTMLElement, any>;
-  svgGraph?: Selection<SVGGraphicsElement, {}, null | HTMLElement, any>;
+  zoom?: ZoomBehavior<SVGSVGElement, Record<string, never>>;
+  svg?: Selection<SVGSVGElement, Record<string, never>, null | HTMLElement, any>;
+  svgGraph?: Selection<SVGGraphicsElement, Record<string, never>, null | HTMLElement, any>;
   state: IMapState;
   moveToDuration: number;
   onZoomChanged?: OnZoomChangedHandler;
@@ -37,28 +37,27 @@ export class ZoomManager {
 
     this.svg = svg;
     this.svgGraph = svgGraph;
-    const self = this;
-    this.zoom = zoom<SVGSVGElement, {}>().on("zoom", function(event) {
+    this.zoom = zoom<SVGSVGElement, Record<string, never>>().on("zoom", (event) => {
       // eslint-disable-next-line
-      self.svgGraph!.attr("transform", event.transform);
-      self.state.scale = event.transform.k;
-      self.state.position.x = event.transform.x;
-      self.state.position.y = event.transform.y;
-      if (self.onZoomChanged) {
-        self.onZoomChanged({
-          scale: self.state.scale,
-          position: self.state.position,
-          size: self.state.size
+      this.svgGraph!.attr("transform", event.transform);
+      this.state.scale = event.transform.k;
+      this.state.position.x = event.transform.x;
+      this.state.position.y = event.transform.y;
+      if (this.onZoomChanged) {
+        this.onZoomChanged({
+          scale: this.state.scale,
+          position: this.state.position,
+          size: this.state.size
         });
       }
     });
-    this.svg!.call(this.zoom! as any).on("dblclick.zoom", null);
+    this.svg.call(this.zoom as any).on("dblclick.zoom", null);
   }
   showAllAndCenterMap() {
     if (!this.svg) {
       return;
     }
-    let positionInfo = this.svg.node()!.getBoundingClientRect();
+    const positionInfo = this.svg.node()!.getBoundingClientRect();
     const xScale = positionInfo.width / this.state.size.width;
     const yScale = positionInfo.height / this.state.size.height;
     const scale = Math.min(xScale, yScale);
@@ -82,28 +81,31 @@ export class ZoomManager {
     this.setZoom(x, y, this.state.scale, this.moveToDuration);
   }
   moveToElement(element: SVGGraphicsElement) {
-    let positionInfo = this.svg!.node()!.getBoundingClientRect();
-    const point = convertCoordsL2L(
-      this.svg!.node()!,
-      element!,
-      this.svgGraph!.node()!
-    );
-    let x = -point.x * this.state.scale + positionInfo.width / 2;
-    let y = -point.y * this.state.scale + positionInfo.height / 2;
+    const positionInfo = this.svg!.node()!.getBoundingClientRect();
+    const svgNode = this.svg!.node();
+    const svgGraphNode = this.svgGraph!.node();
+    if (svgNode && svgGraphNode) {
+      const point = convertCoordsL2L(
+        svgNode,
+        element,
+        svgGraphNode
+      );
+      const x = -point.x * this.state.scale + positionInfo.width / 2;
+      const y = -point.y * this.state.scale + positionInfo.height / 2;
 
-    this.moveTo(x, y);
+      this.moveTo(x, y);
+    }
   }
   setZoom = (x: number, y: number, scale: number, duration: number) => {
     if (!this.svg || !this.zoom) {
       return;
     }
-    const self = this;
     this.svg
       .transition()
       .duration(duration)
       .call(
-        (self.zoom! as any).transform,
-        // eslint-disable-next-line
+        (this.zoom as any).transform,
+         
         zoomIdentity.translate(x, y).scale(scale)
       );
   };

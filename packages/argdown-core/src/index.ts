@@ -1,5 +1,5 @@
 "use strict";
-import { IArgdownLogger } from "./IArgdownLogger";
+import { IArgdownLogger } from "./IArgdownLogger.js";
 
 /**
  * IProcess objects are IArgdownRequest objects with a mandatory process field.
@@ -130,42 +130,42 @@ export interface ISelectionSettings {
 }
 
 //export { tokenize } from "./lexer";
-export * from "./lexer";
+export * from "./lexer.js";
 export { tokenMatcher } from "chevrotain";
-export * from "./RuleNames";
-export * from "./TokenNames";
-export * from "./parser";
-export * from "./ArgdownTreeWalker";
-export * from "./ArgdownApplication";
-export * from "./Logger";
-export * from "./plugins/ModelPlugin";
-export * from "./plugins/ParserPlugin";
-export * from "./plugins/DataPlugin";
-export * from "./plugins/RegroupPlugin";
-export * from "./plugins/ClosedGroupPlugin";
-export * from "./plugins/ColorPlugin";
-export * from "./plugins/HtmlExportPlugin";
-export * from "./plugins/PreselectionPlugin";
-export * from "./plugins/ArgumentSelectionPlugin";
-export * from "./plugins/StatementSelectionPlugin";
-export * from "./plugins/MapPlugin";
-export * from "./plugins/GroupPlugin";
-export * from "./plugins/JSONExportPlugin";
-export * from "./plugins/DotExportPlugin";
-export * from "./plugins/GraphMLExportPlugin";
-export * from "./plugins/HighlightSourcePlugin";
-export * from "./plugins/WebComponentExportPlugin";
-export * from "./plugins/ExplodeArgumentsPlugin";
-export * from "./plugins/MapNodeImagesPlugin";
-// SyncDotToSvgExportPlugin has to be exported explicitely as it is not needed everywhere and renderSync is too large
-// export * from "./plugins/SyncDotToSvgExportPlugin";
-export * from "./plugins/VizJsSettings";
-export * from "./plugins/SaysWhoPlugin";
-export * from "./plugins/shortcodes";
-export * from "./IArgdownPlugin";
-export * from "./IArgdownLogger";
-export * from "./ArgdownPluginError";
-export * from "./model/model";
-export * from "./model/toJSON";
-export * from "./utils";
-export * from "./deriveImplicitRelations";
+export * from "./RuleNames.js";
+export * from "./TokenNames.js";
+export * from "./parser.js";
+export * from "./ArgdownTreeWalker.js";
+export * from "./ArgdownApplication.js";
+export * from "./argdown.js";
+export * from "./Logger.js";
+export * from "./plugins/ModelPlugin.js";
+export * from "./plugins/ParserPlugin.js";
+export * from "./plugins/DataPlugin.js";
+export * from "./plugins/RegroupPlugin.js";
+export * from "./plugins/ClosedGroupPlugin.js";
+export * from "./plugins/ColorPlugin.js";
+export * from "./plugins/HtmlExportPlugin.js";
+export * from "./plugins/PreselectionPlugin.js";
+export * from "./plugins/ArgumentSelectionPlugin.js";
+export * from "./plugins/StatementSelectionPlugin.js";
+export * from "./plugins/MapPlugin.js";
+export * from "./plugins/GroupPlugin.js";
+export * from "./plugins/JSONExportPlugin.js";
+export * from "./plugins/DotExportPlugin.js";
+export * from "./plugins/GraphMLExportPlugin.js";
+export * from "./plugins/HighlightSourcePlugin.js";
+export * from "./plugins/WebComponentExportPlugin.js";
+export * from "./plugins/ExplodeArgumentsPlugin.js";
+export * from "./plugins/MapNodeImagesPlugin.js";
+export * from "./plugins/SyncDotToSvgExportPlugin.js";
+export * from "./plugins/VizJsSettings.js";
+export * from "./plugins/SaysWhoPlugin.js";
+export * from "./plugins/shortcodes.js";
+export * from "./IArgdownPlugin.js";
+export * from "./IArgdownLogger.js";
+export * from "./ArgdownPluginError.js";
+export * from "./model/model.js";
+export * from "./model/toJSON.js";
+export * from "./utils.js";
+export * from "./deriveImplicitRelations.js";

@@ -1,10 +1,10 @@
 import vizRenderStringSync from "@aduh95/viz.js/sync";
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { DefaultSettings, isObject, mergeDefaults } from "../utils";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { DefaultSettings, isObject, mergeDefaults } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
-import { IArgdownRequest } from "..";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { GraphvizEngine, IVizJsSettings } from "./VizJsSettings";
+import { IArgdownRequest } from "../index.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { GraphvizEngine, IVizJsSettings } from "./VizJsSettings.js";
 import { RenderOptions } from "@aduh95/viz.js";
 
 const defaultSettings: DefaultSettings<IVizJsSettings> = {
@@ -35,7 +35,7 @@ export class SyncDotToSvgExportPlugin implements IArgdownPlugin {
   run: IRequestHandler = (request, response) => {
     const requiredResponseFields: string[] = ["dot"];
     checkResponseFields(this, response, requiredResponseFields);
-    let { engine, nop, removeProlog } = this.getSettings(request);
+    const { engine, nop, removeProlog } = this.getSettings(request);
     const files = request.images?.files;
     const settings: RenderOptions = {
       engine,
@@ -49,10 +49,10 @@ export class SyncDotToSvgExportPlugin implements IArgdownPlugin {
         height: height || 100
       }));
     }
-    response.svg = vizRenderStringSync(response.dot!, settings);
+    response.svg = vizRenderStringSync(response.dot ?? "", settings);
     if (removeProlog) {
-      response.svg = response.svg!.replace(
-        /<\?[ ]*xml[\S ]+?\?>[\s]*<\![ ]*DOCTYPE[\S\s]+?\.dtd\"[ ]*>/,
+      response.svg = response.svg?.replace(
+        /<\?[ ]*xml[\S ]+?\?>[\s]*<![ ]*DOCTYPE[\S\s]+?\.dtd"[ ]*>/,
         ""
       );
     }
@@ -61,7 +61,7 @@ export class SyncDotToSvgExportPlugin implements IArgdownPlugin {
       request.images.convertToDataUrls &&
       request.images.files
     ) {
-      for (let image of Object.values(request.images.files)) {
+      for (const image of Object.values(request.images.files)) {
         if (image.dataUrl) {
           const stringToReplace = new RegExp(image.path, "g");
           response.svg = response.svg?.replace(stringToReplace, image.dataUrl);

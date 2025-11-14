@@ -1,143 +1,261 @@
 <template>
-  <div class="argdown-input" v-bind:class="{'use-argvu': useArgVu}">
-    <codemirror ref="codemirror" :options="editorOption" :value="value" @changes="updateValue"></codemirror>
+  <div class="argdown-input" :class="{ 'use-argvu': useArgVu }">
+    <textarea ref="editorRef" class="argdown-editor"></textarea>
   </div>
 </template>
 
 <script>
+import {
+  ref,
+  computed,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
+import { useArgdownStore } from "../store.js";
 import * as _ from "lodash";
-import { CodeMirror, codemirror } from "vue-codemirror";
-import * as argdownMode from "@argdown/codemirror-mode";
-
-import "codemirror/addon/mode/simple.js";
-import "codemirror/addon/lint/lint.js";
-
-CodeMirror.defineSimpleMode("argdown", argdownMode);
+import CodeMirror from "codemirror";
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/mode/simple";
+import argdownMode from "@argdown/codemirror-mode";
+import "@argdown/codemirror-mode/codemirror-argdown.css";
 
 export default {
   name: "argdown-input",
-  data() {
-    return {
-      editorOption: {
-        tabSize: 4,
+  props: ["value"],
+  setup(props, { emit }) {
+    const store = useArgdownStore();
+    const editorRef = ref(null);
+    const localValue = ref(String(props.value || ""));
+    const editor = ref(null);
+    const needsRefresh = ref(false);
+
+    const useArgVu = computed(() => store.useArgVu);
+
+    const debouncedChangeEmission = _.debounce((value) => {
+      emit("change", value);
+    }, 100);
+
+    function sizeEditorToContainer() {}
+
+    function refreshEditor() {
+      if (!editorRef.value) {
+        return;
+      }
+
+      if (editor.value) {
+        editor.value.toTextArea();
+      }
+      // Re-initialize CodeMirror
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
         mode: "argdown",
-        foldGutter: true,
-        styleActiveLine: true,
         lineNumbers: true,
-        lint: true,
-        gutters: ["CodeMirror-lint-markers"],
-        line: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: true,
+        styleActiveLine: true,
         extraKeys: {
-          Tab: function(cm) {
+          Tab: (cm) => {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
+          },
+        },
+      });
+      editor.value.setValue(String(localValue.value || ""));
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(cm.getValue());
+      });
+      // Ensure sizing happens after DOM is painted
+      requestAnimationFrame(() => sizeEditorToContainer());
+    }
+
+    watch(useArgVu, (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        needsRefresh.value = true;
+        nextTick(() => {
+          if (needsRefresh.value) {
+            refreshEditor();
+            needsRefresh.value = false;
           }
-        }
-      }
-    };
-  },
-  props: ["value"],
-  created: function() {
-    const store = this.$store;
-    CodeMirror.registerHelper("lint", "argdown", function() {
-      const found = [];
-      const errors = store.getters.parserErrors;
-      if (!errors) {
-        return found;
-      }
-      for (let i = 0; i < errors.length; i++) {
-        let error = errors[i];
-        let startLine = error.token.startLine - 1;
-        let endLine = error.token.endLine - 1;
-        let startCol = error.token.startColumn - 1;
-        let endCol = error.token.endColumn;
-        found.push({
-          from: CodeMirror.Pos(startLine, startCol),
-          to: CodeMirror.Pos(endLine, endCol),
-          message: error.message,
-          severity: "error"
         });
       }
-      return found;
     });
-  },
-  methods: {
-    updateValue: function(codemirror) {
-      this.debouncedChangeEmission(codemirror.doc.getValue(), this);
-    },
-    debouncedChangeEmission: _.debounce(function(value, component) {
-      component.$emit("change", value);
-    }, 100),
-    refreshEditor: function() {
-      setTimeout(() => this.$refs.codemirror.codemirror.refresh(), 100);
-    }
-  },
-  computed: {
-    useArgVu: {
-      get() {
-        return this.$store.state.useArgVu;
+
+    watch(
+      () => store.argdownInput,
+      (newVal) => {
+        if (typeof newVal === "string" && newVal !== localValue.value) {
+          localValue.value = newVal;
+          if (editor.value) {
+            editor.value.setValue(newVal);
+            editor.value.refresh();
+          }
+        } else if (newVal && typeof newVal === "object") {
+          let newValStr = null;
+
+          if (newVal.content && typeof newVal.content === "string") {
+            newValStr = newVal.content;
+          } else if (newVal.data && typeof newVal.data === "string") {
+            newValStr = newVal.data;
+          } else if (newVal.text && typeof newVal.text === "string") {
+            newValStr = newVal.text;
+          }
+
+          if (newValStr && newValStr !== localValue.value) {
+            localValue.value = newValStr;
+            if (editor.value) {
+              editor.value.setValue(newValStr);
+              editor.value.refresh();
+            }
+          }
+        }
+      },
+    );
+
+    watch(
+      () => props.value,
+      (newVal) => {
+        if (typeof newVal === "string" && newVal !== localValue.value) {
+          localValue.value = newVal;
+          if (editor.value) {
+            editor.value.setValue(newVal);
+          }
+        } else if (newVal && typeof newVal === "object") {
+          // For objects, be conservative
+          let newValStr = null;
+          if (newVal.content && typeof newVal.content === "string") {
+            newValStr = newVal.content;
+          } else if (newVal.data && typeof newVal.data === "string") {
+            newValStr = newVal.data;
+          } else if (newVal.text && typeof newVal.text === "string") {
+            newValStr = newVal.text;
+          }
+
+          if (newValStr && newValStr !== localValue.value) {
+            localValue.value = newValStr;
+            if (editor.value) {
+              editor.value.setValue(newValStr);
+            }
+          }
+        }
+      },
+    );
+
+    onMounted(() => {
+      CodeMirror.defineSimpleMode("argdown", argdownMode);
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
+        mode: "argdown",
+        lineNumbers: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: false,
+        styleActiveLine: true,
+        extraKeys: {
+          Tab: (cm) => {
+            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+          },
+        },
+      });
+      editor.value.setValue(String(localValue.value || ""));
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(cm.getValue());
+      });
+    });
+
+    onBeforeUnmount(() => {
+      if (editor.value) {
+        editor.value.toTextArea();
       }
-    }
+    });
+
+    return {
+      editorRef,
+      localValue,
+      editor,
+      needsRefresh,
+      useArgVu,
+      refreshEditor,
+    };
   },
-  watch: {
-    useArgVu() {
-      this.refreshEditor();
-    }
-  },
-  components: {
-    codemirror
-  }
 };
 </script>
 
 <style lang="scss">
-@import "../../node_modules/codemirror/lib/codemirror.css";
-@import "../../node_modules/codemirror/theme/monokai.css";
-@import "../../node_modules/codemirror/addon/lint/lint.css";
-@import "../../node_modules/@argdown/codemirror-mode/codemirror-argdown.css";
-@font-face {
-  font-family: "ArgVu";
-  src: url("/sandbox/ArgVuSansMono-Regular-8.2.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-feature-settings: "dlig";
-}
+.argdown-input.use-argvu .argdown-editor,
 .argdown-input.use-argvu .CodeMirror {
-  font-family: "ArgVu", mono-space;
-  font-feature-settings: "dlig";
-  font-size: 1em;
+  font-family: "ArgVu Sans Mono Regular", monospace !important;
+  font-size: 1em !important;
+  font-feature-settings: "dlig" 1;
 }
+
 .input-maximized {
   .argdown-input {
-    max-width: 60em;
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
   }
 }
+
 .argdown-input {
-  flex: 1;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0; /* Chrome: allow flex children to shrink properly */
+  max-height: 100%;
   overflow: hidden;
-  textarea {
-    flex: 1;
-    padding: 1em;
+  display: flex;
+  flex-direction: column;
+
+  .argdown-editor {
     width: 100%;
-    height: 100%;
-    font-size: 1.25em;
-  }
-  .vue-codemirror {
-    height: 100%;
-    width: 100%;
-  }
-  .CodeMirror {
+    height: 0;
+    display: none;
+    margin: 0;
     border: 1px solid #eee;
-    height: 100%;
-    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    max-height: 100%;
+    flex: 0 0 auto;
+    font-family: monospace;
     font-size: 1.25em;
-    pre {
-      padding: 0.1em 0.5em;
-      overflow: visible;
-      background-color: transparent;
+    padding: 1em;
+    resize: none;
+    outline: none;
+
+    &:focus {
+      border-color: #3e8eaf;
     }
+  }
+
+  .CodeMirror {
+    /* Allow editor to grow with flex container */
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0; /* Chrome: critical to avoid collapsing */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+    font-size: 1.25em;
+  }
+
+  /* Ensure CodeMirror internals fill available height even when empty */
+  .CodeMirror-scroll {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0; /* Chrome: allow scroll area to expand */
+  }
+
+  .CodeMirror-gutters {
+    padding-left: 20px;
+  }
+
+  .CodeMirror-line {
+    line-height: 1.4 !important;
   }
 }
 </style>

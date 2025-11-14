@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import HtmlOutput from "@/components/HtmlOutput";
 import HtmlNavigation from "@/components/HtmlNavigation";
 import JSONOutput from "@/components/JSONOutput";
@@ -10,21 +9,16 @@ import DebugLexerParserOutput from "@/components/DebugLexerParserOutput";
 import DebugModelOutput from "@/components/DebugModelOutput";
 import DebugNavigation from "@/components/DebugNavigation";
 import MapNavigation from "@/components/MapNavigation";
-import store from "../store";
 
 const VizJsOutput = () => import("@/components/VizJsOutput.vue");
-
 const DagreD3Output = () => import("@/components/DagreD3Output.vue");
 
-Vue.use(Router);
-
-const router = new Router({
-  mode: "history",
-  base: "/sandbox/",
+const router = createRouter({
+  history: createWebHistory("/sandbox/"),
   scrollBehavior(to) {
     if (to.hash) {
       return {
-        selector: to.hash,
+        el: to.hash,
       };
     }
   },
@@ -47,7 +41,7 @@ const router = new Router({
       },
     },
     {
-      path: "/map",
+      path: "/map/viz-js",
       name: "map-viz-js",
       components: {
         default: VizJsOutput,
@@ -79,6 +73,10 @@ const router = new Router({
       },
     },
     {
+      path: "/map",
+      redirect: { name: "map-viz-js" },
+    },
+    {
       path: "/html",
       name: "html",
       components: {
@@ -105,10 +103,11 @@ const router = new Router({
     },
   ],
 });
+
 let currentArgdownQuery = "";
 router.beforeEach((to, from, next) => {
   if (to.query.argdown && to.query.argdown != currentArgdownQuery) {
-    store.commit("setArgdownInput", decodeURIComponent(to.query.argdown));
+    // We'll handle this in the component that needs it
     currentArgdownQuery = to.query.argdown;
     delete to.query.argdown;
     next(to);
@@ -116,4 +115,5 @@ router.beforeEach((to, from, next) => {
   }
   next();
 });
+
 export default router;

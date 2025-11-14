@@ -1,11 +1,11 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { reduceToMap, mergeDefaults, isObject } from "../utils";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { reduceToMap, mergeDefaults, isObject } from "../utils.js";
 import {
   IArgdownRequest,
   IArgdownResponse,
   ISelectionSettings
-} from "../index";
+} from "../index.js";
 import {
   IEquivalenceClass,
   IArgument,
@@ -14,11 +14,11 @@ import {
   IConclusion,
   isConclusion,
   IRelation
-} from "../model/model";
-import { otherRelationMemberIsInSelection } from "./selectionUtils";
+} from "../model/model.js";
+import { otherRelationMemberIsInSelection } from "./selectionUtils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
-declare module "../index" {
+declare module "../index.js" {
   interface ISelectionSettings {
     /**
      * Should statements and arguments be excluded from the map if they have
@@ -136,9 +136,9 @@ const isArgumentSelected = (
         // find incoming undercuts
         if (
           isConclusion(s) &&
-          (<IConclusion>s).inference!.relations!.length > 0
+          (s).inference!.relations!.length > 0
         ) {
-          const inference = (<IConclusion>s).inference!;
+          const inference = (s).inference!;
           hasConnections =
             undefined !==
             inference.relations!.find(r =>
@@ -212,7 +212,7 @@ const isPCSStatementConnectedByEquivalence = (
     if (s.role === StatementRole.MAIN_CONCLUSION) {
       requiredRole = StatementRole.PREMISE;
     }
-    if (selectedStatements.get(s.title!) !== undefined) {
+    if (selectedStatements.get(s.title ?? "") !== undefined) {
       return true;
     }
     const ec = response.statements![s.title!];
@@ -221,7 +221,7 @@ const isPCSStatementConnectedByEquivalence = (
       ec.members.find(
         s =>
           s.role === requiredRole &&
-          selectedArguments.get((<IPCSStatement>s).argumentTitle!) !== undefined
+          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !== undefined
       )
     );
   }

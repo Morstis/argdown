@@ -1,16 +1,11 @@
 import { html } from "lit-html";
-import {
-  component,
-  useState,
-  useEffect,
-  useRef,
-  useLayoutEffect
-} from "haunted";
-import { ArgdownMark } from "./ArgdownMark";
-import { ExpandIcon } from "./ExpandIcon";
-import { MinimizeIcon } from "./MinimizeIcon";
+// @ts-expect-error - haunted exports these as named exports despite TypeScript error
+import { component, useState, useEffect, useRef, useLayoutEffect } from "haunted";
+import { ArgdownMark } from "./ArgdownMark.js";
+import { ExpandIcon } from "./ExpandIcon.js";
+import { MinimizeIcon } from "./MinimizeIcon.js";
 import { select } from "d3-selection";
-import { addZoom, removeZoom } from "./zoomUtils";
+import { addZoom, removeZoom } from "./zoomUtils.js";
 import "./snow-in-spring.argdown-theme.css";
 import "./global-styles.css";
 
@@ -55,18 +50,24 @@ const ArgdownMap = function(
   const onSlotChange = () => {
     setHasMap(el.querySelector<HTMLElement>(`[slot="map"]`) !== null);
     setHasSource(el.querySelector<HTMLElement>(`[slot="source"]`) !== null);
-    initialHeight.current = el.shadowRoot
-      .querySelector(".component")
-      .getBoundingClientRect().height;
+    if (el.shadowRoot) {
+      const componentEl = el.shadowRoot.querySelector(".component") as HTMLElement;
+      if (componentEl) {
+        initialHeight.current = componentEl.getBoundingClientRect().height;
+      }
+    }
   };
 
   useLayoutEffect(() => {
     if (activeView != "map") {
       return;
     }
-    initialHeight.current = el.shadowRoot
-      .querySelector(".component")
-      .getBoundingClientRect().height;
+    if (el.shadowRoot) {
+      const componentEl = el.shadowRoot.querySelector(".component") as HTMLElement;
+      if (componentEl) {
+        initialHeight.current = componentEl.getBoundingClientRect().height;
+      }
+    }
   }, [activeView]);
 
   const onMouseOutMap = () => {
@@ -101,7 +102,7 @@ const ArgdownMap = function(
     setZoomIsActive(true);
   };
   useEffect(() => {
-    if (el.withoutZoom === "true") {
+    if (el.withoutZoom === "true" || !el.shadowRoot) {
       return;
     }
     const mapSlot = el.shadowRoot.querySelector<HTMLSlotElement>(".map-slot");
@@ -111,37 +112,41 @@ const ArgdownMap = function(
 
     const assignedNodes = mapSlot.assignedNodes();
     if (zoomIsActive && assignedNodes.length > 0) {
-      const svg = select<HTMLElement, null>(
-        assignedNodes[0] as HTMLElement
-      ).select<SVGSVGElement>("svg");
+      const svgElement = (assignedNodes[0] as HTMLElement).querySelector("svg");
+      if (!svgElement) return;
+      
+      const svg = select<SVGSVGElement, any>(svgElement);
       const g = svg.select<SVGGraphicsElement>("g");
-      const mapView = select(el.shadowRoot.querySelector(".map-view"));
-      if (!isExpanded) {
-        mapView.attr("style", `height:${initialHeight.current}px;`);
+      const mapViewEl = el.shadowRoot?.querySelector(".map-view");
+      if (mapViewEl) {
+        const mapView = select(mapViewEl);
+        if (!isExpanded) {
+          mapView.attr("style", `height:${initialHeight.current}px;`);
+        }
+        el.classList.add("zooming");
+        const initialZoomState = {
+          // width: svg.attr("width"),
+          // height: svg.attr("height"),
+          viewBox: svg.attr("viewBox"),
+          transform: g.attr("transform")
+        };
+        // svg.attr("width", "100%");
+        // svg.attr("height", "100%");
+        svg.attr("viewBox", null);
+        svg.attr("style", "height:100%; max-height: none;");
+        const headerOffset = el.withoutHeader === "true" ? 0 : 40;
+        const zoomBehavior = addZoom(svg as any, headerOffset);
+        return () => {
+          removeZoom(svg as any, zoomBehavior);
+          el.classList.remove("zooming");
+          // svg.attr("width", initialZoomState.width);
+          // svg.attr("height", initialZoomState.height);
+          svg.attr("style", "");
+          svg.attr("viewBox", initialZoomState.viewBox);
+          g.attr("transform", initialZoomState.transform);
+          mapView.attr("style", null);
+        };
       }
-      el.classList.add("zooming");
-      const initialZoomState = {
-        // width: svg.attr("width"),
-        // height: svg.attr("height"),
-        viewBox: svg.attr("viewBox"),
-        transform: g.attr("transform")
-      };
-      // svg.attr("width", "100%");
-      // svg.attr("height", "100%");
-      svg.attr("viewBox", null);
-      svg.attr("style", "height:100%; max-height: none;");
-      const headerOffset = el.withoutHeader === "true" ? 0 : 40;
-      const zoomBehavior = addZoom(svg, headerOffset);
-      return () => {
-        removeZoom(svg, zoomBehavior);
-        el.classList.remove("zooming");
-        // svg.attr("width", initialZoomState.width);
-        // svg.attr("height", initialZoomState.height);
-        svg.attr("style", "");
-        svg.attr("viewBox", initialZoomState.viewBox);
-        g.attr("transform", initialZoomState.transform);
-        mapView.attr("style", null);
-      };
     }
   }, [zoomIsActive]);
   useEffect(() => {
@@ -162,9 +167,12 @@ const ArgdownMap = function(
     }
     if (isExpanded) {
       //remove style if zooming was already going on
-      if (zoomIsActive) {
-        const content = select(el.shadowRoot.querySelector(".content"));
-        content.attr("style", null);
+      if (zoomIsActive && el.shadowRoot) {
+        const contentEl = el.shadowRoot.querySelector(".content");
+        if (contentEl) {
+          const content = select(contentEl);
+          content.attr("style", null);
+        }
       }
       setZoomIsActive(true);
     } else {

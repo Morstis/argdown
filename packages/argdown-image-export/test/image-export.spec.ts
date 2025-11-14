@@ -1,8 +1,13 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
 import { argdown } from "@argdown/node";
-import { installImageExport } from "../src";
+import { installImageExport } from "../src/index.js";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 // argdown.addPlugin(new ImageExportPlugin({ format: "png" }), "export-png");
 // argdown.addPlugin(new ImageExportPlugin({ format: "jpg" }), "export-jpg");
 // argdown.addPlugin(new ImageExportPlugin({ format: "webp" }), "export-webp");
@@ -89,7 +94,7 @@ describe("ExportImagePlugin", async function() {
       "export-dot",
       "export-svg",
       "export-jpg"
-      //"save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
+      // "save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
     ];
     const input = `
 ===

@@ -1,6 +1,6 @@
 # Argdown for Visual Studio Code
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/argdown-arrow.png)
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/argdown-arrow.png)
 
 [Argdown](https://argdown.org) is a simple syntax for analyzing complex argumentation, inspired by Markdown. This extension provides full language support for Argdown in VS Code:
 
@@ -29,7 +29,7 @@ To tell VS Code that your document is an Argdown document, save your document wi
 
 Standard themes do not by default highlight Argdown relations and elements. To add complete Argdown syntax highlighting to VSCode you can activate one of the two default themes that are provided by the Argdown extension:
 
-![Activating the Argdown theme](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/ArgdownThemeScreencap.gif "Activating the Argdown theme")
+![Activating the Argdown theme](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/ArgdownThemeScreencap.gif "Activating the Argdown theme")
 
 1. Go to `File/Preferences/Color Theme` (Windows) or `Code/Preferences/Color Theme` (OSX) in the main application menu
 2. Select `Argdown Light` or `Argdown Dark` from the list of available themes
@@ -40,7 +40,7 @@ If you prefer to work a different theme, you can also add custom Argdown colors 
 
 ## Using ArgVu font ligatures in VSCode
 
-If you are looking for the perfect font for your Argdown code, check out our free [ArgVu](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs. After installing the font, you can activate it in VSCode by adding the following to your `settings.json`:
+If you are looking for the perfect font for your Argdown code, check out our free [ArgVu](https://github.com/argdown/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs. After installing the font, you can activate it in VSCode by adding the following to your `settings.json`:
 
 ```json
     "[argdown]": {
@@ -49,11 +49,11 @@ If you are looking for the perfect font for your Argdown code, check out our fre
     },
 ```
 
-See [ArgVu's Readme](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu/README.md) file for more detailed instructions.
+See [ArgVu's Readme](https://github.com/argdown/argdown/tree/master/packages/ArgVu/README.md) file for more detailed instructions.
 
 ## Map Preview
 
-![Map Preview](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/MapPreviewScreencap.gif "Opening the map preview")
+![Map Preview](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/MapPreviewScreencap.gif "Opening the map preview")
 
 ## Integration with Markdown
 
@@ -93,17 +93,17 @@ Please note that the advanced language features of VSCode (code dianostics, code
 
 ## Code Completion
 
-![Code Completion](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/CodeCompletionScreencap.gif "Using code completion")
+![Code Completion](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/CodeCompletionScreencap.gif "Using code completion")
 
 ## Document Outline, Breadcrumbs and Symbol Search
 
-![Document Outline](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/OutlineScreencap.gif "Using the document outline")
+![Document Outline](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/OutlineScreencap.gif "Using the document outline")
 
-![Breadcrumbs](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/BreadcrumbsScreencap.gif "Using breadcrumbs")
+![Breadcrumbs](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/BreadcrumbsScreencap.gif "Using breadcrumbs")
 
 ## Exporting
 
-![Export](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/packages/argdown-vscode/media/ExportScreencap.gif "Exporting Argdown document")
+![Export](https://raw.githubusercontent.com/argdown/argdown/HEAD/packages/argdown-vscode/media/ExportScreencap.gif "Exporting Argdown document")
 
 ## Configuration files
 
@@ -170,6 +170,6 @@ In `settings.json` we have to add the custom colors to the `editor.tokenColorCus
 }
 ```
 
-You can find the scopes that are used by the Argdown syntax highlighter in the Argdown Light theme. You find the file of the theme [here](https://github.com/christianvoigt/argdown/blob/master/packages/argdown-vscode/themes/argdown-light.json). Simply copy & paste everything from the `tokenColors` array into the `textMateRules` array, change the colors according to your taste and you are good to go.
+You can find the scopes that are used by the Argdown syntax highlighter in the Argdown Light theme. You find the file of the theme [here](https://github.com/argdown/argdown/blob/master/packages/argdown-vscode/themes/argdown-light.json). Simply copy & paste everything from the `tokenColors` array into the `textMateRules` array, change the colors according to your taste and you are good to go.
 
 While you are at it you might also want to adjust the colors in the HTML and map previews. To achieve that you can add an `argdown.config.json` file in your workspace folder and use the `color` configuration options. Please consult the Argdown documentation for further details.

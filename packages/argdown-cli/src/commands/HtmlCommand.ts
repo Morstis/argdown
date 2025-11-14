@@ -1,7 +1,7 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "html [inputGlob] [outputDir]";
 export const desc = "export Argdown input as HTML files";
@@ -50,7 +50,7 @@ export interface IHtmlCliOptions {
 export const handler = async function(
   args: Arguments<IGeneralCliOptions & IHtmlCliOptions>
 ) {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   config.html = config.html || {};
 

@@ -1,16 +1,20 @@
 import PDFDocument from "pdfkit";
 // var fs = require("fs");
 import { promises as fs, createWriteStream } from "fs";
-let path = require("path");
-let mkdirp = require("mkdirp");
-import SVGtoPDF from "svg-to-pdfkit";
+import * as path from "path";
+import { createRequire } from "module";
+import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 import isFunction from "lodash.isfunction";
 import isString from "lodash.isstring";
+
+// Import CommonJS-only package using createRequire
+const require = createRequire(import.meta.url);
+const SVGtoPDF = require("svg-to-pdfkit");
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 import {
   IArgdownRequest,
   IRequestHandler,
@@ -20,7 +24,7 @@ import {
   mergeDefaults,
   ArgdownPluginError
 } from "@argdown/core";
-import { IFileNameProvider } from "./SaveAsFilePlugin";
+import { IFileNameProvider } from "./SaveAsFilePlugin.js";
 
 export interface IPdfSettings {
   outputDir?: string;
@@ -102,7 +106,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
     if (request.outputSuffix) {
       fileName = fileName + request.outputSuffix;
     }
-    const absoluteOutputDir = path.resolve(process.cwd(), outputDir);
+    const absoluteOutputDir = path.resolve(process.cwd(), outputDir ?? "");
     const filePath = absoluteOutputDir + "/" + fileName + ".pdf";
     await mkdirp(absoluteOutputDir);
     const doc = new PDFDocument({
@@ -110,7 +114,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
       ...settings.pdf
     });
     if (settings.fonts) {
-      for (let font of settings.fonts) {
+      for (const font of settings.fonts) {
         try {
           const baseDir =
             request.inputPath && !!path.extname(request.inputPath)
@@ -138,7 +142,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
           if (bold) face = `${face} Bold`;
           if (italic) face = `${face} Italic`;
           const re = new RegExp(`${face}( Regular)?$`);
-          let match = settings.fonts!.find(fontObj => {
+          const match = settings.fonts!.find(fontObj => {
             return re.test(fontObj.name);
           });
           if (match !== undefined) {
@@ -188,13 +192,13 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
     });
   }
   getFileName(file: string): string {
-    let extension = path.extname(file);
+    const extension = path.extname(file);
     return path.basename(file, extension);
   }
   toArrayBuffer(buf: Buffer) {
-    var ab = new ArrayBuffer(buf.length);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buf.length; ++i) {
+    const ab = new ArrayBuffer(buf.length);
+    const view = new Uint8Array(ab);
+    for (let i = 0; i < buf.length; ++i) {
       view[i] = buf[i];
     }
     return ab;

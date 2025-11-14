@@ -1,9 +1,9 @@
 import { tokenMatcher } from "chevrotain";
-import * as argdownLexer from "./../lexer";
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { IRuleNodeHandler, ITokenNodeHandler } from "../ArgdownTreeWalker";
-import { ArgdownPluginError, checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest, IArgdownResponse } from "../index";
+import * as argdownLexer from "./../lexer.js";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { IRuleNodeHandler, ITokenNodeHandler } from "../ArgdownTreeWalker.js";
+import { ArgdownPluginError, checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
 import last from "lodash.last";
 import union from "lodash.union";
@@ -29,18 +29,18 @@ import {
   isRuleNode,
   isTokenNode,
   IArgumentDescription
-} from "../model/model";
-import { RuleNames } from "../RuleNames";
-import { TokenNames } from "../TokenNames";
+} from "../model/model.js";
+import { RuleNames } from "../RuleNames.js";
+import { TokenNames } from "../TokenNames.js";
 import {
   stringToClassName,
   isObject,
   mergeDefaults,
   ensure,
   DefaultSettings
-} from "../utils";
-import { other } from "../utils";
-import { ISpecialCharacterDictionary, shortcodes } from "./shortcodes";
+} from "../utils.js";
+import { other } from "../utils.js";
+import { ISpecialCharacterDictionary, shortcodes } from "./shortcodes.js";
 
 export interface ITagData {
   tag: string;
@@ -61,7 +61,7 @@ export interface IModelPluginSettings {
   shortcodes?: ISpecialCharacterDictionary;
   explodeArguments?: boolean;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[ModelPlugin]]
@@ -115,7 +115,7 @@ const defaultSettings: DefaultSettings<IModelPluginSettings> = {
   shortcodes: ensure.object<ISpecialCharacterDictionary>(shortcodes)
 };
 /**
- * The ModelPlugin builds the basic data model from the abstract syntax tree (AST) in the [[IArgdownResponse.ast]] response property that is provided by the [[ParserPlugin]].
+ * The ModelPlugin builds the basic data model from the abstract syntax tree (AST) in the [[IArgdownResponse.ast]] response property that is provided by the [[ParserPlugin]].
  * This includes the following response object properties:
  *
  *  - [[IArgdownResponse.statements]]
@@ -148,7 +148,7 @@ export class ModelPlugin implements IArgdownPlugin {
    */
   transformArgumentRelations = (response: IArgdownResponse) => {
     const newRelations: IRelation[] = [];
-    for (let relation of response.relations!) {
+    for (const relation of response.relations!) {
       let addRelation = true;
       if (!relation.from) {
         throw new ArgdownPluginError(
@@ -175,19 +175,19 @@ export class ModelPlugin implements IArgdownPlugin {
       // to outgoing relations of the main conclusion, removing duplicates
       if (fromIsReconstructedArgument) {
         //change relation.from to point to the argument's conclusion
-        let argument = <IArgument>relation.from;
+        const argument = <IArgument>relation.from;
 
         //remove from argument
         this.removeRelationFromSource(relation);
 
-        let conclusionStatement = argument.pcs![argument.pcs!.length - 1];
-        let equivalenceClass = response.statements![conclusionStatement.title!];
+        const conclusionStatement = argument.pcs[argument.pcs.length - 1];
+        const equivalenceClass = response.statements![conclusionStatement.title!];
         //change to relation of main conclusion
         relation.from = equivalenceClass;
 
         //check if this relation already exists
         let relationExists = false;
-        for (let existingRelation of equivalenceClass.relations!) {
+        for (const existingRelation of equivalenceClass.relations!) {
           if (
             relation.to == existingRelation.to &&
             relation.relationType === existingRelation.relationType
@@ -211,14 +211,14 @@ export class ModelPlugin implements IArgdownPlugin {
         toIsReconstructedArgument &&
         relation.relationType === RelationType.UNDERCUT
       ) {
-        let argument = <IArgument>relation.to;
-        let inference = (<IConclusion>last(argument.pcs)!).inference!;
+        const argument = <IArgument>relation.to;
+        const inference = (<IConclusion>last(argument.pcs)!).inference!;
         relation.to = inference;
         // remove relation from argument
         this.removeRelationFromTarget(relation);
 
         let relationExists = false;
-        for (let existingRelation of inference.relations!) {
+        for (const existingRelation of inference.relations!) {
           if (
             relation.from == existingRelation.from &&
             relation.relationType === existingRelation.relationType
@@ -251,7 +251,7 @@ export class ModelPlugin implements IArgdownPlugin {
    */
   transformStatementRelations = (response: IArgdownResponse) => {
     const newRelations: IRelation[] = [];
-    for (let relation of response.relations!) {
+    for (const relation of response.relations!) {
       let addRelation = true;
       const isS2SRelation =
         relation.from!.type === ArgdownTypes.EQUIVALENCE_CLASS &&
@@ -283,12 +283,12 @@ export class ModelPlugin implements IArgdownPlugin {
     response.relations = newRelations;
   };
   removeRelationFromSource = (relation: IRelation) => {
-    let indexSource = relation.from!.relations!.indexOf(relation);
+    const indexSource = relation.from!.relations!.indexOf(relation);
     relation.from!.relations!.splice(indexSource, 1);
   };
   removeRelationFromTarget = (relation: IRelation) => {
     //remove relation from target
-    let indexTarget = relation.to!.relations!.indexOf(relation);
+    const indexTarget = relation.to!.relations!.indexOf(relation);
     relation.to!.relations!.splice(indexTarget, 1);
   };
   /**
@@ -297,7 +297,7 @@ export class ModelPlugin implements IArgdownPlugin {
    */
   removeRedundantEC2ARelations = (response: IArgdownResponse) => {
     const newRelations: IRelation[] = [];
-    for (let relation of response.relations!) {
+    for (const relation of response.relations!) {
       if (
         relation.from!.type !== ArgdownTypes.EQUIVALENCE_CLASS ||
         relation.relationType !== RelationType.ATTACK ||
@@ -306,7 +306,7 @@ export class ModelPlugin implements IArgdownPlugin {
         newRelations.push(relation);
         continue;
       }
-      const argument = relation.to! as IArgument;
+      const argument = relation.to!;
       if (!argument.pcs) {
         newRelations.push(relation);
         continue;
@@ -321,7 +321,7 @@ export class ModelPlugin implements IArgdownPlugin {
             otherRelation.relationType === RelationType.CONTRARY) &&
           !!argument.pcs.find(
             s =>
-              s.title === other(otherRelation, ec)!.title &&
+              s.title === other(otherRelation, ec).title &&
               s.role === StatementRole.PREMISE
           )
       );
@@ -354,11 +354,11 @@ export class ModelPlugin implements IArgdownPlugin {
     ]);
 
     // If an equivalence class has no definition as a member, we use the first reference's section
-    for (let ec of Object.values(response.statements!)) {
+    for (const ec of Object.values(response.statements ?? {})) {
       this.assignSectionOfFirstMemberIfWithoutSection(ec);
     }
     // If an argument has neither a pcs nor a description, we use the first reference's section
-    for (let argument of Object.values(response.arguments!)) {
+    for (const argument of Object.values(response.arguments ?? {})) {
       this.assignSectionOfFirstMemberIfWithoutSection(argument);
     }
     const settings = this.getSettings(request);
@@ -374,19 +374,18 @@ export class ModelPlugin implements IArgdownPlugin {
   constructor(config?: IModelPluginSettings) {
     this.defaults = defaultsDeep({}, config, defaultSettings);
     this.name = "ModelPlugin";
-    let $ = this;
 
     const statementReferencePattern = /\[(.+)\]/;
-    const statementDefinitionPattern = /\[(.+)\]\:/;
-    const statementMentionPattern = /\@\[(.+)\](\s?)/;
-    const argumentReferencePattern = /\<(.+)\>/;
-    const argumentDefinitionPattern = /\<(.+)\>\:/;
-    const argumentMentionPattern = /\@\<(.+)\>(\s?)/;
-    // const statementReferenceByNumberPattern = /\<(.+)\>\((.+)\)/;
-    // const statementDefinitionByNumberPattern = /\<(.+)\>\((.+)\)\:/;
-    // const statementMentionByNumberPattern = /\@\<(.+)\>\((.+)\)/;
+    const statementDefinitionPattern = /\[(.+)\]:/;
+    const statementMentionPattern = /@\[(.+)\](\s?)/;
+    const argumentReferencePattern = /<(.+)>/;
+    const argumentDefinitionPattern = /<(.+)>:/;
+    const argumentMentionPattern = /@<(.+)>(\s?)/;
+    // const statementReferenceByNumberPattern = /<(.+)>\((.+)\)/;
+    // const statementDefinitionByNumberPattern = /<(.+)>\((.+)\):/;
+    // const statementMentionByNumberPattern = /@<(.+)>\((.+)\)/;
     const linkPattern = /\[(.+)\]\((.+)\)/;
-    const tagPattern = /#(?:\(([^\)]+)\)|([a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+))/;
+    const tagPattern = /#(?:\(([^)]+)\)|([a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+))/;
 
     let uniqueTitleCounter = 0;
     function getUniqueTitle() {
@@ -414,19 +413,23 @@ export class ModelPlugin implements IArgdownPlugin {
       response: IArgdownResponse,
       relationParent: IStatement | IInference | IArgument
     ): IArgument | IEquivalenceClass | IInference => {
-      let target = relationParent;
+      const target = relationParent;
       if (relationParent.type === ArgdownTypes.STATEMENT) {
         if (!relationParent.title) relationParent.title = getUniqueTitle();
         if (relationParent.role === StatementRole.ARGUMENT_DESCRIPTION) {
-          return getArgument(response.arguments!, relationParent.title);
+          return getArgument(response.arguments ?? {}, relationParent.title);
         } else {
           return getEquivalenceClass(
-            response.statements!,
+            response.statements ?? {},
             relationParent.title
           );
         }
+      } else if (relationParent.type === ArgdownTypes.ARGUMENT || relationParent.type === ArgdownTypes.INFERENCE) {
+        // IArgument and IInference are already valid RelationMember types
+        return target as IArgument | IInference;
       } else {
-        return <IArgument | IInference>target;
+        // This should not happen, but provide a fallback
+        throw new Error(`Unexpected relation parent type: ${(relationParent as any).type}`);
       }
     };
     const getArgument = (
@@ -460,7 +463,7 @@ export class ModelPlugin implements IArgdownPlugin {
       object.tags = union(object.tags, newTags);
     };
     const onRelationExit: IRuleNodeHandler = (_request, response, node) => {
-      let relation = node.relation;
+      const relation = node.relation;
       if (!node.children || node.children.length < 2) {
         throw new ArgdownPluginError(
           this.name,
@@ -468,8 +471,8 @@ export class ModelPlugin implements IArgdownPlugin {
           "Relation without children."
         );
       }
-      let contentNode = node.children[1] as IRuleNode;
-      let content = contentNode.argument || contentNode.statement;
+      const contentNode = node.children[1] as IRuleNode;
+      const content = contentNode.argument || contentNode.statement;
       if (!content) {
         throw new ArgdownPluginError(
           this.name,
@@ -477,7 +480,7 @@ export class ModelPlugin implements IArgdownPlugin {
           "Relation member not found."
         );
       }
-      let target = getRelationMember(response, content);
+      const target = getRelationMember(response, content);
       if (relation) {
         if (relation.from) {
           relation.to = target;
@@ -486,7 +489,7 @@ export class ModelPlugin implements IArgdownPlugin {
         }
         let relationExists = false;
         const relationSource = relation.from;
-        for (let existingRelation of relationSource.relations!) {
+        for (const existingRelation of relationSource.relations!) {
           if (
             relation.to === existingRelation.to &&
             relation.relationType === existingRelation.relationType
@@ -515,7 +518,7 @@ export class ModelPlugin implements IArgdownPlugin {
           }
           response.relations!.push(relation);
           relation.from.relations!.push(relation);
-          relation.to!.relations!.push(relation);
+          relation.to.relations!.push(relation);
         }
       }
     };
@@ -527,7 +530,7 @@ export class ModelPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        let match = statementDefinitionPattern.exec(token.image);
+        const match = statementDefinitionPattern.exec(token.image);
         if (match != null && currentStatement) {
           currentStatement.title = match[1];
           token.title = currentStatement.title;
@@ -540,7 +543,7 @@ export class ModelPlugin implements IArgdownPlugin {
         token,
         parentNode
       ) => {
-        let match = statementReferencePattern.exec(token.image);
+        const match = statementReferencePattern.exec(token.image);
         if (match != null && currentStatement) {
           currentStatement.title = match[1];
           currentStatement.isReference = true;
@@ -549,7 +552,7 @@ export class ModelPlugin implements IArgdownPlugin {
         }
       },
       [TokenNames.STATEMENT_MENTION]: (_request, _response, token) => {
-        let match = statementMentionPattern.exec(token.image);
+        const match = statementMentionPattern.exec(token.image);
         if (match) {
           token.title = match[1];
           if (token.image[token.image.length - 1] == " ") {
@@ -565,7 +568,7 @@ export class ModelPlugin implements IArgdownPlugin {
             if (!target.ranges) {
               target.ranges = [];
             }
-            let range: IRange = {
+            const range: IRange = {
               type: RangeType.STATEMENT_MENTION,
               title: token.title,
               start: previousText.length,
@@ -576,25 +579,25 @@ export class ModelPlugin implements IArgdownPlugin {
         }
       },
       [TokenNames.ARGUMENT_REFERENCE]: (_request, _response, token) => {
-        let match = argumentReferencePattern.exec(token.image);
+        const match = argumentReferencePattern.exec(token.image);
         if (match != null && currentStatement) {
-          let title = match[1];
+          const title = match[1];
           currentStatement.title = title;
           currentStatement.isReference = true;
           token.title = title;
         }
       },
       [TokenNames.ARGUMENT_DEFINITION]: (_request, _response, token) => {
-        let match = argumentDefinitionPattern.exec(token.image);
+        const match = argumentDefinitionPattern.exec(token.image);
         if (match != null && currentStatement) {
-          let title = match[1];
+          const title = match[1];
           currentStatement.title = title;
           token.title = title;
         }
       },
       [TokenNames.ARGUMENT_MENTION]: (_request, _response, token) => {
         const target = currentHeading ? currentHeading : currentStatement;
-        let match = argumentMentionPattern.exec(token.image);
+        const match = argumentMentionPattern.exec(token.image);
         if (match) {
           token.title = match[1];
           if (token.image[token.image.length - 1] == " ") {
@@ -609,7 +612,7 @@ export class ModelPlugin implements IArgdownPlugin {
             if (!target.ranges) {
               target.ranges = [];
             }
-            let range: IRange = {
+            const range: IRange = {
               type: RangeType.ARGUMENT_MENTION,
               title: token.title,
               start: previousText.length,
@@ -624,7 +627,7 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!target) {
           return;
         }
-        let match = linkPattern.exec(token.image);
+        const match = linkPattern.exec(token.image);
         if (!match || match.length < 3) {
           throw new ArgdownPluginError(
             this.name,
@@ -637,7 +640,7 @@ export class ModelPlugin implements IArgdownPlugin {
         const oldText = target.text || "";
         const newText = oldText + token.text;
         target.text = newText;
-        let linkRange = <IRange>{
+        const linkRange = <IRange>{
           type: "link",
           start: oldText.length,
           stop: newText.length - 1
@@ -659,7 +662,7 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!target) {
           return;
         }
-        let match = tagPattern.exec(token.image);
+        const match = tagPattern.exec(token.image);
         if (!match || match.length < 2) {
           throw new ArgdownPluginError(
             this.name,
@@ -667,13 +670,13 @@ export class ModelPlugin implements IArgdownPlugin {
             "Could not parse tag."
           );
         }
-        let tag = match[1] || match[2];
-        const settings = $.getSettings(request);
+        const tag = match[1] || match[2];
+        const settings = this.getSettings(request);
         token.tag = tag;
         if (!settings.removeTagsFromText) {
           const oldText = target.text || "";
           const newText = oldText + token.image;
-          let tagRange: IRange = {
+          const tagRange: IRange = {
             type: RangeType.TAG,
             start: oldText.length,
             stop: newText.length - 1
@@ -687,7 +690,7 @@ export class ModelPlugin implements IArgdownPlugin {
           target.ranges.push(tagRange);
         }
         target.tags = target.tags || [];
-        let tags = target.tags;
+        const tags = target.tags;
         if (target.tags.indexOf(tag) === -1) {
           tags.push(tag);
         }
@@ -769,12 +772,12 @@ export class ModelPlugin implements IArgdownPlugin {
           );
         }
         if (node.children) {
-          let headingStart = node.children[0] as ITokenNode;
+          const headingStart = node.children[0] as ITokenNode;
           currentHeading.level = headingStart.image.length - 1; //number of # - whitespace
           sectionCounter++;
-          let sectionId = "s" + sectionCounter;
+          const sectionId = "s" + sectionCounter;
           const title = currentHeading.text ? currentHeading.text.trim() : "";
-          let newSection: ISection = {
+          const newSection: ISection = {
             type: ArgdownTypes.SECTION,
             id: sectionId,
             level: currentHeading.level,
@@ -850,7 +853,7 @@ export class ModelPlugin implements IArgdownPlugin {
         currentStatement = {
           type: ArgdownTypes.STATEMENT
         };
-        if (parentNode!.name === "argdown") {
+        if (parentNode!.name === RuleNames.ARGDOWN) {
           currentStatement.role = StatementRole.TOP_LEVEL_STATEMENT;
           currentStatement.isTopLevel = true;
         } else if (currentRelation) {
@@ -860,7 +863,7 @@ export class ModelPlugin implements IArgdownPlugin {
         node.statement = currentStatement;
       },
       [RuleNames.STATEMENT + "Exit"]: (_request, response, node) => {
-        let statement = node.statement;
+        const statement = node.statement;
         if (!statement) {
           return;
         }
@@ -872,8 +875,8 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!statement.title || statement.title == "") {
           statement.title = getUniqueTitle();
         }
-        let equivalenceClass = getEquivalenceClass(
-          response.statements!,
+        const equivalenceClass = getEquivalenceClass(
+          response.statements ?? {},
           statement.title
         );
         node.equivalenceClass = equivalenceClass;
@@ -930,7 +933,7 @@ export class ModelPlugin implements IArgdownPlugin {
         node.statement = desc;
       },
       [RuleNames.ARGUMENT + "Exit"]: (_request, response, node) => {
-        let desc = node.statement;
+        const desc = node.statement;
         if (!desc) {
           throw new ArgdownPluginError(
             this.name,
@@ -946,7 +949,7 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!desc.title || desc.title == "") {
           desc.title = getUniqueTitle();
         }
-        const argument = getArgument(response.arguments!, desc.title);
+        const argument = getArgument(response.arguments ?? {}, desc.title);
         node.argument = argument;
         if (desc.tags) {
           addTags(desc.tags, argument);
@@ -1011,7 +1014,7 @@ export class ModelPlugin implements IArgdownPlugin {
           }
         }
         if (!argument) {
-          argument = getArgument(response.arguments!);
+          argument = getArgument(response.arguments ?? {});
         }
         if (currentSection) {
           argument.section = currentSection;
@@ -1091,8 +1094,8 @@ export class ModelPlugin implements IArgdownPlugin {
         }
         if (node.children && node.children.length > 1) {
           //first node is ArgumentStatementStart
-          let statementNode = node.children[1] as IRuleNode;
-          let statement: IPCSStatement = <IPCSStatement>statementNode.statement;
+          const statementNode = node.children[1] as IRuleNode;
+          const statement: IPCSStatement = <IPCSStatement>statementNode.statement;
           if (!statement) {
             throw new ArgdownPluginError(
               this.name,
@@ -1100,7 +1103,7 @@ export class ModelPlugin implements IArgdownPlugin {
               "Missing statement."
             );
           }
-          let ec = getEquivalenceClass(response.statements!, statement.title!);
+          const ec = getEquivalenceClass(response.statements ?? {}, statement.title ?? "untitled");
           statement.role = StatementRole.PREMISE;
           statement.argumentTitle = currentPCS.title;
           if (
@@ -1109,7 +1112,7 @@ export class ModelPlugin implements IArgdownPlugin {
             parentNode &&
             parentNode.children
           ) {
-            let precedingSibling = parentNode.children[
+            const precedingSibling = parentNode.children[
               childIndex - 1
             ] as IRuleNode;
             if (precedingSibling.name === RuleNames.INFERENCE) {
@@ -1119,16 +1122,16 @@ export class ModelPlugin implements IArgdownPlugin {
               const conclusion = <IConclusion>statement;
               ec.isUsedAsIntermediaryConclusion = true;
               conclusion.inference = precedingSibling.inference;
-              conclusion.inference!.conclusionIndex = currentPCS.pcs!.length;
+              conclusion.inference!.conclusionIndex = currentPCS.pcs.length;
               conclusion.inference!.argumentTitle = currentPCS.title;
             }
           }
           if (statement.role == StatementRole.PREMISE) {
             ec.isUsedAsPremise = true;
           }
-          currentPCS.pcs!.push(statement);
+          currentPCS.pcs.push(statement);
           node.statement = statement;
-          node.statementNr = currentPCS.pcs!.length;
+          node.statementNr = currentPCS.pcs.length;
         }
       },
       [RuleNames.INFERENCE + "Entry"]: (_request, _response, node) => {
@@ -1144,7 +1147,7 @@ export class ModelPlugin implements IArgdownPlugin {
         currentInference.endColumn = node.endColumn;
         node.inference = currentInference!;
         currentRelationParent = currentInference;
-        relationParentsStack.push(currentInference!);
+        relationParentsStack.push(currentInference);
       },
       [RuleNames.INFERENCE + "Exit"]: (_request, _response, node) => {
         if (!currentInference) {
@@ -1157,7 +1160,7 @@ export class ModelPlugin implements IArgdownPlugin {
           return;
         }
         if (node.children) {
-          for (let child of node.children) {
+          for (const child of node.children) {
             if (isRuleNode(child) && child.name == RuleNames.FREESTYLE_TEXT) {
               if (!currentInference.inferenceRules) {
                 currentInference.inferenceRules = [];
@@ -1274,10 +1277,10 @@ export class ModelPlugin implements IArgdownPlugin {
       [RuleNames.FREESTYLE_TEXT + "Entry"]: (request, _response, node) => {
         const target = currentHeading ? currentHeading : currentStatement;
         node.text = "";
-        const settings = $.getSettings(request);
+        const settings = this.getSettings(request);
 
         if (node.children) {
-          for (let child of node.children) {
+          for (const child of node.children) {
             if (isTokenNode(child) && child.image !== undefined) {
               if (tokenMatcher(child, argdownLexer.EscapedChar)) {
                 node.text += child.image.substring(1, child.image.length);
@@ -1292,7 +1295,7 @@ export class ModelPlugin implements IArgdownPlugin {
                   if (child.image[child.image.length - 1] == " ") {
                     node.text += " ";
                   }
-                  let specialCharRange = {
+                  const specialCharRange = {
                     type: RangeType.SPECIAL_CHAR,
                     start: startPos,
                     stop: startPos + specialCharInfo.unicode.length
@@ -1318,7 +1321,7 @@ export class ModelPlugin implements IArgdownPlugin {
           return;
         }
         const startPos = target.text ? target.text.length : 0;
-        let italicRange = {
+        const italicRange = {
           type: RangeType.ITALIC,
           start: startPos,
           stop: startPos
@@ -1334,8 +1337,8 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!target) {
           return;
         }
-        let italicEnd = last(node.children) as ITokenNode;
-        let range = last(rangesStack);
+        const italicEnd = last(node.children) as ITokenNode;
+        const range = last(rangesStack);
         if (range) {
           range.stop = target.text ? target.text.length - 1 : 0;
           rangesStack.pop();
@@ -1353,7 +1356,7 @@ export class ModelPlugin implements IArgdownPlugin {
           return;
         }
         const text = target.text || "";
-        let boldRange: IRange = {
+        const boldRange: IRange = {
           type: RangeType.BOLD,
           start: text.length,
           stop: text.length
@@ -1369,9 +1372,9 @@ export class ModelPlugin implements IArgdownPlugin {
         if (!target) {
           return;
         }
-        const ruleNode = node as IRuleNode;
-        let boldEnd = last(ruleNode.children) as ITokenNode;
-        let range = last(rangesStack);
+        const ruleNode = node;
+        const boldEnd = last(ruleNode.children) as ITokenNode;
+        const range = last(rangesStack);
         if (range) {
           range.stop = target.text ? target.text.length - 1 : 0;
           rangesStack.pop();

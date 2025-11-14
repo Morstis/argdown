@@ -48,12 +48,49 @@ describe("SyncDotToSvgExportPlugin", function() {
       logLevel: "error"
     };
     const response = await app.run(request);
-    //console.log(response.svg);
     //let's do some tests for the labels
     expect(response.svg).to.contain(">A</text>");
     expect(response.svg).to.contain(">B</text>");
     expect(response.svg).to.contain(">C</text>");
     expect(response.svg).to.contain(">test</text>");
     expect(response.svg).to.exist;
+  });
+  it("can generate tooltips in svg format", async () => {
+    const input = `
+        [Statement Title]: Statement text content
+
+        <Argument Title>: Argument text content
+            - [Statement Title]
+            + <Another Argument>: More argument text
+        `;
+    const request: IArgdownRequest = {
+      input,
+      process: [
+        "parse-input",
+        "build-model",
+        "create-map",
+        "add-colors",
+        "export-dot",
+        "export-dot-as-svg"
+      ],
+      logLevel: "error"
+    };
+    const response = await app.run(request);
+    
+    try {
+      // Verify the SVG is generated successfully
+      expect(response.svg).to.exist;
+      expect(response.svg).to.contain("<svg");
+      expect(response.svg).to.contain("</svg>");
+
+      // Check that tooltips are added via xlink:title attributes
+      // Tooltips should be in the format: <a xlink:title="tooltip">
+      expect(response.svg).to.contain('xlink:title="Statement text content"');
+      expect(response.svg).to.contain('xlink:title="Argument text content"');
+      expect(response.svg).to.contain('xlink:title="More argument text"');
+    } catch (error) {
+      console.error("Generated SVG:", response.svg);
+      throw error;
+    }
   });
 });

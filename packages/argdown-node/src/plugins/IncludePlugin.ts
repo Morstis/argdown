@@ -2,13 +2,13 @@ import * as fs from "fs";
 import { promisify } from "util";
 
 const readFileAsync = promisify(fs.readFile);
-let path = require("path");
+import * as path from "path";
 import defaultsDeep from "lodash.defaultsdeep";
 import includes from "lodash.includes";
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 import {
   IArgdownRequest,
   IRequestHandler,
@@ -31,7 +31,7 @@ export class IncludePlugin implements IAsyncArgdownPlugin {
   defaults: IIncludeSettings;
   constructor(config?: IIncludeSettings) {
     this.defaults = defaultsDeep({}, config, {
-      regEx: /@include\(([^\)]+)\)/g
+      regEx: /@include\(([^)]+)\)/g
     });
   }
   getSettings = (request: IArgdownRequest): IIncludeSettings => {
@@ -59,8 +59,8 @@ export class IncludePlugin implements IAsyncArgdownPlugin {
     const settings = this.getSettings(request);
     settings.regEx!.lastIndex = 0;
     request.input = await this.replaceIncludesAsync(
-      request.inputPath!,
-      request.input!,
+      request.inputPath,
+      request.input,
       settings.regEx!,
       []
     );

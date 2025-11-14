@@ -57,7 +57,7 @@ const generateArgdownRelationString = function(
   title: string,
   type: ArgdownTypes
 ) {
-  let relationPartnerStr =
+  const relationPartnerStr =
     type === ArgdownTypes.ARGUMENT ? `<${title}>` : `[${title}]`;
   const relationSymbol = getRelationSymbol(relationType, isOutgoing);
   return `
@@ -90,7 +90,7 @@ export const generateMarkdownForStatement = (
     response.arguments!
   );
   let explicitRelationsStr = "";
-  for (let relation of explicitRelations) {
+  for (const relation of explicitRelations) {
     if (relation.to!.type === ArgdownTypes.INFERENCE) {
       //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
       continue;
@@ -103,7 +103,7 @@ export const generateMarkdownForStatement = (
   let implicitRelationsStr = "";
   if (implicitRelations.length > 0) {
     implicitRelationsStr = "\n  // implicit relations derived from pcs";
-    for (let relation of implicitRelations) {
+    for (const relation of implicitRelations) {
       if (relation.to!.type === ArgdownTypes.INFERENCE) {
         //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
         continue;
@@ -139,7 +139,7 @@ export const generateMarkdownForArgument = (
     response.arguments!
   );
   let explicitRelationsStr = "";
-  for (let relation of explicitRelations) {
+  for (const relation of explicitRelations) {
     if (relation.to!.type === ArgdownTypes.INFERENCE) {
       //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
       continue;
@@ -152,7 +152,7 @@ export const generateMarkdownForArgument = (
   let implicitRelationsStr = "";
   if (implicitRelations.length > 0) {
     implicitRelationsStr = " \n // implicit relations derived from pcs";
-    for (let relation of implicitRelations) {
+    for (const relation of implicitRelations) {
       if (relation.to!.type === ArgdownTypes.INFERENCE) {
         //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
         continue;
@@ -187,8 +187,8 @@ export const walkTree = (
   if (node) {
     callback(node, parentNode, childIndex);
     if (isRuleNode(node) && node.children && node.children.length > 0) {
-      for (var i = 0; i < node.children.length; i++) {
-        let child = node.children[i];
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
         walkTree(child, node, i, callback);
       }
     }

@@ -18,7 +18,7 @@ export class FoldingRangesPlugin implements IArgdownPlugin {
   name = "FoldingRangesPlugin";
   tokenListeners: { [eventId: string]: ITokenNodeHandler } = {
     [TokenNames.FRONT_MATTER]: (_req, response, node) => {
-      response.foldingRanges!.push(FoldingRange.create(node!.startLine! - 1, node!.endLine! - 1));
+      response.foldingRanges!.push(FoldingRange.create(node.startLine! - 1, node.endLine! - 1));
     }
   };
   ruleListeners: { [eventId: string]: IRuleNodeHandler } = {

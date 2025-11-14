@@ -1,10 +1,10 @@
 "use strict";
 
 import { EmbeddedActionsParser } from "chevrotain";
-import * as lexer from "./lexer";
-import { errorMessageProvider } from "./ArgdownErrorMessageProvider";
-import { IAstNode, IRuleNode } from "./model/model";
-import { RuleNames } from "./RuleNames";
+import * as lexer from "./lexer.js";
+import { errorMessageProvider } from "./ArgdownErrorMessageProvider.js";
+import { IAstNode, IRuleNode } from "./model/model.js";
+import { RuleNames } from "./RuleNames.js";
 
 class ArgdownParser extends EmbeddedActionsParser {
   constructor() {
@@ -22,7 +22,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   private c2: any;
   private c3: any;
 
-  public argdown = this.RULE<IAstNode>(RuleNames.ARGDOWN, () => {
+  public argdown = this.RULE(RuleNames.ARGDOWN, () => {
     const children: IAstNode[] = [];
     this.OPTION1(() => {
       this.CONSUME1(lexer.Newline);
@@ -76,7 +76,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private heading = this.RULE(RuleNames.HEADING, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME1(lexer.HeadingStart));
     this.AT_LEAST_ONE({
       DEF: () => children.push(this.SUBRULE(this.statementContent))
@@ -92,41 +92,41 @@ class ArgdownParser extends EmbeddedActionsParser {
     });
     return IRuleNode.create(RuleNames.HEADING, children);
   });
-  private pcs = this.RULE<IAstNode>(RuleNames.PCS, () => {
-    let children: IAstNode[] = [];
-    children.push(this.SUBRULE1<IAstNode>(this.pcsStatement));
+  private pcs = this.RULE(RuleNames.PCS, () => {
+    const children: IAstNode[] = [];
+    children.push(this.SUBRULE(this.pcsStatement));
     this.AT_LEAST_ONE({
       DEF: () => {
-        children.push(this.SUBRULE2<IAstNode>(this.pcsTail));
+        children.push(this.SUBRULE(this.pcsTail));
       }
     });
     return IRuleNode.create(RuleNames.PCS, children);
   });
   private pcsTail = this.RULE(RuleNames.PCS_TAIL, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.MANY({
       DEF: () => {
-        children.push(this.SUBRULE1<IAstNode>(this.pcsStatement));
+        children.push(this.SUBRULE(this.pcsStatement));
       }
     });
-    children.push(this.SUBRULE2<IAstNode>(this.inference));
-    children.push(this.SUBRULE3<IAstNode>(this.pcsStatement));
+    children.push(this.SUBRULE(this.inference));
+    children.push(this.SUBRULE2(this.pcsStatement));
     return IRuleNode.create(RuleNames.PCS_TAIL, children);
   });
-  private pcsStatement = this.RULE<IAstNode>(RuleNames.PCS_STATEMENT, () => {
-    let children: IAstNode[] = [];
+  private pcsStatement = this.RULE(RuleNames.PCS_STATEMENT, () => {
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.StatementNumber));
-    children.push(this.SUBRULE<IAstNode>(this.statement));
+    children.push(this.SUBRULE(this.statement));
     return IRuleNode.create(RuleNames.PCS_STATEMENT, children);
   });
-  private inference = this.RULE<IAstNode>(RuleNames.INFERENCE, () => {
-    let children: IAstNode[] = [];
+  private inference = this.RULE(RuleNames.INFERENCE, () => {
+    const children: IAstNode[] = [];
     children.push(this.CONSUME1(lexer.InferenceStart));
     this.OPTION1(() => {
       this.OPTION2(() => {
         children.push(this.CONSUME1(lexer.Newline));
       });
-      children.push(this.SUBRULE1<IAstNode>(this.inferenceRules));
+      children.push(this.SUBRULE(this.inferenceRules));
     });
     this.OPTION3(() => {
       children.push(this.CONSUME2(lexer.Newline));
@@ -140,14 +140,14 @@ class ArgdownParser extends EmbeddedActionsParser {
     children.push(this.CONSUME3(lexer.InferenceEnd));
     children.push(this.CONSUME4(lexer.Newline));
     this.OPTION6(() => {
-      children.push(this.SUBRULE4<IAstNode>(this.inferenceRelations));
+      children.push(this.SUBRULE(this.inferenceRelations));
     });
     return IRuleNode.create(RuleNames.INFERENCE, children);
   });
-  private inferenceRules = this.RULE<IAstNode>(
+  private inferenceRules = this.RULE(
     RuleNames.INFERENCE_RULES,
     () => {
-      let children: IAstNode[] = [];
+      const children: IAstNode[] = [];
       this.AT_LEAST_ONE_SEP1({
         SEP: lexer.ListDelimiter,
         DEF: () => children.push(this.SUBRULE(this.freestyleText))
@@ -157,7 +157,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   );
 
   private orderedList = this.RULE(RuleNames.ORDERED_LIST, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.Indent));
     this.AT_LEAST_ONE(() => children.push(this.SUBRULE(this.orderedListItem)));
     this.CONSUME(lexer.Dedent); // Dedent is removed from AST
@@ -165,7 +165,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.ORDERED_LIST, children);
   });
   private unorderedList = this.RULE(RuleNames.UNORDERED_LIST, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.Indent));
     this.AT_LEAST_ONE(() =>
       children.push(this.SUBRULE(this.unorderedListItem))
@@ -176,7 +176,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private unorderedListItem = this.RULE(RuleNames.UNORDERED_LIST_ITEM, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.UnorderedListItem));
     this.OR({
       DEF: [
@@ -187,7 +187,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.UNORDERED_LIST_ITEM, children);
   });
   private orderedListItem = this.RULE(RuleNames.ORDERED_LIST_ITEM, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.OrderedListItem));
     this.OR({
       DEF: [
@@ -198,7 +198,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.ORDERED_LIST_ITEM, children);
   });
   private argument = this.RULE(RuleNames.ARGUMENT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.OR([
       {
         ALT: () => {
@@ -231,7 +231,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private statement = this.RULE(RuleNames.STATEMENT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.OR([
       {
         ALT: () => {
@@ -251,7 +251,7 @@ class ArgdownParser extends EmbeddedActionsParser {
       },
       {
         ALT: () => {
-          let defChildren = [];
+          const defChildren = [];
           defChildren.push(this.CONSUME3(lexer.StatementDefinition));
           defChildren.push(this.SUBRULE4(this.statementContent));
           children.push(
@@ -273,7 +273,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private inferenceRelations = this.RULE("inferenceRelations", () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.Indent));
     // OR caching. see: http://sap.github.io/chevrotain/docs/FAQ.html#major-performance-benefits
     this.AT_LEAST_ONE(() => {
@@ -284,7 +284,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.RELATIONS, children);
   });
   private relations = this.RULE(RuleNames.RELATIONS, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.Indent));
     // OR caching. see: http://sap.github.io/chevrotain/docs/FAQ.html#major-performance-benefits
     this.AT_LEAST_ONE(() => {
@@ -322,7 +322,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.RELATIONS, children);
   });
   private incomingSupport = this.RULE(RuleNames.INCOMING_SUPPORT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.IncomingSupport));
     this.OR({
       DEF: [
@@ -334,7 +334,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.INCOMING_SUPPORT, children);
   });
   private incomingAttack = this.RULE(RuleNames.INCOMING_ATTACK, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.IncomingAttack));
     this.OR({
       DEF: [
@@ -345,7 +345,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.INCOMING_ATTACK, children);
   });
   private incomingUndercut = this.RULE(RuleNames.INCOMING_UNDERCUT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.IncomingUndercut));
     this.OR({
       DEF: [
@@ -356,7 +356,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.INCOMING_UNDERCUT, children);
   });
   private outgoingUndercut = this.RULE(RuleNames.OUTGOING_UNDERCUT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.OutgoingUndercut));
     this.OR({
       DEF: [
@@ -368,7 +368,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private outgoingSupport = this.RULE(RuleNames.OUTGOING_SUPPORT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.OutgoingSupport));
     this.OR({
       DEF: [
@@ -379,7 +379,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.OUTGOING_SUPPORT, children);
   });
   private outgoingAttack = this.RULE(RuleNames.OUTGOING_ATTACK, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.OutgoingAttack));
     this.OR({
       DEF: [
@@ -390,14 +390,14 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.OUTGOING_ATTACK, children);
   });
   private contradiction = this.RULE(RuleNames.CONTRADICTION, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     children.push(this.CONSUME(lexer.Contradiction));
     children.push(this.SUBRULE(this.statement));
     return IRuleNode.create(RuleNames.CONTRADICTION, children);
   });
 
   private bold = this.RULE(RuleNames.BOLD, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.OR([
       {
         ALT: () => {
@@ -421,7 +421,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.BOLD, children);
   });
   private italic = this.RULE(RuleNames.ITALIC, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.OR([
       {
         ALT: () => {
@@ -445,7 +445,7 @@ class ArgdownParser extends EmbeddedActionsParser {
     return IRuleNode.create(RuleNames.ITALIC, children);
   });
   private statementContent = this.RULE(RuleNames.STATEMENT_CONTENT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     // OR caching. see: http://sap.github.io/chevrotain/docs/FAQ.html#major-performance-benefits
     this.AT_LEAST_ONE(() => {
       children.push(
@@ -491,7 +491,7 @@ class ArgdownParser extends EmbeddedActionsParser {
   });
 
   private freestyleText = this.RULE(RuleNames.FREESTYLE_TEXT, () => {
-    let children: IAstNode[] = [];
+    const children: IAstNode[] = [];
     this.AT_LEAST_ONE(() =>
       this.OR([
         {

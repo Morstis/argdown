@@ -1,9 +1,9 @@
 import { Hover, Position } from "vscode-languageserver";
-import { findNodeAtPosition } from "./findNodeAtPosition";
+import { findNodeAtPosition } from "./findNodeAtPosition.js";
 import {
   generateMarkdownForArgument,
   generateMarkdownForStatement
-} from "./utils";
+} from "./utils.js";
 import { IArgdownResponse, isTokenNode } from "@argdown/core";
 export const provideHover = (
   response: IArgdownResponse,
@@ -13,18 +13,18 @@ export const provideHover = (
   const character = position.character + 1;
   const nodeAtPosition = findNodeAtPosition(response, line, character);
   if (nodeAtPosition && isTokenNode(nodeAtPosition)) {
-    const tokenName = nodeAtPosition.tokenType!.name;
-    if (tokenName!.startsWith("Statement")) {
+    const tokenName = nodeAtPosition.tokenType.name;
+    if (tokenName.startsWith("Statement")) {
       const eqClass = response.statements![nodeAtPosition.title!];
       return <Hover>{
         contents: generateMarkdownForStatement(eqClass, response)
       };
-    } else if (tokenName!.startsWith("Argument")) {
+    } else if (tokenName.startsWith("Argument")) {
       const argument = response.arguments![nodeAtPosition.title!];
       return <Hover>{
         contents: generateMarkdownForArgument(argument, response)
       };
-    } else if (tokenName!.startsWith("Tag") && nodeAtPosition.tag) {
+    } else if (tokenName.startsWith("Tag") && nodeAtPosition.tag) {
       const tag = nodeAtPosition.tag;
       const statementsStr = Object.keys(response.statements!)
         .map(k => response.statements![k])
@@ -34,7 +34,7 @@ export const provideHover = (
         .map(k => response.arguments![k])
         .filter((a: any) => a.tags && a.tags.includes(tag))
         .reduce((acc, val) => `${acc} * <${val.title}>\n`, "");
-      const contents = `**\#(${tag}**)
+      const contents = `**#(${tag}**)
       
 ${statementsStr}${argumentsStr}`;
       return <Hover>{

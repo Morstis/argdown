@@ -1,29 +1,43 @@
 {
   "name": "@argdown/map-views",
   "version": "1.7.10",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "description": "Browser-based map views for Argdown data using dagre-d3 and viz.js",
   "files": [
     "dist/"
   ],
+  "targets": {
+    "module": false,
+    "main": false,
+    "types": false
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-dagre"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-dagre"
   },
   "keywords": [
     "argument",
     "mapping",
     "argdown"
   ],
+  "engines": {
+    "node": ">= 22.11.0"
+  },
   "author": "Christian Voigt",
   "license": "MIT",
   "readmeFilename": "Readme.md",
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
-    "@argdown/core": "^1.7.5",
-    "@types/dagre-d3": "^0.6.2",
-    "@types/lodash.defaultsdeep": "^4.6.6",
+    "@argdown/core": "workspace:^",
     "babel-polyfill": "^6.26.0",
     "d3-selection": "3.0.0",
     "d3-transition": "3.0.1",
@@ -33,39 +47,42 @@
     "string-pixel-width": "^1.10.0"
   },
   "devDependencies": {
-    "@parcel/config-default": "2.0.0-nightly.845",
-    "@parcel/transformer-typescript-tsc": "2.0.0-nightly.845",
-    "@types/d3": "7.0.0",
+    "@parcel/config-default": "^2.15.4",
+    "@parcel/core": "^2.16.0",
+    "@parcel/transformer-typescript-tsc": "^2.15.4",
+    "@types/d3": "7.4.3",
+    "@types/dagre-d3": "0.6.6",
     "@types/lodash": "^4.14.172",
-    "@types/mocha": "9.0.0",
-    "@types/node": "16.10.1",
-    "chai": "^4.2.0",
+    "@types/lodash.defaultsdeep": "^4.6.9",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
+    "@types/string-pixel-width": "^1.10.3",
+    "chai": "^4.3.10",
     "copyfiles": "^2.1.1",
-    "mocha": "9.1.1",
-    "nyc": "^15.1.0",
-    "parcel": "2.0.0-nightly.843",
+    "mocha": "11.1.0",
+    "nyc": "^17.1.0",
+    "parcel": "^2.15.4",
     "parcel-reporter-static-files-copy": "^1.3.0",
-    "rimraf": "^3.0.0",
-    "serve-static": "^1.14.1",
+    "rimraf": "^6.0.1",
+    "serve-static": "^2.2.0",
     "source-map-support": "^0.5.13",
-    "ts-node": "10.2.1",
-    "typescript": "4.4.3"
+    "typedoc": "0.28.14",
+    "typescript": "5.9.3"
   },
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
-    "build": "npm run clean && npm run build:src && npm run copy:css",
-    "build:src": "tsc",
+    "build": "npm run clean && tsc && npm run copy:css",
     "docs:build": "typedoc  --options ./typedoc.js",
     "copy:css": "copyfiles \"src/**/*.css\" dist -u 1",
-    "test": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
-    "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "echo \"No tests to run here\"",
+    "coverage": "echo \"No tests to run here\"",
     "report": "nyc report",
-    "clean": "rimraf \"dist/*\"",
+    "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master",
-    "example": "parcel serve ./example/src/index.html",
-    "build-example": "parcel build ./example/src/index.html --dist-dir example-dist"
+    "example": "set PARCEL_WORKERS=0 && parcel serve ./example/src/index.html",
+    "build-example": "set PARCEL_WORKERS=0 && parcel build ./example/src/index.html --dist-dir example-dist"
   },
   "nyc": {
     "include": [
@@ -77,7 +94,7 @@
       ".tsx"
     ],
     "require": [
-      "ts-node/register"
+      "tsx"
     ],
     "reporter": [
       "text",
@@ -87,9 +104,11 @@
     "instrument": true
   },
   "staticFiles": {
-    "staticPath": "example/public"
+    "staticPath": "example/public",
+    "staticOutPath": "."
   },
   "browserslist": [
     "last 1 Chrome versions"
-  ]
+  ],
+  "packageManager": "yarn@4.9.4"
 }

@@ -2,47 +2,57 @@
   "name": "@argdown/highlightjs",
   "version": "1.7.5",
   "description": "Argdown language definition for highlightjs",
-  "main": "dist/index.js",
-  "module": "dist-esm/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
-    "dist/",
-    "dist-esm/"
+    "dist/"
   ],
   "scripts": {
     "sandbox": "parcel ./test/sandbox.html",
-    "build": "npm run clean && node copy-css.js && npm run build:src && npm run build:esm",
-    "build:esm": "tsc -m es6 --target ES2018 --outDir dist-esm",
-    "build:src": "tsc",
-    "clean": "rimraf \"dist/*\" && rimraf \"dist-esm/*\"",
-    "copy-css": ""
+    "build": "npm run clean && tsc && node copy-css.js",
+    "clean": "rimraf \"dist/*\" --glob",
+    "copy-css": "",
+    "test": "echo \"No tests to run here\""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-highlightjs"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-highlightjs"
   },
   "keywords": [
     "Argdown",
     "highlightjs"
   ],
+  "engines": {
+    "node": ">= 22.11.0"
+  },
   "author": "Christian Voigt",
   "license": "MIT",
   "devDependencies": {
-    "@parcel/config-default": "^2.0.0-nightly.826",
-    "@parcel/optimizer-cssnano": "^2.0.0-nightly.826",
-    "@parcel/optimizer-htmlnano": "2.0.0-rc.0",
-    "@parcel/packager-css": "^2.0.0-nightly.826",
-    "@parcel/packager-html": "^2.0.0-nightly.826",
-    "@parcel/transformer-css": "^2.0.0-nightly.826",
-    "@parcel/transformer-html": "^2.0.0-nightly.826",
-    "@parcel/transformer-postcss": "^2.0.0-nightly.826",
-    "@parcel/transformer-posthtml": "^2.0.0-nightly.826",
-    "@parcel/transformer-typescript-tsc": "^2.0.0-nightly.826",
-    "@parcel/validator-typescript": "^2.0.0-nightly.826",
-    "highlight.js": "11.3.1",
-    "parcel": "^2.0.0-nightly.824",
-    "postcss": "8.3.11",
-    "rimraf": "^3.0.2",
-    "ts-node": "10.4.0",
-    "typescript": "4.4.4"
-  }
+    "@parcel/config-default": "^2.14.4",
+    "@parcel/core": "^2.16.0",
+    "@parcel/optimizer-cssnano": "^2.14.4",
+    "@parcel/optimizer-htmlnano": "^2.14.4",
+    "@parcel/packager-css": "^2.14.4",
+    "@parcel/packager-html": "^2.14.4",
+    "@parcel/transformer-css": "^2.14.4",
+    "@parcel/transformer-html": "^2.14.4",
+    "@parcel/transformer-postcss": "^2.14.4",
+    "@parcel/transformer-posthtml": "^2.14.4",
+    "@parcel/transformer-typescript-tsc": "^2.14.4",
+    "@parcel/validator-typescript": "^2.14.4",
+    "@types/node": "^22.15.24",
+    "highlight.js": "11.11.1",
+    "parcel": "^2.14.4",
+    "postcss": "8.5.3",
+    "rimraf": "^6.0.1",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "yarn@4.9.4"
 }

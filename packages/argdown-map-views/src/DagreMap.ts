@@ -15,8 +15,8 @@ import {
 } from "@argdown/core";
 import { splitByLineWidth, splitByCharactersInLine } from "@argdown/core";
 import { graphlib } from "dagre-d3";
-import { ZoomManager, OnZoomChangedHandler } from "./ZoomManager";
-import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode";
+import { ZoomManager, OnZoomChangedHandler } from "./ZoomManager.js";
+import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode.js";
 
 export interface IDagreLabelSettings {
   bold?: boolean;
@@ -118,7 +118,7 @@ export class DagreMap implements CanSelectNode {
       ? props.settings
       : {};
     mergeDefaults(settings, dagreDefaultSettings);
-    // eslint-disable-next-line
+     
     if (
       !this.svgElement ||
       !props.map ||
@@ -144,15 +144,15 @@ export class DagreMap implements CanSelectNode {
       return {};
     });
 
-    for (let node of props.map.nodes) {
+    for (const node of props.map.nodes) {
       createDagreNode(node, g, null, settings);
     }
 
-    for (let edge of props.map.edges) {
+    for (const edge of props.map.edges) {
       const props: { [key: string]: any } = {
         class: edge.relationType
       };
-      if (edge.relationType === "contradictory") {
+      if (edge.relationType === "contradictory" as any) {
         props.arrowhead = "diamond";
         props.arrowtail = "diamond";
       }
@@ -171,10 +171,10 @@ export class DagreMap implements CanSelectNode {
     //   }
 
     // Create the renderer
-    const render = new dagreD3.render(); // eslint-disable-line new-cap
+    const render = new dagreD3.render();  
     // Add our custom arrow
     render.arrows().diamond = function normal(parent, id, edge, type) {
-      var marker = parent
+      const marker = parent
         .append("marker")
         .attr("id", id)
         .attr("viewBox", "0 0 10 10")
@@ -185,7 +185,7 @@ export class DagreMap implements CanSelectNode {
         .attr("markerHeight", 10)
         .attr("orient", "auto");
 
-      var path = marker
+      const path = marker
         .append("path")
         .attr("d", "M 0 5 L 5 2 L 10 5 L 5 8 z")
         .style("stroke-width", 0)
@@ -224,7 +224,7 @@ export class DagreMap implements CanSelectNode {
         0
       );
     }
-    svgGraph!.attr(
+    svgGraph?.attr(
       "height",
       this.zoomManager.state.size.width * this.zoomManager.state.scale + 40
     );
@@ -256,7 +256,7 @@ export class DagreMap implements CanSelectNode {
   }
 }
 
-var createTSpan = (
+const createTSpan = (
   str: string,
   font: string,
   fontSize: number,
@@ -264,7 +264,7 @@ var createTSpan = (
   color: string,
   dy = "1em"
 ) => {
-  var tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+  const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
   tspan.setAttributeNS(
     "http://www.w3.org/XML/1998/namespace",
     "xml:space",
@@ -303,9 +303,9 @@ const createDagreNode = function(
   currentGroup: IGroupMapNode | null,
   settings: IDagreSettings
 ) {
-  var svgLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  const svgLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
-  var docFrag = document.createDocumentFragment();
+  const docFrag = document.createDocumentFragment();
   let maxWidth = 0;
   let lineWidth = 0;
   let rx = 0;
@@ -330,47 +330,57 @@ const createDagreNode = function(
     textSettings = null;
   }
   if (node.labelTitle) {
-    let { bold, fontSize, font, charactersInLine } = titleSettings!;
-    var titleArr = settings.measureLineWidth
+    const { 
+      bold = true, 
+      fontSize = 14, 
+      font = "arial", 
+      charactersInLine = 25 
+    } = titleSettings || {};
+    const titleArr = settings.measureLineWidth
       ? splitByLineWidth(node.labelTitle, {
           maxWidth: lineWidth,
           fontSize,
           bold,
           font
         })
-      : splitByCharactersInLine(node.labelTitle, charactersInLine!, true);
-    for (let str of titleArr) {
+      : splitByCharactersInLine(node.labelTitle, charactersInLine, true);
+    for (const str of titleArr) {
       const width = pixelWidth(str, {
-        font: font,
+        font: font as any,
         size: fontSize,
         bold: bold
       });
       maxWidth = width > maxWidth ? width : maxWidth;
       docFrag.appendChild(
-        createTSpan(str, font!, fontSize!, bold!, node.fontColor!)
+        createTSpan(str, font, fontSize, bold, node.fontColor!)
       );
     }
   }
   if (node.labelText) {
-    let { bold, fontSize, font, charactersInLine } = textSettings!;
-    var textArr = settings.measureLineWidth
+    const { 
+      bold = false, 
+      fontSize = 14, 
+      font = "arial", 
+      charactersInLine = 25 
+    } = textSettings || {};
+    const textArr = settings.measureLineWidth
       ? splitByLineWidth(node.labelText, {
           maxWidth: lineWidth,
           fontSize,
           bold,
           font
         })
-      : splitByCharactersInLine(node.labelText, charactersInLine!, true);
+      : splitByCharactersInLine(node.labelText, charactersInLine, true);
     let dy = node.labelTitle ? "1.5em" : "1em";
-    for (let str of textArr) {
+    for (const str of textArr) {
       const width = pixelWidth(str, {
-        font: font,
+        font: font as any,
         size: fontSize,
         bold: bold
       });
       maxWidth = width > maxWidth ? width : maxWidth;
       docFrag.appendChild(
-        createTSpan(str, font!, fontSize!, bold!, node.fontColor!, dy)
+        createTSpan(str, font, fontSize, bold, node.fontColor!, dy)
       );
       dy = "1em";
     }
@@ -418,7 +428,7 @@ const createDagreNode = function(
     g.setParent(node.id, currentGroup.id);
   }
   if (isGroupMapNode(node) && node.children) {
-    for (let child of node.children) {
+    for (const child of node.children) {
       createDagreNode(child, g, node, settings);
     }
   }

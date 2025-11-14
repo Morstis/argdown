@@ -33,20 +33,20 @@ export class ExtensionContentSecurityPolicyArbiter implements ContentSecurityPol
 
 	public getSecurityLevelForResource(resource: vscode.Uri): ArgdownPreviewSecurityLevel {
 		// Use new security level setting first
-		const level = this.globalState.get<ArgdownPreviewSecurityLevel | undefined>(this.security_level_key + this.getRoot(resource), undefined);
+		const level = this.globalState.get<ArgdownPreviewSecurityLevel | undefined>(this.security_level_key + this.getRoot(resource).toString(), undefined);
 		if (typeof level !== 'undefined') {
 			return level;
 		}
 
 		// Fallback to old trusted workspace setting
-		if (this.globalState.get<boolean>(this.old_trusted_workspace_key + this.getRoot(resource), false)) {
+		if (this.globalState.get<boolean>(this.old_trusted_workspace_key + this.getRoot(resource).toString(), false)) {
 			return ArgdownPreviewSecurityLevel.AllowScriptsAndAllContent;
 		}
 		return ArgdownPreviewSecurityLevel.Strict;
 	}
 
 	public setSecurityLevelForResource(resource: vscode.Uri, level: ArgdownPreviewSecurityLevel): Thenable<void> {
-		return this.globalState.update(this.security_level_key + this.getRoot(resource), level);
+		return this.globalState.update(this.security_level_key + this.getRoot(resource).toString(), level);
 	}
 
 	public shouldAllowSvgsForResource(resource: vscode.Uri) {

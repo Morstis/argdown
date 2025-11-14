@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { argdown } from "../src/index";
+import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
 describe("ImageSizePlugin", function(){
     this.timeout(20000);
@@ -29,7 +29,7 @@ describe("ImageSizePlugin", function(){
     expect(request.images!.files!["./argdown-mark.svg"].height).to.equal(128);
   });
   it("can set image size from url", async () => {
-    const url = "https://github.com/christianvoigt/argdown/blob/master/argdown-arrow.png?raw=true";
+    const url = "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
 
     const input = `
         <A>: test {images: ["${url}"]}

@@ -4,9 +4,9 @@ import {
   TextEdit,
   WorkspaceEdit
 } from "vscode-languageserver";
-import { createRange } from "./utils";
-import { findReferences } from "./findReferences";
-import { findNodeAtPosition } from "./findNodeAtPosition";
+import { createRange } from "./utils.js";
+import { findReferences } from "./findReferences.js";
+import { findNodeAtPosition } from "./findNodeAtPosition.js";
 import { IAstNode, isTokenNode } from "@argdown/core";
 const createTextEdit = (node: IAstNode, newName: string): TextEdit | null => {
   if (isTokenNode(node) && node.tokenType) {

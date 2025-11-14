@@ -54,7 +54,7 @@ export class CopyWebComponentToClipboardCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    execute(
+    void execute(
       resource,
       "web-component-to-html",
       `Web component html copied to the clipbard. Paste your component into any html file. For more information on how to use the web component visit the [component's documentation](https://argdown.org/guide/embed-your-map-in-html.html).`

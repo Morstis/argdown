@@ -3,8 +3,8 @@
 import * as chevrotain from "chevrotain";
 import last from "lodash.last";
 import partialRight from "lodash.partialright";
-import { TokenNames } from "./TokenNames";
-import { arrayIsEmpty } from "./utils";
+import { TokenNames } from "./TokenNames.js";
+import { arrayIsEmpty } from "./utils.js";
 
 const createToken = chevrotain.createToken;
 const createTokenInstance = chevrotain.createTokenInstance;
@@ -95,7 +95,7 @@ const emitIndentOrDedent = (
   const endColumn = startColumn + indentStr.length - 1;
   if (currIndentLevel > lastIndentLevel) {
     indentStack.push(currIndentLevel);
-    let indentToken = createTokenInstance(
+    const indentToken = createTokenInstance(
       Indent,
       image,
       startOffset,
@@ -110,7 +110,7 @@ const emitIndentOrDedent = (
     while (indentStack.length > 1 && currIndentLevel < lastIndentLevel) {
       indentStack.pop();
       lastIndentLevel = last(indentStack) || 0;
-      let dedentToken = createTokenInstance(
+      const dedentToken = createTokenInstance(
         Dedent,
         image,
         startOffset,
@@ -138,7 +138,7 @@ const matchRelation = (
 
   if (arrayIsEmpty(tokens) || afterEmptyline || afterNewline) {
     //relations after Emptyline are illegal, but we need the token for error reporting
-    let match = pattern!.exec(remainingText);
+    const match = pattern!.exec(remainingText);
     if (match !== null && match.length == 3) {
       const indentStr = match[1];
       emitIndentOrDedent(tokens!, indentStr);
@@ -227,9 +227,9 @@ const matchInferenceStart: chevrotain.CustomPatternMatcherFunc = (
   offset,
   tokens
 ) => {
-  let remainingText = text.substr(offset || 0);
+  const remainingText = text.substr(offset || 0);
   const lastToken = last(tokens);
-  let afterNewline = lastTokenIsNewline(lastToken);
+  const afterNewline = lastTokenIsNewline(lastToken);
   if (arrayIsEmpty(tokens) || afterNewline) {
     const match = inferenceStartPattern.exec(remainingText);
     if (match != null) {
@@ -259,7 +259,7 @@ tokenList.push(FrontMatter);
 
 export const Data = createToken({
   name: TokenNames.DATA,
-  pattern: /{((?!}\s[^\,}])(.|\n))*}(?!\s*(\,|}))/,
+  pattern: /{((?!}\s[^,}])(.|\n))*}(?!\s*(,|}))/,
   label: "Meta Data (YAML)"
 });
 tokenList.push(Data);
@@ -285,12 +285,12 @@ const matchListItem = (
   _groups?: any,
   pattern?: RegExp
 ): RegExpExecArray | null => {
-  let remainingText = text.substr(offset || 0);
-  let lastToken = last(tokens);
-  let afterNewline = lastTokenIsNewline(lastToken);
-  let afterEmptyline = lastToken && tokenMatcher(lastToken, Emptyline);
+  const remainingText = text.substr(offset || 0);
+  const lastToken = last(tokens);
+  const afterNewline = lastTokenIsNewline(lastToken);
+  const afterEmptyline = lastToken && tokenMatcher(lastToken, Emptyline);
   if (arrayIsEmpty(tokens) || afterEmptyline || afterNewline) {
-    let match = pattern!.exec(remainingText);
+    const match = pattern!.exec(remainingText);
     if (match !== null) {
       /*
        dirty hack: 
@@ -344,11 +344,11 @@ const matchEmptyline = (
   offset?: number,
   tokens?: chevrotain.IToken[]
 ) => {
-  let remainingText = text.substr(offset || 0);
-  let lastToken = last(tokens);
+  const remainingText = text.substr(offset || 0);
+  const lastToken = last(tokens);
   //ignore Emptylines after first one (relevant for Emptylines after ignored comments)
   if (lastToken && tokenMatcher(lastToken, Emptyline)) return null;
-  let match = emptylinePattern.exec(remainingText);
+  const match = emptylinePattern.exec(remainingText);
   if (match !== null) {
     //ignore trailing linebreaks
     if (match[0].length < remainingText.length) {
@@ -383,7 +383,7 @@ tokenList.push(Dedent);
 
 export const StatementDefinition = createToken({
   name: TokenNames.STATEMENT_DEFINITION,
-  pattern: /\[.+?\]\:/,
+  pattern: /\[.+?\]:/,
   label: "[Statement Title]: (Statement Definition)"
 });
 tokenList.push(StatementDefinition);
@@ -409,7 +409,7 @@ tokenList.push(StatementReference);
 
 export const StatementMention = createToken({
   name: TokenNames.STATEMENT_MENTION,
-  pattern: /\@\[.+?\][ \t]?/,
+  pattern: /@\[.+?\][ \t]?/,
   label: "@[Statement Title] (Statement Mention)"
 });
 tokenList.push(StatementMention);
@@ -426,14 +426,14 @@ const matchStatementNumber = (
   offset?: number,
   tokens?: chevrotain.IToken[]
 ) => {
-  let remainingText = text.substr(offset || 0);
-  var lastToken = last(tokens);
-  let afterNewline = lastTokenIsNewline(lastToken);
-  let afterEmptyline = lastToken && tokenMatcher(lastToken, Emptyline);
+  const remainingText = text.substr(offset || 0);
+  const lastToken = last(tokens);
+  const afterNewline = lastTokenIsNewline(lastToken);
+  const afterEmptyline = lastToken && tokenMatcher(lastToken, Emptyline);
 
   //Statement in argument reconstruction:
   if (arrayIsEmpty(tokens) || afterEmptyline || afterNewline) {
-    let match = statementNumberPattern.exec(remainingText);
+    const match = statementNumberPattern.exec(remainingText);
     if (match !== null) {
       emitRemainingDedentTokens(tokens!);
       return match;
@@ -452,21 +452,21 @@ tokenList.push(StatementNumber);
 
 export const ArgumentDefinition = createToken({
   name: TokenNames.ARGUMENT_DEFINITION,
-  pattern: /\<.+?\>\:/,
+  pattern: /<.+?>:/,
   label: "<Argument Title>: (Argument Definition)"
 });
 tokenList.push(ArgumentDefinition);
 
 export const ArgumentReference = createToken({
   name: TokenNames.ARGUMENT_REFERENCE,
-  pattern: /\<[^-].*?\>/,
+  pattern: /<[^-].*?>/,
   label: "<Argument Title> (Argument Reference)"
 });
 tokenList.push(ArgumentReference);
 
 export const ArgumentMention = createToken({
   name: TokenNames.ARGUMENT_MENTION,
-  pattern: /\@\<.+?\>[ \t]?/,
+  pattern: /@<.+?>[ \t]?/,
   label: "@<Argument Title> (Argument Mention)"
 });
 tokenList.push(ArgumentMention);
@@ -477,9 +477,9 @@ const matchHeadingStart = (
   offset?: number,
   tokens?: chevrotain.IToken[]
 ) => {
-  let remainingText = text.substr(offset || 0);
-  let lastToken = last(tokens);
-  let afterEmptyline =
+  const remainingText = text.substr(offset || 0);
+  const lastToken = last(tokens);
+  const afterEmptyline =
     lastToken &&
     (tokenMatcher(lastToken, Emptyline) || tokenMatcher(lastToken, Newline));
 
@@ -509,8 +509,8 @@ const matchBoldOrItalicStart = (
   pattern?: RegExp,
   rangeType?: string
 ) => {
-  let remainingText = text.substr(offset || 0);
-  let match = pattern!.exec(remainingText);
+  const remainingText = text.substr(offset || 0);
+  const match = pattern!.exec(remainingText);
   if (match != null) {
     rangesStack.push(rangeType!);
     return match;
@@ -526,20 +526,20 @@ const matchBoldOrItalicEnd = (
   pattern?: RegExp,
   rangeType?: string
 ): RegExpExecArray | null => {
-  let lastRange = last(rangesStack);
+  const lastRange = last(rangesStack);
   if (lastRange != rangeType) return null;
   //first check if the last match was skipped Whitespace
-  let skipped: any = groups ? groups[chevrotain.Lexer.SKIPPED] : null;
-  let lastSkipped: any = last(skipped);
-  let lastMatched = last(tokens);
+  const skipped: any = groups ? groups[chevrotain.Lexer.SKIPPED] : null;
+  const lastSkipped: any = last(skipped);
+  const lastMatched = last(tokens);
   if (
     !lastMatched ||
     (lastSkipped && lastSkipped.endOffset! > lastMatched.endOffset!)
   ) {
     return null;
   }
-  let remainingText = text.substr(offset || 0);
-  let match = pattern!.exec(remainingText);
+  const remainingText = text.substr(offset || 0);
+  const match = pattern!.exec(remainingText);
 
   if (match != null) {
     rangesStack.pop();
@@ -554,7 +554,7 @@ const matchAsteriskBoldStart = partialRight(
 );
 const matchAsteriskBoldEnd = partialRight(
   matchBoldOrItalicEnd,
-  /^\*\*(?:[ \t]|(?=\n|\r|\)|\}|\_|\.|,|!|\?|;|:|-|\*|$))/,
+  /^\*\*(?:[ \t]|(?=\n|\r|\)|\}|_|\.|,|!|\?|;|:|-|\*|$))/,
   "AsteriskBold"
 );
 
@@ -565,7 +565,7 @@ const matchUnderscoreBoldStart = partialRight(
 );
 const matchUnderscoreBoldEnd = partialRight(
   matchBoldOrItalicEnd,
-  /^__(?:[ \t]|(?=\n|\r|\)|\}|\_|\.|,|!|\?|;|:|-|\*|$))/,
+  /^__(?:[ \t]|(?=\n|\r|\)|\}|_|\.|,|!|\?|;|:|-|\*|$))/,
   "UnderscoreBold"
 );
 
@@ -576,18 +576,18 @@ const matchAsteriskItalicStart = partialRight(
 );
 const matchAsteriskItalicEnd = partialRight(
   matchBoldOrItalicEnd,
-  /^\*(?:[ \t]|(?=\n|\r|\)|\}|\_|\.|,|!|\?|;|:|-|\*|$))/,
+  /^\*(?:[ \t]|(?=\n|\r|\)|\}|_|\.|,|!|\?|;|:|-|\*|$))/,
   "AsteriskItalic"
 );
 
 const matchUnderscoreItalicStart = partialRight(
   matchBoldOrItalicStart,
-  /^\_(?!\s)/,
+  /^_(?!\s)/,
   "UnderscoreItalic"
 );
 const matchUnderscoreItalicEnd = partialRight(
   matchBoldOrItalicEnd,
-  /^\_(?:[ \t]|(?=\n|\r|\)|\}|\_|\.|,|!|\?|;|:|-|\*|$))/,
+  /^_(?:[ \t]|(?=\n|\r|\)|\}|_|\.|,|!|\?|;|:|-|\*|$))/,
   "UnderscoreItalic"
 );
 
@@ -675,7 +675,7 @@ const matchComment = (
   offset?: number,
   tokens?: chevrotain.IToken[]
 ) => {
-  let lastToken = last(tokens);
+  const lastToken = last(tokens);
   if (lastToken && tokenMatcher(lastToken, Emptyline)) {
     commentWithTrailingLinebreaksPattern.lastIndex = offset || 0;
     return commentWithTrailingLinebreaksPattern.exec(text);
@@ -699,14 +699,14 @@ tokenList.push(Comment);
 
 export const Link = createToken({
   name: TokenNames.LINK,
-  pattern: /\[[^\]]+?\]\([^\)]+?\)[ \t]?/,
+  pattern: /\[[^\]]+?\]\([^)]+?\)[ \t]?/,
   label: "[Title](Url) (Link)"
 });
 tokenList.push(Link);
 
 export const Tag = createToken({
   name: TokenNames.TAG,
-  pattern: /#(?:\([^\)]+\)|[a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)[ \t]?/,
+  pattern: /#(?:\([^)]+\)|[a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)[ \t]?/,
   label: "#tag-text or #(tag text) (Tag)"
 });
 tokenList.push(Tag);
@@ -734,7 +734,7 @@ export const EscapedChar = createToken({
 tokenList.push(EscapedChar);
 export const SpecialChar = createToken({
   name: TokenNames.SPECIAL_CHAR,
-  pattern: /(?:\.[^\s]+?\.[ \t]?)|(?:\:[^\s]+?\:[ \t]?)/,
+  pattern: /(?:\.[^\s]+?\.[ \t]?)|(?::[^\s]+?:[ \t]?)/,
   label: ".{name}. or :{name}: (Special Character)"
 });
 tokenList.push(SpecialChar);
@@ -742,7 +742,7 @@ tokenList.push(SpecialChar);
 //The rest of the text that is free of any Argdown syntax
 export const Freestyle = createToken({
   name: TokenNames.FREESTYLE,
-  pattern: /[^\\\@\#\*\_\[\]\,\.\:\;\<\/\>\-\r\n\(\)\{\}]+/,
+  pattern: /[^\\@#*_[\],.:</>(){}\r\n;-]+/,
   line_breaks: true,
   label: "Text Content"
 });
@@ -754,7 +754,7 @@ tokenList.push(Freestyle);
 //Note that some "meaningful" characters (like +) are not listed here, as they are only meaningful after a linebreak and freestyle text already gets "cut up" by each line break.
 export const UnusedControlChar = createToken({
   name: TokenNames.UNUSED_CONTROL_CHAR,
-  pattern: /[\@\#\*\_\[\]\,\.\:\;\<\/\>\-\(\)\{\}][ \t]?/,
+  pattern: /[@#*_[\],.:</>(){};-][ \t]?/,
   label: "Text Content (Control Characters)"
 });
 tokenList.push(UnusedControlChar);
@@ -834,7 +834,7 @@ const lexer = new chevrotain.Lexer(lexerConfig);
 export const tokenize = (text: string): chevrotain.ILexingResult => {
   init();
 
-  let lexResult = lexer.tokenize(text);
+  const lexResult = lexer.tokenize(text);
   if (lexResult.errors && lexResult.errors.length > 0) {
     throw new Error("sad sad panda lexing errors detected");
   }

@@ -1,13 +1,16 @@
-let fs = require("fs");
-let path = require("path");
-let mkdirp = require("mkdirp");
+import * as fs from "fs";
+import * as path from "path";
+import { createRequire } from "module";
+import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 
 import { IArgdownRequest, IRequestHandler } from "@argdown/core";
+
+const require = createRequire(import.meta.url);
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
+} from "../IAsyncArgdownPlugin.js";
 
 export interface ICopyDefaultCssSettings {
   outputDir?: string;
@@ -45,13 +48,13 @@ export class CopyDefaultCssPlugin implements IAsyncArgdownPlugin {
   };
   runAsync: IAsyncRequestHandler = async (request, _response, logger) => {
     const settings = this.getSettings(request);
-    let rootPath = request.rootPath || process.cwd();
-    let outputDir = request.outputPath
+    const rootPath = request.rootPath || process.cwd();
+    const outputDir = request.outputPath
       ? path.dirname(request.outputPath)
-      : settings.outputDir;
-    let absoluteOutputDir = path.resolve(rootPath, outputDir);
+      : settings.outputDir ?? "";
+    const absoluteOutputDir = path.resolve(rootPath, outputDir);
     await mkdirp(absoluteOutputDir);
-    let pathToDefaultCssFile = require.resolve(
+    const pathToDefaultCssFile = require.resolve(
       "@argdown/core/dist/plugins/argdown.css"
     );
     logger.log(
@@ -65,7 +68,7 @@ export class CopyDefaultCssPlugin implements IAsyncArgdownPlugin {
           pathToDefaultCssFile,
           path.resolve(absoluteOutputDir, "argdown.css"),
           COPYFILE_EXCL,
-          (err: Error) => {
+          (err: Error | null) => {
             if (err) {
               reject(err);
             }

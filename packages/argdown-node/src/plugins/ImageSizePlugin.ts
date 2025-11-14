@@ -1,15 +1,17 @@
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
-} from "../IAsyncArgdownPlugin";
-import { promisify } from "util";
-import imageSize from "image-size";
+} from "../IAsyncArgdownPlugin.js";
+import { imageSize } from "image-size";
 import { ArgdownPluginError } from "@argdown/core";
 import axios from "axios";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { constants, promises as fs } from "fs";
 import path from "path";
-const imageSizeAsync = promisify(imageSize);
+
+interface ISizeCalculationResult {
+  width?: number;
+  height?: number;
+}
 
 export class ImageSizePlugin implements IAsyncArgdownPlugin {
   name = "ImageSizePlugin";
@@ -17,7 +19,7 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
     if (!request.images || !request.images.files) {
       return;
     }
-    for (let image of Object.values(request.images!.files!)) {
+    for (const image of Object.values(request.images.files)) {
       if (!image.path) {
         return;
       }
@@ -39,7 +41,8 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
               path.resolve(baseDir, image.path),
               constants.F_OK | constants.R_OK
             );
-            dimensions = await imageSizeAsync(image.path);
+            const fileBuffer = await fs.readFile(path.resolve(baseDir, image.path));
+            dimensions = imageSize(fileBuffer);
           } catch (err) {
             dimensions = await this.getSizeFromRemoteFile(image.path);
           }
@@ -60,7 +63,7 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
       }
     }
   };
-  getSizeFromRemoteFile = async (path: string) => {
+  getSizeFromRemoteFile = async (path: string): Promise<ISizeCalculationResult> => {
     const response = await axios.get(path, {
       responseType: "arraybuffer"
     });

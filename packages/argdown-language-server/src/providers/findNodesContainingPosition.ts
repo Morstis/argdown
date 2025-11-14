@@ -12,14 +12,14 @@ export const findNodesContainingPosition = (
   line: number,
   character: number
 ): any[] => {
-  let result = [];
+  const result = [];
   const closestNode = nodes
     .filter(n => {
       // Indent and Dedent are pseudo tokens that mess up the search because of their location information
       return (
         isRuleNode(n) ||
-        (n.tokenType!.name !== TokenNames.INDENT &&
-          n.tokenType!.name !== TokenNames.DEDENT)
+        (n.tokenType.name !== String(TokenNames.INDENT) &&
+          n.tokenType.name !== String(TokenNames.DEDENT))
       );
     })
     .filter(n => {

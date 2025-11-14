@@ -5,5 +5,64 @@ name: Node.js Test CI
 
 on:
   workflow_dispatch:
+# Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
+# push:
+#   branches: [ $default-branch ]
+# pull_request:
+#   branches: [ $default-branch ]
 
-# DUMMY, will be replaced later
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      # Perform a shallow clone of a specific branch
+      - uses: actions/checkout@v4
+        with:
+          ref: yarn-berry
+          fetch-depth: 1
+      - name: Install rsvg-convert and tex
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin
+          sudo apt install -y \
+              texlive-base \
+              texlive-latex-base \
+              texlive-latex-recommended \
+              texlive-latex-extra \
+              texlive-fonts-recommended \
+              latexmk \
+              lmodern
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - name: Get pandoc version from package.json
+        id: pandoc-version
+        run: |
+          PANDOC_VERSION=$(jq -r '.systemDependencies.pandoc' packages/argdown-pandoc-filter/package.json | sed 's/>=//g')
+          echo "version=$PANDOC_VERSION" >> $GITHUB_OUTPUT
+      - name: Install pandoc
+        uses: pandoc/actions/setup@main
+        with:
+          version: ${{ steps.pandoc-version.outputs.version }}
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Run build
+        run: yarn build
+      #   - name: Run lint
+      #     run: yarn lint
+      - name: Run tests
+        run: xvfb-run -a yarn test
+        if: runner.os == 'Linux'
+      - name: Run tests
+        run: yarn test
+        if: runner.os != 'Linux'

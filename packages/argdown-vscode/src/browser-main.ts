@@ -99,9 +99,9 @@ export function activate(context: ExtensionContext) {
   client = createWorkerLanguageClient(context, clientOptions);
   logger.log("language server started");
 
-  const disposable = client.start();
-  context.subscriptions.push(disposable);
-
+  context.subscriptions.push(client);
+  void client.start();
+  
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
@@ -156,7 +156,7 @@ function createWorkerLanguageClient(
   // Create a worker. The worker main file implements the language server.
   const serverMain = Uri.joinPath(
     context.extensionUri,
-    "node_modules/@argdown/language-server/dist/web/server-browser.js"
+    "node_modules/@argdown/language-server/dist/browser/server-browser.cjs"
   );
   const worker = new Worker(serverMain.toString());
 

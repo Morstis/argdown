@@ -1,13 +1,13 @@
 import {
   IArgdownRequest,
   WebComponentExportPlugin,
-  IWebComponentExportSettings
+  IWebComponentExportSettings,
+  argdown as defaultArgdownApplication
 } from "@argdown/core";
-import { argdown } from "@argdown/core/dist/argdown";
 import defaultsDeep from "lodash.defaultsdeep";
 import { visit } from "unist-util-visit";
 import { Code } from "mdast";
-import { Parent, Node, Data } from "unist";
+import { Parent, Node } from "unist";
 import { Transformer } from "unified";
 import { u } from "unist-builder";
 
@@ -39,7 +39,7 @@ const generateWebComponent = (
     },
     config
   );
-  const response = argdown.run(request);
+  const response = defaultArgdownApplication.run(request);
   return response.webComponent;
 };
 export interface RemarkArgdownOptions {
@@ -48,17 +48,17 @@ export interface RemarkArgdownOptions {
 export const remarkArgdownPlugin = (
   options: RemarkArgdownOptions = {}
 ): Transformer => {
-  return async function transformer(tree, file) {
+  return function transformer(tree, file) {
     const config =
       typeof options.argdownConfig === "function"
         ? options.argdownConfig(file.cwd)
         : options.argdownConfig || {};
-    const webComponentPlugin = argdown.getPlugin(
+    const webComponentPlugin = defaultArgdownApplication.getPlugin(
       WebComponentExportPlugin.name,
       "export-web-component"
     ) as WebComponentExportPlugin;
     const webComponentDefaults = webComponentPlugin.defaults;
-    let pluginSettings: IWebComponentExportSettings = defaultsDeep(
+    const pluginSettings: IWebComponentExportSettings = defaultsDeep(
       {},
       config.webComponent || {},
       webComponentDefaults
@@ -101,7 +101,7 @@ export const remarkArgdownPlugin = (
         parent.children.splice(index, 1, u("html", { value: htmlOutput }));
       }
     };
-    visit<Node<Data>, any>(tree, "code", visitor as any);
+    visit<Node, any>(tree, "code", visitor as any);
   };
 };
 export default remarkArgdownPlugin;

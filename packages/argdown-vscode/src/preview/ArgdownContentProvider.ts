@@ -54,7 +54,7 @@ export class ArgdownContentProvider {
     argdownDocument: vscode.TextDocument,
     previewConfigurations: ArgdownPreviewConfigurationManager
     // , initialLine: number | undefined = undefined
-  ): Promise<any> {
+  ): Promise<unknown> {
     const sourceUri = argdownDocument.uri;
     const config = previewConfigurations.getConfiguration(sourceUri);
     const viewProvider = this.viewProviders[currentView];
@@ -137,7 +137,7 @@ export class ArgdownContentProvider {
       jsonReplacer
     )};</script>
 				${this.getStyles(resourceProvider, sourceUri, config)}
-				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri)}">
+				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri).toString()}">
 			</head>
 			<body class="vscode-body argdown ${view}-active ${
       menuLocked ? "locked" : "unlocked"
@@ -188,8 +188,19 @@ export class ArgdownContentProvider {
     resourceProvider: WebviewResourceProvider,
     mediaFile: string
   ): vscode.Uri {
+    // Determine the correct subdirectory based on file type
+    let subdirectory: string;
+    if (mediaFile === "pre.js") {
+      subdirectory = "dist/preview";
+    } else if (["htmlView.js", "dagreView.js", "vizjsView.js"].includes(mediaFile)) {
+      subdirectory = "dist/preview";
+    } else {
+      // Default to media for other files (CSS, images, etc.)
+      subdirectory = "media";
+    }
+    
     return resourceProvider.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", mediaFile)
+      vscode.Uri.joinPath(this.context.extensionUri, subdirectory, mediaFile)
     );
   }
   private fixHref(

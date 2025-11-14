@@ -1,14 +1,12 @@
-import { ArgdownPluginError } from "./ArgdownPluginError";
+import { ArgdownPluginError } from "./ArgdownPluginError.js";
 
-"use strict";
-
-import { ArgdownTreeWalker } from "./ArgdownTreeWalker";
-import { IArgdownLogger } from "./IArgdownLogger";
-import { IArgdownPlugin } from "./IArgdownPlugin";
-import { Logger } from "./Logger";
-import { IArgdownRequest, IArgdownResponse } from "./index";
+import { ArgdownTreeWalker } from "./ArgdownTreeWalker.js";
+import { IArgdownLogger } from "./IArgdownLogger.js";
+import { IArgdownPlugin } from "./IArgdownPlugin.js";
+import { Logger } from "./Logger.js";
+import { IArgdownRequest, IArgdownResponse } from "./index.js";
 import defaultsDeep from "lodash.defaultsdeep";
-import { isString, isFunction, arrayIsEmpty } from "./utils";
+import { isString, isFunction, arrayIsEmpty } from "./utils.js";
 
 /**
  * A processor is a "working step" in a process, containing a group of plugins
@@ -150,12 +148,12 @@ export class ArgdownApplication {
         processor.walker = new ArgdownTreeWalker();
       }
       if (plugin.tokenListeners) {
-        for (let key of Object.keys(plugin.tokenListeners)) {
+        for (const key of Object.keys(plugin.tokenListeners)) {
           processor.walker.addListener(key, plugin.tokenListeners[key]);
         }
       }
       if (plugin.ruleListeners) {
-        for (let key of Object.keys(plugin.ruleListeners)) {
+        for (const key of Object.keys(plugin.ruleListeners)) {
           processor.walker.addListener(key, plugin.ruleListeners[key]);
         }
       }
@@ -172,26 +170,26 @@ export class ArgdownApplication {
       processorId = "default";
     }
 
-    let processor = this.processors[processorId];
+    const processor = this.processors[processorId];
     if (!processor) {
       throw new Error(`Could not find processor "${processorId}"`);
     }
 
-    let index = processor.plugins.indexOf(plugin);
+    const index = processor.plugins.indexOf(plugin);
     if (index > -1) {
       if (plugin.tokenListeners && processor.walker) {
-        for (let key of Object.keys(plugin.tokenListeners)) {
+        for (const key of Object.keys(plugin.tokenListeners)) {
           processor.walker.removeListener(key, plugin.tokenListeners[key]);
         }
       }
       if (plugin.ruleListeners && processor.walker) {
-        for (let key of Object.keys(plugin.ruleListeners)) {
+        for (const key of Object.keys(plugin.ruleListeners)) {
           processor.walker.removeListener(key, plugin.ruleListeners[key]);
         }
       }
       processor.plugins.splice(index, 1);
     } else {
-      `Could not find plugin "${plugin.name}" in processor "${processorId}"`;
+      console.warn(`Could not find plugin "${plugin.name}" in processor "${processorId}"`);
     }
   }
   /**
@@ -210,7 +208,7 @@ export class ArgdownApplication {
       processorId = "default";
     }
 
-    let processor = this.processors[processorId];
+    const processor = this.processors[processorId];
     if (!processor) {
       throw new Error(`Could not find processor "${processorId}"`);
     }
@@ -226,7 +224,7 @@ export class ArgdownApplication {
     plugins[pluginIndex] = newPlugin;
     // remove and recreate processor to keep order of listeners
     this.removeProcessor(processorId);
-    for (let plugin of plugins) {
+    for (const plugin of plugins) {
       this.addPlugin(plugin, processorId);
     }
   }
@@ -240,7 +238,7 @@ export class ArgdownApplication {
     if (!processorId) {
       processorId = "default";
     }
-    let processor = this.processors[processorId];
+    const processor = this.processors[processorId];
     if (processor) return processor.plugins;
     else {
       return null;
@@ -252,9 +250,9 @@ export class ArgdownApplication {
    * @param processorId
    */
   getPlugin(name: string, processorId: string): IArgdownPlugin | null {
-    let plugins = this.getPlugins(processorId);
+    const plugins = this.getPlugins(processorId);
     if (plugins) {
-      for (let plugin of plugins) {
+      for (const plugin of plugins) {
         if (plugin.name == name) {
           return plugin;
         }
@@ -267,11 +265,11 @@ export class ArgdownApplication {
    * @param processorId
    */
   removeProcessor(processorId: string): void {
-    let processor = this.processors[processorId];
+    const processor = this.processors[processorId];
     if (!processor) {
       throw new Error(`Could not find processor "${processorId}"`);
     }
-    for (let plugin of processor.plugins) {
+    for (const plugin of processor.plugins) {
       this.removePlugin(plugin, processorId);
     }
     delete this.processors[processorId];
@@ -286,7 +284,7 @@ export class ArgdownApplication {
   run(request: IArgdownRequest, response?: IArgdownResponse): IArgdownResponse {
     let processorsToRun: string[] = [];
     this.logger.setLevel("error");
-    let resp: IArgdownResponse = response || <IArgdownResponse>{};
+    const resp: IArgdownResponse = response || <IArgdownResponse>{};
     let req: IArgdownRequest = request;
 
     if (req) {
@@ -306,7 +304,7 @@ export class ArgdownApplication {
           if (isString(processObj.process)) {
             processorsToRun = this.defaultProcesses[processObj.process];
           } else if (req.process && req.process.constructor === Array) {
-            processorsToRun = <string[]>req.process;
+            processorsToRun = req.process;
           }
         } else if (isString(req.process)) {
           processorsToRun = this.defaultProcesses[req.process];
@@ -321,9 +319,9 @@ export class ArgdownApplication {
     const exceptions: Error[] = [];
     resp.exceptions = exceptions;
 
-    for (let processorId of processorsToRun) {
+    for (const processorId of processorsToRun) {
       let cancelProcessor = false;
-      let processor = this.processors[processorId];
+      const processor = this.processors[processorId];
       if (!processor) {
         this.logger.log(
           "error",
@@ -336,7 +334,7 @@ export class ArgdownApplication {
         "[ArgdownApplication]: Running processor: " + processorId
       );
 
-      for (let plugin of processor.plugins) {
+      for (const plugin of processor.plugins) {
         if (isFunction(plugin.prepare)) {
           this.logger.log(
             "verbose",
@@ -382,7 +380,7 @@ export class ArgdownApplication {
         }
       }
 
-      for (let plugin of processor.plugins) {
+      for (const plugin of processor.plugins) {
         this.logger.log(
           "verbose",
           "[ArgdownApplication]: Running plugin: " + plugin.name
@@ -404,7 +402,7 @@ export class ArgdownApplication {
       }
     }
     if (req.logExceptions === undefined || req.logExceptions) {
-      for (let exception of exceptions) {
+      for (const exception of exceptions) {
         let msg = exception.stack || exception.message;
         if (exception instanceof ArgdownPluginError) {
           msg = `[${exception.processor}/${exception.plugin}]: ${msg}`;

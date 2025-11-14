@@ -1,7 +1,7 @@
 import { argdown } from "@argdown/node";
 import { Arguments } from "yargs";
-import { IGeneralCliOptions } from "../IGeneralCliOptions";
-import { runArgdown } from "./runArgdown";
+import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
+import { runArgdown } from "./runArgdown.js";
 
 export const command = "web-component [inputGlob] [outputDir]";
 export const desc = "export Argdown input as argdown-map web component";
@@ -47,7 +47,7 @@ export interface IWebComponentCliOptions {
 export const handler = async function(
   args: Arguments<IGeneralCliOptions & IWebComponentCliOptions>
 ) {
-  let config = await argdown.loadConfig(args.config);
+  const config = await argdown.loadConfig(args.config);
 
   config.sourceHighlighter = config.sourceHighlighter || {};
   config.webComponent = config.webComponent || {};

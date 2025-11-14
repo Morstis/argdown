@@ -1,7 +1,7 @@
 import * as yaml from "js-yaml";
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { ITokenNodeHandler } from "../ArgdownTreeWalker";
-import { IArgdownRequest } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { ITokenNodeHandler } from "../ArgdownTreeWalker.js";
+import { IArgdownRequest } from "../index.js";
 export enum FrontMatterSettingsModes {
   IGNORE = "ignore",
   DEFAULT = "default",
@@ -9,7 +9,7 @@ export enum FrontMatterSettingsModes {
 }
 import defaultsDeep from "lodash.defaultsdeep";
 import merge from "lodash.merge";
-import { mergeDefaults, isObject } from "../utils";
+import { mergeDefaults, isObject } from "../utils.js";
 
 /**
  * Settings for the DataPlugin
@@ -31,7 +31,7 @@ export interface IDataSettings {
    */
   switchToBlockFormatIfMultiline?: boolean;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[DataPlugin]]
@@ -52,8 +52,8 @@ const defaultSettings: IDataSettings = {
   frontMatterSettingsMode: FrontMatterSettingsModes.PRIORITY,
   switchToBlockFormatIfMultiline: true
 };
-const frontMatterStartPattern = /^\s*\={3,}/;
-const frontMatterEndPattern = /\={3,}\s*$/;
+const frontMatterStartPattern = /^\s*={3,}/;
+const frontMatterEndPattern = /={3,}\s*$/;
 const blockFormatStartPattern = /^{[ \t]*(\n\r|\n)/;
 const blockFormatEndPattern = /}\s*$/;
 /**
@@ -76,7 +76,7 @@ export class DataPlugin implements IArgdownPlugin {
   constructor(config?: IDataSettings) {
     this.defaults = defaultsDeep({}, config, defaultSettings);
     this.tokenListeners = {
-      Data: (request, {}, token, parentNode) => {
+      Data: (request, _response, token, parentNode) => {
         const options: yaml.LoadOptions = {};
         let dataStr = token.image;
         const settings = this.getSettings(request);
@@ -95,7 +95,7 @@ export class DataPlugin implements IArgdownPlugin {
       },
       FrontMatter: (request, response, token, parentNode) => {
         const options: yaml.LoadOptions = {};
-        let dataStr = token.image
+        const dataStr = token.image
           .replace(frontMatterStartPattern, "")
           .replace(frontMatterEndPattern, "");
         const data: any = yaml.load(dataStr, options);
@@ -107,7 +107,7 @@ export class DataPlugin implements IArgdownPlugin {
         if (
           data &&
           isObject(data) &&
-          settings!.frontMatterSettingsMode !== FrontMatterSettingsModes.IGNORE
+          settings.frontMatterSettingsMode !== FrontMatterSettingsModes.IGNORE
         ) {
           if (
             settings.frontMatterSettingsMode ===

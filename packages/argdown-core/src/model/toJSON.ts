@@ -9,17 +9,17 @@ import {
   IGroupMapNode,
   IEquivalenceClass,
   IInference
-} from "./model";
-import { isObject } from "../utils";
+} from "./model.js";
+import { isObject } from "../utils.js";
 const prepareEquivalenceClassForJSON = (s: IEquivalenceClass): any => {
-  let copy: any = Object.assign({}, s);
+  const copy: any = Object.assign({}, s);
   if (copy.section) {
     copy.section = copy.section.id;
   }
   return copy;
 };
 const prepareStatementForJSON = (s: IStatement): any => {
-  let copy: any = Object.assign({}, s);
+  const copy: any = Object.assign({}, s);
   if (copy.section) {
     copy.section = copy.section.id;
   }
@@ -29,14 +29,14 @@ const prepareStatementForJSON = (s: IStatement): any => {
  * Substitutes sections with their ids.
  */
 const prepareArgumentForJSON = (a: IArgument) => {
-  let copy: any = Object.assign({}, a);
+  const copy: any = Object.assign({}, a);
   if (copy.section) {
     copy.section = copy.section.id;
   }
   return copy;
 };
 const prepareMapEdgeForJSON = (e: IMapEdge) => {
-  let edge: any = { id: e.id, type: e.type, relationType: e.relationType };
+  const edge: any = { id: e.id, type: e.type, relationType: e.relationType };
   if (e.from) {
     edge.from = e.from.id;
   }
@@ -52,7 +52,7 @@ const prepareMapEdgeForJSON = (e: IMapEdge) => {
   return edge;
 };
 const prepareMapNodeForJSON = (n: IMapNode) => {
-  let node = {
+  const node = {
     id: n.id,
     title: n.title,
     type: n.type,
@@ -65,7 +65,7 @@ const prepareMapNodeForJSON = (n: IMapNode) => {
   return node;
 };
 const prepareGroupMapNodeForJSON = (n: IGroupMapNode) => {
-  let node = {
+  const node = {
     id: n.id,
     title: n.title,
     type: n.type,
@@ -81,7 +81,7 @@ const prepareGroupMapNodeForJSON = (n: IGroupMapNode) => {
   return node;
 };
 const prepareRelationForJSON = (r: IRelation): any => {
-  let rel: any = {
+  const rel: any = {
     type: r.type,
     relationType: r.relationType
   };
@@ -106,7 +106,7 @@ const prepareRelationForJSON = (r: IRelation): any => {
  * Substitutes parent with parent's id.
  */
 const prepareSectionForJSON = (s: ISection) => {
-  let copy: any = Object.assign({}, s);
+  const copy: any = Object.assign({}, s);
   if (copy.parent) {
     copy.parent = copy.parent.id;
   }
@@ -149,13 +149,13 @@ export const jsonReplacer = (_key: string, value: any): any => {
 export const prepareForJSON = (obj: any): any => {
   if (isObject(obj)) {
     const data = jsonReplacer("", obj);
-    for (let key of Object.keys(data)) {
+    for (const key of Object.keys(data)) {
       data[key] = prepareForJSON(data[key]);
     }
     return data;
   } else if (Array.isArray(obj)) {
     const arr = [];
-    for (let e of obj) {
+    for (const e of obj) {
       arr.push(prepareForJSON(e));
     }
     return arr;
@@ -165,7 +165,7 @@ export const prepareForJSON = (obj: any): any => {
 };
 export const stringifyArgdownData = (
   obj: object,
-  replacer?: ((key: string, value: any) => any) | undefined | null,
+  replacer?: ((key: string, value: any) => any)   | null,
   space?: number
 ): string => {
   const wrapper = (key: string, value: any) => {

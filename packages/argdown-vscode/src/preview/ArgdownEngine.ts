@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { argdown } from "@argdown/core/dist-esm/argdown";
+import { argdown } from "@argdown/core";
 import { findElementAtPositionPlugin } from "./FindElementAtPositionPlugin";
 import {
   IArgdownRequest,
@@ -40,6 +40,7 @@ export class ArgdownEngine {
       }
     };
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async exportHtml(
     doc: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
@@ -56,9 +57,10 @@ export class ArgdownEngine {
       },
       throwExceptions: false
     };
-    const response = await argdown.run(request);
+    const response = argdown.run(request);
     return response.html!;
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async getMapNodeId(
     doc: vscode.TextDocument,
     config: ArgdownPreviewConfiguration,
@@ -137,7 +139,7 @@ export class ArgdownEngine {
     sections: ISection[],
     headingText: string
   ): ISection | null {
-    for (let section of sections) {
+    for (const section of sections) {
       if (section.title === headingText) {
         return section;
       }
@@ -197,7 +199,7 @@ export class ArgdownEngine {
     nodes: IMapNode[],
     handler: (n: IMapNode) => boolean
   ): IMapNode | null {
-    for (let node of nodes) {
+    for (const node of nodes) {
       if (handler(node)) {
         return node;
       }
@@ -210,6 +212,7 @@ export class ArgdownEngine {
     }
     return null;
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async getMap(
     doc: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
@@ -240,6 +243,7 @@ export class ArgdownEngine {
     const map = this.getMap(doc, config);
     return stringifyArgdownData(map);
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async exportJson(
     doc: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
@@ -287,6 +291,7 @@ export class ArgdownEngine {
     const response = argdown.run(request);
     return { dot: response.dot!, request };
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async exportGraphML(
     doc: vscode.TextDocument,
     config: ArgdownPreviewConfiguration

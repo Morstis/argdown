@@ -1,16 +1,11 @@
 {
-    "compilerOptions": {
-        "newLine": "LF",
-        "outDir": "./dist/",
-        "module": "commonjs",
-        "target": "es6",
-        "jsx": "react",
-        "sourceMap": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "noUnusedLocals": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true
-    }
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "dom"],
+    "jsx": "react",
+    "rootDir": "./",
+    "outDir": "./dist"
+  },
+  "include": [".", "../types"],
+  "exclude": ["node_modules", "dist"]
 }

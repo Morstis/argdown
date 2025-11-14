@@ -12,11 +12,11 @@ export class CommandManager {
 	}
 
 	public register<T extends Command>(command: T): T {
-		this.registerCommand(command.id, command.execute, command);
+		this.registerCommand(command.id, (...args: unknown[]) => command.execute(...args), command);
 		return command;
 	}
 
-	private registerCommand(id: string, impl: (...args: any[]) => void, thisArg?: any) {
+	private registerCommand(id: string, impl: (...args: unknown[]) => void, thisArg?: unknown) {
 		if (this.commands.has(id)) {
 			return;
 		}

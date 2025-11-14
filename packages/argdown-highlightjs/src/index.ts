@@ -150,7 +150,7 @@ export default function(hljs: any) {
   BOLD.contains.push(ITALIC);
   ITALIC.contains.push(BOLD);
 
-  var CONTAINABLE: any[] = [LINK];
+  let CONTAINABLE: any[] = [LINK];
 
   BOLD.contains = BOLD.contains.concat(CONTAINABLE);
   ITALIC.contains = ITALIC.contains.concat(CONTAINABLE);

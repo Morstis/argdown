@@ -1,10 +1,10 @@
-import * as argdownLexer from "../lexer";
-import { parser } from "../parser";
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { IArgdownLogger } from "../IArgdownLogger";
-import { ArgdownPluginError } from "../ArgdownPluginError";
-import { IArgdownRequest, IArgdownResponse } from "../index";
-import { IAstNode } from "../model/model";
+import * as argdownLexer from "../lexer.js";
+import { parser } from "../parser.js";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { IArgdownLogger } from "../IArgdownLogger.js";
+import { ArgdownPluginError } from "../ArgdownPluginError.js";
+import { IArgdownRequest, IArgdownResponse } from "../index.js";
+import { IAstNode } from "../model/model.js";
 import {
   IToken,
   ILexingError,
@@ -14,10 +14,10 @@ import {
   createTokenInstance
 } from "chevrotain";
 import last from "lodash.last";
-import { isObject, mergeDefaults } from "../utils";
+import { isObject, mergeDefaults } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownResponse {
     /**
      * The abstract syntax tree of the Argdown input.
@@ -106,7 +106,7 @@ export class ParserPlugin implements IArgdownPlugin {
       );
     }
     const settings = this.getSettings(request);
-    let lexResult = argdownLexer.tokenize(request.input);
+    const lexResult = argdownLexer.tokenize(request.input);
     response.tokens = lexResult.tokens;
     response.lexerErrors = lexResult.errors;
     parser.input = lexResult.tokens;
@@ -131,8 +131,8 @@ export class ParserPlugin implements IArgdownPlugin {
     }
     if (response.parserErrors && response.parserErrors.length > 0) {
       // //add location if token is EOF
-      var lastToken = last(response.tokens);
-      for (let error of response.parserErrors) {
+      const lastToken = last(response.tokens);
+      for (const error of response.parserErrors) {
         if (error.token && tokenMatcher(error.token, EOF)) {
           const startLine = lastToken!.endLine || 1;
           const endLine = startLine;

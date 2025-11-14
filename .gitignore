@@ -1,7 +1,11 @@
 .DS_Store
+.yarn
+.vscode
+.vscode-test
+.vscode-test-web
 node_modules
+coverage
 
-/docs/.vuepress/dist/
 
 .nyc_output
 

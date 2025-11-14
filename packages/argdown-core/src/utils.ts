@@ -4,14 +4,13 @@ import {
   RelationMember,
   IRange,
   RangeType
-} from "./model/model";
-import { isTokenNode, isRuleNode } from "./model/model";
+} from "./model/model.js";
+import { isTokenNode, isRuleNode } from "./model/model.js";
 import { IToken } from "chevrotain";
 import pixelWidth from "string-pixel-width";
 import cloneDeep from "lodash.clonedeep";
-
-const mdurl = require("mdurl");
-const punycode = require("punycode");
+import * as mdurl from "mdurl";
+import * as punycode from "punycode";
 
 // taken from: https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 
@@ -64,8 +63,8 @@ const GOOD_DATA_RE = /^data:image\/(gif|png|jpeg|webp);/;
 
 export const validateLink = (url: string, allowFile: boolean): boolean => {
   // url should be normalized at this point, and existing entities are decoded
-  var str = url.trim().toLowerCase();
-  var proto_re = allowFile ? BAD_PROTO_WITHOUT_FILE_RE : BAD_PROTO_RE;
+  const str = url.trim().toLowerCase();
+  const proto_re = allowFile ? BAD_PROTO_WITHOUT_FILE_RE : BAD_PROTO_RE;
 
   return proto_re.test(str) ? (GOOD_DATA_RE.test(str) ? true : false) : true;
 };
@@ -75,7 +74,7 @@ export const validateLink = (url: string, allowFile: boolean): boolean => {
 const RECODE_HOSTNAME_FOR = ["http:", "https:", "mailto:"];
 
 export const normalizeLink = (url: string): string => {
-  var parsed = mdurl.parse(url, true);
+  const parsed = mdurl.parse(url, true);
 
   if (parsed.hostname) {
     // Encode hostnames in urls like:
@@ -97,7 +96,7 @@ export const normalizeLink = (url: string): string => {
 };
 
 export const normalizeLinkText = (url: string): string => {
-  var parsed = mdurl.parse(url, true);
+  const parsed = mdurl.parse(url, true);
 
   if (parsed.hostname) {
     // Encode hostnames in urls like:
@@ -129,7 +128,7 @@ export const stringToHtmlId = (str: string): string => {
   id = id.replace(/ü/g, "ue");
   id = id.replace(/ß/g, "ss");
   id = id.replace(/\s/g, "-");
-  id = id.replace(/[^a-z0-9\-]/g, "");
+  id = id.replace(/[^a-z0-9-]/g, "");
   return id;
 };
 export const stringToClassName = (str: string): string => stringToHtmlId(str);
@@ -146,7 +145,7 @@ export const getHtmlId = (
   let id = type + "-" + title;
   id = stringToHtmlId(id);
   if (htmlIdsSet) {
-    let originalId = id;
+    const originalId = id;
     let i = 1;
     while (htmlIdsSet[id]) {
       i++;
@@ -166,7 +165,7 @@ export const reduceToMap = <K, V extends object>(
 };
 export const tokensToString = (tokens: IToken[]): string => {
   let str = "";
-  for (let token of tokens) {
+  for (const token of tokens) {
     if (token.tokenType) {
       str += token.tokenType.name + " " + token.image + "\n";
     }
@@ -175,7 +174,7 @@ export const tokensToString = (tokens: IToken[]): string => {
 };
 export const tokenLocationsToString = (tokens: IToken[]): string => {
   let str = "";
-  for (let token of tokens) {
+  for (const token of tokens) {
     if (!token.tokenType) {
       continue;
     }
@@ -212,13 +211,13 @@ const logAstRecursively = (
     str += "undefined";
     return str;
   } else if (isTokenNode(value)) {
-    str += value.tokenType!.name;
+    str += value.tokenType.name;
     return str;
   } else if (isRuleNode(value)) {
     str += value.name;
     if (value.children && value.children.length > 0) {
-      let nextPre = pre + " |";
-      for (let child of value.children) {
+      const nextPre = pre + " |";
+      for (const child of value.children) {
         str += "\n" + nextPre + "__";
         str = logAstRecursively(child, nextPre, str);
       }
@@ -243,7 +242,7 @@ export const isObject = (x: any): x is object => {
   return !!x && typeof x === "object" && !Array.isArray(x);
 };
 
-export const isFunction = (x: any): x is Function => {
+export const isFunction = (x: any): x is (...args: any[]) => any => {
   return x !== null && typeof x === "function";
 };
 
@@ -276,16 +275,16 @@ export function splitByCharactersInLine(
     a.push(s);
     return a;
   }
-  var line = s.substring(0, n);
+  let line = s.substring(0, n);
   if (!useSpaces) {
     // insert newlines anywhere
     a.push(line);
     return splitByCharactersInLine(s.substring(n), n, useSpaces, a);
   } else {
     // attempt to insert newlines after whitespace
-    var lastSpaceRgx = /\s(?!.*\s)/;
-    var idx = line.search(lastSpaceRgx);
-    var nextIdx = n;
+    const lastSpaceRgx = /\s(?!.*\s)/;
+    const idx = line.search(lastSpaceRgx);
+    let nextIdx = n;
     if (idx > 0) {
       line = line.substring(0, idx);
       nextIdx = idx;
@@ -318,15 +317,15 @@ export const splitByLineWidth = (
   const words = str.split(" ");
   let currentLineWidth = 0;
   let currentLine = "";
-  let { font = "arial", fontSize = 10, bold = false, maxWidth = 0 } = options;
+  const { font = "arial", fontSize = 10, bold = false, maxWidth = 0 } = options;
   const spaceWidth = pixelWidth(" ", {
-    font: font,
+    font: font as any,
     size: fontSize,
     bold: bold
   });
-  for (let word of words) {
+  for (const word of words) {
     const wordWidth = pixelWidth(word, {
-      font: font,
+      font: font as any,
       size: fontSize,
       bold: bold
     });
@@ -380,7 +379,7 @@ export const addLineBreaks = (
       const nodes: ({ start: number; end: number } | { text: string })[] = [
         { start, end }
       ];
-      for (let range of options.applyRanges) {
+      for (const range of options.applyRanges) {
         if (range.start >= start && range.start <= end) {
           const nodeIndex = nodes.findIndex(n =>
             "text" in n ? false : n.start <= range.start && n.end >= range.start
@@ -505,9 +504,9 @@ const escapeOverrides: { [key: number]: string } = {
 };
 // see https://stackoverflow.com/questions/1354064/how-to-convert-characters-to-html-entities-using-plain-javascript/23831239
 export const escapeAsHtmlEntities = (s: string): string => {
-  return s.replace(/([\u0000-\uD799]|[\uD800-\uDBFF][\uDC00-\uFFFF])/g, c => {
+  return s.replace(/([\u0020-\uD799]|[\uD800-\uDBFF][\uDC00-\uFFFF])/g, c => {
     const c1 = c.charCodeAt(0);
-    let c1s = escapeOverrides[c1];
+    const c1s = escapeOverrides[c1];
     // ascii character, use override or escape
     if (c1 <= 0xff) return c1s ? c1s : escape(c).replace(/%(..)/g, "&#x$1;");
     // utf8/16 character
@@ -538,7 +537,7 @@ export const mergeDefaults = (
   settings: any,
   defaults: { [key: string]: any }
 ) => {
-  for (let key of Object.keys(defaults)) {
+  for (const key of Object.keys(defaults)) {
     const incomingValue = settings[key];
     const defaultValue = defaults[key];
     const defaultValueIsObject = isObject(defaultValue);
@@ -570,7 +569,7 @@ export type DefaultSettings<T> = { [K in keyof T]: DefaultSettingValue<T[K]> };
  * Plugins should use these methods together with mergeDefaults.
  */
 export const ensure = {
-  object: <T>(defaultValue: T) => {
+  object: <T extends Record<string, any>>(defaultValue: T) => {
     return {
       merge: (incoming: any) => {
         if (!incoming || !isObject(incoming)) {

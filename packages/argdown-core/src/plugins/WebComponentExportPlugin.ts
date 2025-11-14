@@ -1,4 +1,4 @@
-import { IRequestHandler, IArgdownPlugin } from "../IArgdownPlugin";
+import { IRequestHandler, IArgdownPlugin } from "../IArgdownPlugin.js";
 import {
   mergeDefaults,
   DefaultSettings,
@@ -6,9 +6,9 @@ import {
   isObject,
   escapeHtml,
   escapeCSSWidthOrHeight
-} from "../utils";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest } from "..";
+} from "../utils.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 /**
@@ -36,7 +36,7 @@ export interface IWebComponentExportSettings {
   globalStylesUrl?: string;
   webComponentPolyfillUrl?: string;
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[WebComponentExportPlugin]]

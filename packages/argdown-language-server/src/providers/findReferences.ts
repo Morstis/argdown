@@ -1,4 +1,4 @@
-import { walkTree } from "./utils";
+import { walkTree } from "./utils.js";
 import {
   TokenNames,
   IArgdownResponse,
@@ -16,13 +16,13 @@ export const findReferences = (
 ): IAstNode[] => {
   const references = <IAstNode[]>[];
   if (nodeAtPosition && isTokenNode(nodeAtPosition)) {
-    const refersToStatement = nodeAtPosition!.tokenType!.name!.startsWith(
+    const refersToStatement = nodeAtPosition.tokenType.name.startsWith(
       "Statement"
     );
-    const refersToArgument = nodeAtPosition.tokenType!.name!.startsWith(
+    const refersToArgument = nodeAtPosition.tokenType.name.startsWith(
       "Argument"
     );
-    const refersToTag = nodeAtPosition.tokenType!.name === TokenNames.TAG;
+    const refersToTag = nodeAtPosition.tokenType.name === String(TokenNames.TAG);
     // const isArgument = nodeAtPosition.tokenType.name.startsWith(
     //   "Argument"
     // );
@@ -42,7 +42,7 @@ export const findReferences = (
       if (
         isTokenNode(node) &&
         node.tokenType &&
-        node.tokenType.name!.startsWith(tokenStart)
+        node.tokenType.name.startsWith(tokenStart)
       ) {
         let matches = false;
         if (refersToArgument || refersToStatement) {
@@ -52,7 +52,7 @@ export const findReferences = (
         }
         if (
           matches &&
-          (includeDeclaration || !node.tokenType.name!.endsWith("Definition"))
+          (includeDeclaration || !node.tokenType.name.endsWith("Definition"))
         ) {
           references.push(node);
         }

@@ -1,17 +1,18 @@
 import {
   IArgdownRequest,
   WebComponentExportPlugin,
-  IWebComponentExportSettings
+  IWebComponentExportSettings,
+  argdown as defaultArgdownApplication
 } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
-import { argdown } from "@argdown/core/dist/argdown";
+import {Renderer, MarkedOptions, Tokens } from "marked";
 
 export const addArgdownSupportToMarked = (
-  markedFn: (src: string, options?: marked.MarkedOptions | undefined) => string,
-  renderer: marked.Renderer,
+  markedFn: (src: string, options?: MarkedOptions) => Promise<string>, 
+  renderer: Renderer,
   config?: ((options: any) => IArgdownRequest) | IArgdownRequest
 ) => {
-  const webComponentPlugin = argdown.getPlugin(
+  const webComponentPlugin = defaultArgdownApplication.getPlugin(
     WebComponentExportPlugin.name,
     "export-web-component"
   ) as WebComponentExportPlugin;
@@ -44,23 +45,21 @@ export const addArgdownSupportToMarked = (
       },
       currentConfig
     );
-    const response = argdown.run(request);
+    const response = defaultArgdownApplication.run(request);
     return response.webComponent;
   };
-  const tempCode = renderer.code.bind(renderer as any); // could not find out the required type of Renderer<T> here
-  renderer.code = (
-    code: string,
-    language: string | undefined,
-    isEscaped: boolean
-  ) => {
-    if (language === "argdown-map") {
-      return generateWebComponent(code.trim(), "map") || "";
-    } else if (language === "argdown") {
-      return generateWebComponent(code.trim(), "source") || "";
+  const tempCode = renderer.code.bind(renderer as any);
+  renderer.code = (token: Tokens.Code) => {
+    const { text, lang} = token; 
+
+    if (lang === "argdown-map") {
+      return generateWebComponent(text.trim(), "map") || "";
+    } else if (lang === "argdown") {
+      return generateWebComponent(text.trim(), "source") || "";
     }
-    return tempCode(code, language, isEscaped);
+    return tempCode(token);
   };
-  return (src: string, options?: marked.MarkedOptions | undefined) => {
+  return (src: string, options?: MarkedOptions  ) => {
     if (typeof config === "function") {
       currentConfig = config(options);
     }
@@ -83,10 +82,10 @@ export const addArgdownSupportToMarked = (
     if (pluginSettings.addWebComponentPolyfill) {
       polyfill = `<script src="${pluginSettings.webComponentPolyfillUrl}" type="module"></script>`;
     }
-    return `${script}${styles}${polyfill}${markedFn(src, {
-      ...options,
-      renderer
-    })}`;
+    return (async () => {
+      const parsed = await markedFn(src, { ...options, renderer, async: true });
+      return `${script}${styles}${polyfill}${parsed}`;
+    })();
     return markedFn(src, { ...options, renderer });
   };
 };

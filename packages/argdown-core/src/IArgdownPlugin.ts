@@ -1,6 +1,6 @@
-import { IArgdownLogger } from "./IArgdownLogger";
-import { IRuleNodeHandler, ITokenNodeHandler } from "./ArgdownTreeWalker";
-import { IArgdownRequest, IArgdownResponse } from "./index";
+import { IArgdownLogger } from "./IArgdownLogger.js";
+import { IRuleNodeHandler, ITokenNodeHandler } from "./ArgdownTreeWalker.js";
+import { IArgdownRequest, IArgdownResponse } from "./index.js";
 
 /**
  *

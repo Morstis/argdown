@@ -1,21 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "newLine": "LF",
-    "module": "es6",
-    "target": "es6",
-    "lib": ["es6", "es2015.promise", "dom"],
-    "outDir": "./dist",
+    "lib": ["ES2023", "dom"],
     "rootDir": "./src",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node"
+    "outDir": "./dist"
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src", "types"],
+  "exclude": ["node_modules", "dist", "preview", "test"]
 }

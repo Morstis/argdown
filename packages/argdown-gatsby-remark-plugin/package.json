@@ -6,7 +6,13 @@
   "files": [
     "index.js"
   ],
-  "scripts": {},
+  "engines": {
+    "node": ">= 22.11.0"
+  },
+  "scripts": {
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
+  },
   "keywords": [
     "gatsby-remark-plugin",
     "gatsby-plugin",
@@ -17,19 +23,19 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-gatsby-remark-plugin"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-gatsby-remark-plugin"
   },
   "author": {
     "name": "Christian Voigt",
     "email": "1pxsolidblack@gmail.com"
   },
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
-    "@argdown/remark-plugin": "^1.7.4",
-    "to-vfile": "^7.2.1"
+    "@argdown/remark-plugin": "workspace:^",
+    "to-vfile": "^8.0.0"
   },
   "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "packageManager": "yarn@4.9.4"
 }

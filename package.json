@@ -1,32 +1,61 @@
 {
-  "name": "@argdown/monorepo",
+  "name": "argdown-monorepo",
   "author": "Christian Voigt <1pxsolidblack@googlemail.com>",
-  "repository": "https://github.com/christianvoigt/argdown",
+  "repository": "https://github.com/argdown/argdown",
   "private": true,
   "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "lerna:bootstrap": "lerna bootstrap",
-    "lerna:version": "lerna version",
-    "test": "lerna run test",
-    "test:coverage": "lerna run test:coverage",
-    "build": "lerna run build",
-    "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
-    "docs:buildall": "build-docs.sh",
-    "docs:build": "yarn run copy-web-component && vuepress build docs",
-    "docs:deploy": "./deploy-docs.sh",
-    "prepare": "lerna run prepare",
-    "copy-web-component": "node ./copy-web-component.js",
-    "install-package": "lerna add @types/pdfkit --scope=@argdown/node",
-    "lerna:upgrade": "lerna exec -- yarn upgrade",
-    "lerna:install": "lerna exec -- yarn install"
+    "clean-modules": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf .parcel-cache",
+    "build": "yarn workspaces foreach -A --topological-dev --exclude . run build",
+    "install-package": "yarn workspace @argdown/node add @types/pdfkit",
+    "yarn:upgrade": "yarn workspaces foreach --all upgrade",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
+    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --topological-dev --exclude . run test",
+    "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
+    "docs:dev": "yarn workspace @argdown/docs run docs:dev",
+    "lint": "eslint",
+    "lint:all": "eslint packages/argdown-cli/src packages/argdown-core/src packages/argdown-image-export/src packages/argdown-language-server/src packages/argdown-map-views/src packages/argdown-markdown-it-plugin/src packages/argdown-marked-plugin/src packages/argdown-node/src packages/argdown-vscode/src packages/argdown-web-components/src && yarn workspaces foreach -A --include @argdown/sandbox run lint",
+    "lint:fix": "eslint --fix",
+    "lint:all:fix": "eslint --fix packages/argdown-cli/src packages/argdown-core/src packages/argdown-image-export/src packages/argdown-language-server/src packages/argdown-map-views/src packages/argdown-markdown-it-plugin/src packages/argdown-marked-plugin/src packages/argdown-node/src packages/argdown-vscode/src packages/argdown-web-components/src"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "packages/*/src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
   "devDependencies": {
-    "@vuepress/plugin-pwa": "1.8.2",
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "@vue/component-compiler-utils": "^3.0.0",
+    "@vuepress/plugin-pwa": "1.9.10",
+    "eslint": "^9.15.0",
     "esm": "^3.2.25",
-    "lerna": "4.0.0",
-    "vuepress": "1.8.2"
+    "nyc": "^17.1.0",
+    "stream-browserify": "^3.0.0",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.18.0",
+    "vm-browserify": "^1.1.2",
+    "vue": "^2.6.10",
+    "vuepress": "1.9.10",
+    "webpack": "5.99.9"
   },
   "workspace-sources": {
     "*": [
@@ -34,7 +63,22 @@
     ]
   },
   "dependencies": {
-    "markdown-it-container": "3.0.0",
+    "@yarnpkg/types": "^4.0.1",
+    "chalk": "^2.4.2",
+    "commander": "^2.20.3",
+    "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
+  },
+  "resolutions": {
+    "@types/markdown-it": "^14.1.2",
+    "axios": "1.12.0",
+    "braces": "3.0.3",
+    "esbuild": "0.25.0",
+    "http-proxy-middleware": "2.0.9",
+    "minimist": "1.2.6"
+  },
+  "packageManager": "yarn@4.9.4",
+  "engines": {
+    "node": ">= 22.11.0"
   }
 }

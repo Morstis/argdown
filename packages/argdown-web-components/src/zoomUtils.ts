@@ -1,18 +1,21 @@
 import { zoom, ZoomBehavior, zoomIdentity } from "d3-zoom";
-import { select, Selection } from "d3-selection";
+import { Selection } from "d3-selection";
 
 export const addZoom = (
   svg: Selection<SVGSVGElement, null, HTMLElement, any>,
   headerOffset: number
 ) => {
   const g = svg.select<SVGGraphicsElement>("g");
-  const listener = function(event) {
+  const listener = function(event: any) {
     g.attr("transform", event.transform);
   };
   const zoomBehavior = zoom<SVGSVGElement, null>().on("zoom", listener);
   svg.call(zoomBehavior);
-  const bbox = g.node().getBBox();
-  showAllAndCenterMap(svg, zoomBehavior, bbox.width, bbox.height, headerOffset);
+  const gNode = g.node();
+  if (gNode) {
+    const bbox = gNode.getBBox();
+    showAllAndCenterMap(svg, zoomBehavior, bbox.width, bbox.height, headerOffset);
+  }
   return zoomBehavior;
 };
 export const removeZoom = (
@@ -30,7 +33,10 @@ export const showAllAndCenterMap = (
   height: number,
   headerOffset: number
 ) => {
-  let positionInfo = svg.node().getBoundingClientRect();
+  const svgNode = svg.node();
+  if (!svgNode) return;
+  
+  const positionInfo = svgNode.getBoundingClientRect();
   const horizontalPadding = 5;
   const verticalPadding = 5;
   const availableWidth = positionInfo.width - horizontalPadding * 2;
@@ -59,5 +65,5 @@ export const setZoom = (
   svg
     .transition()
     .duration(duration)
-    .call(zoomBehavior.transform, zoomIdentity.translate(x, y).scale(scale));
+    .call((selection) => zoomBehavior.transform(selection, zoomIdentity.translate(x, y).scale(scale)));
 };

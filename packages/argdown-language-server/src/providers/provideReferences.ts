@@ -1,7 +1,7 @@
 import { Location, Position, ReferenceContext } from "vscode-languageserver";
-import { createLocation } from "./utils";
-import { findReferences } from "./findReferences";
-import { findNodeAtPosition } from "./findNodeAtPosition";
+import { createLocation } from "./utils.js";
+import { findReferences } from "./findReferences.js";
+import { findNodeAtPosition } from "./findNodeAtPosition.js";
 import { IArgdownResponse } from "@argdown/core";
 
 export const provideReferences = (

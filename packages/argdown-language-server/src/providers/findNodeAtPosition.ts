@@ -1,4 +1,4 @@
-import { findNodesContainingPosition } from "./findNodesContainingPosition";
+import { findNodesContainingPosition } from "./findNodesContainingPosition.js";
 import {
   TokenNames,
   IArgdownResponse,
@@ -27,10 +27,10 @@ export const findNodeAtPosition = (
   line: number,
   character: number
 ): IAstNode | null => {
-  if (!response || !response.ast || !(<IRuleNode>response.ast!).children) {
+  if (!response || !response.ast || !(<IRuleNode>response.ast).children) {
     return null;
   }
-  var children = (<IRuleNode>response.ast!).children!;
+  const children = (<IRuleNode>response.ast).children!;
   const containingNodes: any[] = findNodesContainingPosition(
     children,
     line,
