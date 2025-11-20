@@ -55,7 +55,6 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     mkdirp: "npm:^3.0.1"
     mocha: "npm:^11.1.0"
-    nyc: "npm:^17.1.0"
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.21"
     typedoc: "npm:0.28.14"
