@@ -42,12 +42,12 @@
     "email": "1pxsolidblack@gmail.com"
   },
   "scripts": {
-    "deploy": "npm run version:patch && git push --tags origin HEAD:master",
-    "build": "npm run clean && tsc",
+    "deploy": "yarn run version:patch && git push --tags origin HEAD:master",
+    "build": "yarn run clean && tsc",
     "test": "tsc --noEmit && mocha",
     "test:build": "yarn build && mocha",
     "test:custom-process": "mocha --fgrep \"custom process\"",
-    "prepublishOnly": "npm run-script build",
+    "prepublishOnly": "yarn run-script build",
     "clean": "rimraf \"dist/*\" --glob"
   },
   "readmeFilename": "Readme.md",
