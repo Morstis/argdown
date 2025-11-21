@@ -10,7 +10,7 @@ import { IToken } from "chevrotain";
 import pixelWidth from "string-pixel-width";
 import cloneDeep from "lodash.clonedeep";
 import * as mdurl from "mdurl";
-import { domainToASCII, domainToUnicode } from "node:url";
+import { toASCII, toUnicode } from "punycode/";
 
 // taken from: https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 
@@ -85,7 +85,7 @@ export const normalizeLink = (url: string): string => {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = domainToASCII(parsed.hostname);
+        parsed.hostname = toASCII(parsed.hostname);
       } catch (er) {
         /**/
       }
@@ -107,7 +107,7 @@ export const normalizeLinkText = (url: string): string => {
     //
     if (!parsed.protocol || RECODE_HOSTNAME_FOR.indexOf(parsed.protocol) >= 0) {
       try {
-        parsed.hostname = domainToUnicode(parsed.hostname);
+        parsed.hostname = toUnicode(parsed.hostname);
       } catch (er) {
         /**/
       }

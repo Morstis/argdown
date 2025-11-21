@@ -89,6 +89,7 @@ __metadata:
     "@types/lodash.union": "npm:^4.6.6"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
+    "@types/punycode": "npm:^2"
     "@types/string-pixel-width": "npm:^1.10.3"
     "@yarnpkg/pnpify": "npm:^4.1.4"
     chai: "npm:^4.3.10"
@@ -107,6 +108,7 @@ __metadata:
     mdurl: "npm:^2.0.0"
     mocha: "npm:^11.1.0"
     nyc: "npm:^17.1.0"
+    punycode: "npm:^2.3.1"
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.16"
     string-pixel-width: "npm:^1.10.0"
@@ -7065,6 +7067,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/e467fbbc4f4e5a487887c9f27784aa6262e5a45ab8f5676ee4662eb8862e1ef9a18a8f463fbc3150f2d50fe83902c5877714ac141acd8ccb780e18c88999cc29
+  languageName: node
+  linkType: hard
+
+"@types/punycode@npm:^2":
+  version: 2.1.4
+  resolution: "@types/punycode@npm:2.1.4"
+  checksum: 10c0/0472cc871783a22859ad83fe7cb62d23226ff78694b9807d2a3ec37571d46b05409ca9282c8ccedfb59e58e4a4561b27463623ce95bcfd6bd9c11ac1ef3cd0d1
   languageName: node
   linkType: hard
 
