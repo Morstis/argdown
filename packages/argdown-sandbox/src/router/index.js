@@ -18,7 +18,7 @@ const router = createRouter({
   scrollBehavior(to) {
     if (to.hash) {
       return {
-        el: to.hash,
+        el: to.hash
       };
     }
   },
@@ -28,8 +28,8 @@ const router = createRouter({
       name: "debug-lexer-parser",
       components: {
         default: DebugLexerParserOutput,
-        "output-header": DebugNavigation,
-      },
+        "output-header": DebugNavigation
+      }
     },
     { path: "/debug", redirect: { name: "debug-lexer-parser" } },
     {
@@ -37,57 +37,57 @@ const router = createRouter({
       name: "debug-model",
       components: {
         default: DebugModelOutput,
-        "output-header": DebugNavigation,
-      },
+        "output-header": DebugNavigation
+      }
     },
     {
       path: "/map/viz-js",
       name: "map-viz-js",
       components: {
         default: VizJsOutput,
-        "output-header": MapNavigation,
-      },
+        "output-header": MapNavigation
+      }
     },
     {
       path: "/map/dagre-d3",
       name: "map-dagre-d3",
       components: {
         default: DagreD3Output,
-        "output-header": MapNavigation,
-      },
+        "output-header": MapNavigation
+      }
     },
     {
       path: "/map/dot",
       name: "map-dot",
       components: {
         default: DotOutput,
-        "output-header": MapNavigation,
-      },
+        "output-header": MapNavigation
+      }
     },
     {
       path: "/map/graphml",
       name: "map-graphml",
       components: {
         default: GraphMLOutput,
-        "output-header": MapNavigation,
-      },
+        "output-header": MapNavigation
+      }
     },
     {
       path: "/map",
-      redirect: { name: "map-viz-js" },
+      redirect: { name: "map-viz-js" }
     },
     {
       path: "/html",
       name: "html",
       components: {
         default: HtmlOutput,
-        "output-header": HtmlNavigation,
-      },
+        "output-header": HtmlNavigation
+      }
     },
     {
       path: "/json",
       name: "json",
-      component: JSONOutput,
+      component: JSONOutput
     },
     { path: "/", redirect: { name: "html" } },
     {
@@ -95,13 +95,13 @@ const router = createRouter({
       name: "html-source",
       components: {
         default: HtmlOutput,
-        "output-header": HtmlNavigation,
+        "output-header": HtmlNavigation
       },
       props: {
-        default: { source: true },
-      },
-    },
-  ],
+        default: { source: true }
+      }
+    }
+  ]
 });
 
 let currentArgdownQuery = "";

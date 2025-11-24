@@ -6,7 +6,7 @@ export const addZoom = (
   headerOffset: number
 ) => {
   const g = svg.select<SVGGraphicsElement>("g");
-  const listener = function(event: any) {
+  const listener = function (event: any) {
     g.attr("transform", event.transform);
   };
   const zoomBehavior = zoom<SVGSVGElement, null>().on("zoom", listener);
@@ -14,7 +14,13 @@ export const addZoom = (
   const gNode = g.node();
   if (gNode) {
     const bbox = gNode.getBBox();
-    showAllAndCenterMap(svg, zoomBehavior, bbox.width, bbox.height, headerOffset);
+    showAllAndCenterMap(
+      svg,
+      zoomBehavior,
+      bbox.width,
+      bbox.height,
+      headerOffset
+    );
   }
   return zoomBehavior;
 };
@@ -35,7 +41,7 @@ export const showAllAndCenterMap = (
 ) => {
   const svgNode = svg.node();
   if (!svgNode) return;
-  
+
   const positionInfo = svgNode.getBoundingClientRect();
   const horizontalPadding = 5;
   const verticalPadding = 5;
@@ -65,5 +71,10 @@ export const setZoom = (
   svg
     .transition()
     .duration(duration)
-    .call((selection) => zoomBehavior.transform(selection, zoomIdentity.translate(x, y).scale(scale)));
+    .call((selection) =>
+      zoomBehavior.transform(
+        selection,
+        zoomIdentity.translate(x, y).scale(scale)
+      )
+    );
 };

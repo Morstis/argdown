@@ -14,7 +14,7 @@ export const findNodesContainingPosition = (
 ): any[] => {
   const result = [];
   const closestNode = nodes
-    .filter(n => {
+    .filter((n) => {
       // Indent and Dedent are pseudo tokens that mess up the search because of their location information
       return (
         isRuleNode(n) ||
@@ -22,7 +22,7 @@ export const findNodesContainingPosition = (
           n.tokenType.name !== String(TokenNames.DEDENT))
       );
     })
-    .filter(n => {
+    .filter((n) => {
       return n.endLine! >= line && n.startLine! <= line;
     })
     .reduce((acc: IAstNode | undefined, val) => {

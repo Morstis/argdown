@@ -1,13 +1,13 @@
 {
-    "presets": [
-        [
-            "env",
-            {
-                "targets": {
-                    "node": "current"
-                }
-            }
-        ]
-    ],
-    "ignore": ["src/pdfkit.js"]
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "ignore": ["src/pdfkit.js"]
 }

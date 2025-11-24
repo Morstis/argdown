@@ -29,7 +29,7 @@ export class SyncDotToSvgExportPlugin implements IArgdownPlugin {
       return request.vizJs;
     }
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
   run: IRequestHandler = (request, response) => {

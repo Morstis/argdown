@@ -118,7 +118,7 @@ export class DagreMap implements CanSelectNode {
       ? props.settings
       : {};
     mergeDefaults(settings, dagreDefaultSettings);
-     
+
     if (
       !this.svgElement ||
       !props.map ||
@@ -140,7 +140,7 @@ export class DagreMap implements CanSelectNode {
       nodesep: settings.nodeSep,
       marginx: 20,
       marginy: 20
-    }).setDefaultEdgeLabel(function() {
+    }).setDefaultEdgeLabel(function () {
       return {};
     });
 
@@ -152,7 +152,7 @@ export class DagreMap implements CanSelectNode {
       const props: { [key: string]: any } = {
         class: edge.relationType
       };
-      if (edge.relationType === "contradictory" as any) {
+      if (edge.relationType === ("contradictory" as any)) {
         props.arrowhead = "diamond";
         props.arrowtail = "diamond";
       }
@@ -171,7 +171,7 @@ export class DagreMap implements CanSelectNode {
     //   }
 
     // Create the renderer
-    const render = new dagreD3.render();  
+    const render = new dagreD3.render();
     // Add our custom arrow
     render.arrows().diamond = function normal(parent, id, edge, type) {
       const marker = parent
@@ -297,13 +297,16 @@ function escapeHtml(str: string) {
 
   return str;
 }
-const createDagreNode = function(
+const createDagreNode = function (
   node: IMapNode,
   g: graphlib.Graph,
   currentGroup: IGroupMapNode | null,
   settings: IDagreSettings
 ) {
-  const svgLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  const svgLabel = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "text"
+  );
 
   const docFrag = document.createDocumentFragment();
   let maxWidth = 0;
@@ -330,11 +333,11 @@ const createDagreNode = function(
     textSettings = null;
   }
   if (node.labelTitle) {
-    const { 
-      bold = true, 
-      fontSize = 14, 
-      font = "arial", 
-      charactersInLine = 25 
+    const {
+      bold = true,
+      fontSize = 14,
+      font = "arial",
+      charactersInLine = 25
     } = titleSettings || {};
     const titleArr = settings.measureLineWidth
       ? splitByLineWidth(node.labelTitle, {
@@ -357,11 +360,11 @@ const createDagreNode = function(
     }
   }
   if (node.labelText) {
-    const { 
-      bold = false, 
-      fontSize = 14, 
-      font = "arial", 
-      charactersInLine = 25 
+    const {
+      bold = false,
+      fontSize = 14,
+      font = "arial",
+      charactersInLine = 25
     } = textSettings || {};
     const textArr = settings.measureLineWidth
       ? splitByLineWidth(node.labelText, {

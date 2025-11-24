@@ -115,7 +115,12 @@ export class ExportDocumentToGraphMLCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri) {
-    void executeExport(resource, { graphml: ["graphml"] }, "graphml", "graphml");
+    void executeExport(
+      resource,
+      { graphml: ["graphml"] },
+      "graphml",
+      "graphml"
+    );
   }
 }
 export class ExportDocumentToVizjsSvgCommand implements Command {

@@ -9,7 +9,7 @@ import {
   MapPlugin,
   GroupPlugin,
   ColorPlugin,
-  DotExportPlugin,
+  DotExportPlugin
 } from "@argdown/core";
 import { VizJsMap, DagreMap } from "../../src/index";
 import "babel-polyfill";
@@ -40,7 +40,7 @@ const exportDot = [
   "build-model",
   "create-map",
   "colorize",
-  "export-dot",
+  "export-dot"
 ];
 const exportMap = ["parse-input", "build-model", "create-map", "colorize"];
 
@@ -57,7 +57,7 @@ const createDagreMap = (container: HTMLElement) => {
       <a1>
           - <a2>
       `,
-    process: exportMap,
+    process: exportMap
   });
   dagreMap.render({ settings: {}, map: response.map! });
 };
@@ -74,7 +74,7 @@ const createVizJsMap = async (container: HTMLElement) => {
   <a1>
       - <a2>
   `,
-    process: exportDot,
+    process: exportDot
   });
 
   try {
@@ -84,13 +84,13 @@ const createVizJsMap = async (container: HTMLElement) => {
         // Use the sync version which has synchronous rendering
         const svgString = renderStringSync(dot, {
           format: "svg",
-          engine: "dot",
+          engine: "dot"
         });
 
         // Clean up the SVG string (remove XML prolog if needed)
         return svgString.replace(
           /<\?[ ]*xml[\S ]+?\?>[\s]*<\![ ]*DOCTYPE[\S\s]+?\.dtd\"[ ]*>/,
-          "",
+          ""
         );
       } catch (error) {
         // Fallback to simple SVG if Viz.js fails
@@ -130,7 +130,7 @@ window.onload = function () {
   const container = document.createElement("div");
   container.setAttribute(
     "style",
-    "position:fixed; top: 80px; left: 0px; right: 0px; bottom: 0px;",
+    "position:fixed; top: 80px; left: 0px; right: 0px; bottom: 0px;"
   );
   document.body.appendChild(menu);
   const dagreButton = document.getElementById("dagre-button");
@@ -138,7 +138,7 @@ window.onload = function () {
   const vizJsButton = document.getElementById("viz-js-button");
   vizJsButton!.addEventListener(
     "click",
-    async () => await createVizJsMap(container),
+    async () => await createVizJsMap(container)
   );
   document.body.appendChild(container);
 };

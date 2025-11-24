@@ -14,10 +14,10 @@ export const builder = {
     type: "string" as const
   }
 };
-export const handler = async (
-  args: ArgumentsCamelCase<any>
-) => {
-  const typedArgs = args as ArgumentsCamelCase<IGeneralCliOptions & IRunCliOptions>;
+export const handler = async (args: ArgumentsCamelCase<any>) => {
+  const typedArgs = args as ArgumentsCamelCase<
+    IGeneralCliOptions & IRunCliOptions
+  >;
   const processName = typedArgs.process || "default";
   const config = await argdown.loadConfig(typedArgs.config);
   config.process = processName;

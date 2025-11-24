@@ -37,7 +37,7 @@ export class CopyDefaultCssPlugin implements IAsyncArgdownPlugin {
     }
     return request.copyDefaultCss;
   };
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     const settings = this.getSettings(request);
     defaultsDeep(settings, this.defaults);
     if (request.html && request.html.outputDir) {
@@ -51,7 +51,7 @@ export class CopyDefaultCssPlugin implements IAsyncArgdownPlugin {
     const rootPath = request.rootPath || process.cwd();
     const outputDir = request.outputPath
       ? path.dirname(request.outputPath)
-      : settings.outputDir ?? "";
+      : (settings.outputDir ?? "");
     const absoluteOutputDir = path.resolve(rootPath, outputDir);
     await mkdirp(absoluteOutputDir);
     const pathToDefaultCssFile = require.resolve(

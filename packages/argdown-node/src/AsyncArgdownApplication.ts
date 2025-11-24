@@ -227,17 +227,17 @@ export class AsyncArgdownApplication extends ArgdownApplication {
       watcherRequest.watch = false;
 
       watcher
-        .on("add", path => {
+        .on("add", (path) => {
           this.logger.log("verbose", `File ${path} has been added.`);
           watcherRequest.inputPath = path;
           void this.load(watcherRequest);
         })
-        .on("change", path => {
+        .on("change", (path) => {
           this.logger.log("verbose", `File ${path} has been changed.`);
           watcherRequest.inputPath = path;
           void this.load(watcherRequest);
         })
-        .on("unlink", path => {
+        .on("unlink", (path) => {
           this.logger.log("verbose", `File ${path} has been removed.`);
         });
     } else {

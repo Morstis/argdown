@@ -57,7 +57,7 @@ export default {
     const tokens = computed(() => store.tokens);
 
     return { lexerErrors, parserErrors, ast, tokens };
-  },
+  }
 };
 </script>
 

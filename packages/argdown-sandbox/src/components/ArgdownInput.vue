@@ -11,7 +11,7 @@ import {
   watch,
   nextTick,
   onMounted,
-  onBeforeUnmount,
+  onBeforeUnmount
 } from "vue";
 import { useArgdownStore } from "../store.js";
 import * as _ from "lodash";
@@ -60,8 +60,8 @@ export default {
           Tab: (cm) => {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
-          },
-        },
+          }
+        }
       });
       editor.value.setValue(String(localValue.value || ""));
       editor.value.on("change", (cm) => {
@@ -112,7 +112,7 @@ export default {
             }
           }
         }
-      },
+      }
     );
 
     watch(
@@ -141,7 +141,7 @@ export default {
             }
           }
         }
-      },
+      }
     );
 
     onMounted(() => {
@@ -158,8 +158,8 @@ export default {
           Tab: (cm) => {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
-          },
-        },
+          }
+        }
       });
       editor.value.setValue(String(localValue.value || ""));
       editor.value.on("change", (cm) => {
@@ -180,9 +180,9 @@ export default {
       editor,
       needsRefresh,
       useArgVu,
-      refreshEditor,
+      refreshEditor
     };
-  },
+  }
 };
 </script>
 

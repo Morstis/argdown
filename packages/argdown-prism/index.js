@@ -18,7 +18,8 @@ Prism.languages["argdown"] = {
     alias: "punctuation"
   },
   inference: {
-    pattern: /([ \t]*--+(\n|\r\n)[\S\s]+?(\n|\r\n)--+[ \t]*|[ \t]*----+[ \t]*(?=\r?\n))/,
+    pattern:
+      /([ \t]*--+(\n|\r\n)[\S\s]+?(\n|\r\n)--+[ \t]*|[ \t]*----+[ \t]*(?=\r?\n))/,
     alias: "function",
     inside: {
       punctuation: /--+/,

@@ -1,5 +1,11 @@
 import { expect } from "chai";
-import { ArgdownApplication, ParserPlugin, ModelPlugin, DataPlugin, RegroupPlugin } from "../src/index";
+import {
+  ArgdownApplication,
+  ParserPlugin,
+  ModelPlugin,
+  DataPlugin,
+  RegroupPlugin
+} from "../src/index";
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -11,8 +17,8 @@ app.addPlugin(modelPlugin, "build-model");
 const regroupPlugin = new RegroupPlugin();
 app.addPlugin(regroupPlugin, "build-model");
 
-describe("GroupPlugin", function() {
-  it("can regroup sections", function() {
+describe("GroupPlugin", function () {
+  it("can regroup sections", function () {
     let source = `
     ===
     group:
@@ -64,9 +70,17 @@ describe("GroupPlugin", function() {
 
     expect(result.statements!["p"].section).to.be.null;
     expect(result.statements!["q"].section).to.equal(result.sections![0]);
-    expect(result.arguments!["a"].section).to.equal(result.sections![0].children[0]);
-    expect(result.arguments!["b"].section).to.equal(result.sections![0].children[1]);
-    expect(result.arguments!["c"].section).to.equal(result.sections![0].children[0]);
-    expect(result.arguments!["d"].section).to.equal(result.sections![0].children[1]);
+    expect(result.arguments!["a"].section).to.equal(
+      result.sections![0].children[0]
+    );
+    expect(result.arguments!["b"].section).to.equal(
+      result.sections![0].children[1]
+    );
+    expect(result.arguments!["c"].section).to.equal(
+      result.sections![0].children[0]
+    );
+    expect(result.arguments!["d"].section).to.equal(
+      result.sections![0].children[1]
+    );
   });
 });

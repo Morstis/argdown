@@ -21,12 +21,15 @@ export interface LSPNotification {
 export class LanguageServerTestHelper {
   private serverProcess: ChildProcess | null = null;
   private requestId = 1;
-  private pendingRequests = new Map<number, { resolve: Function; reject: Function }>();
+  private pendingRequests = new Map<
+    number,
+    { resolve: Function; reject: Function }
+  >();
   private initializeCompleted = false;
 
   async startServer(): Promise<void> {
     const serverPath = path.join(__dirname, "../dist/node/server-node.cjs");
-    
+
     this.serverProcess = spawn("node", [serverPath, "--stdio"], {
       stdio: ["pipe", "pipe", "pipe"]
     });
@@ -54,31 +57,29 @@ export class LanguageServerTestHelper {
     await this.initialize();
   }
 
-
-
   private extractCompleteMessages(buffer: string): string {
     let remaining = buffer;
-    
+
     while (true) {
       const contentLengthMatch = remaining.match(/Content-Length: (\d+)\r?\n/);
       if (!contentLengthMatch) {
         break; // No more complete headers
       }
-      
+
       const contentLength = parseInt(contentLengthMatch[1]);
-      const headerEndIndex = remaining.indexOf('\r\n\r\n');
-      
+      const headerEndIndex = remaining.indexOf("\r\n\r\n");
+
       if (headerEndIndex === -1) {
         break; // Incomplete header
       }
-      
+
       const messageStart = headerEndIndex + 4;
       const messageEnd = messageStart + contentLength;
-      
+
       if (remaining.length < messageEnd) {
         break; // Incomplete message
       }
-      
+
       const messageContent = remaining.substring(messageStart, messageEnd);
       try {
         const message = JSON.parse(messageContent);
@@ -86,10 +87,10 @@ export class LanguageServerTestHelper {
       } catch (error) {
         console.error("Failed to parse message:", messageContent, error);
       }
-      
+
       remaining = remaining.substring(messageEnd);
     }
-    
+
     return remaining;
   }
 
@@ -129,10 +130,10 @@ export class LanguageServerTestHelper {
     };
 
     const result = await this.sendRequest("initialize", initializeParams);
-    
+
     // Send initialized notification
     await this.sendNotification("initialized", {});
-    
+
     this.initializeCompleted = true;
     return result;
   }
@@ -144,15 +145,15 @@ export class LanguageServerTestHelper {
 
     const id = this.requestId++;
     const request: LSPRequest = { id, method, params };
-    
+
     return new Promise((resolve, reject) => {
       this.pendingRequests.set(id, { resolve, reject });
-      
+
       const message = JSON.stringify(request);
       const header = `Content-Length: ${Buffer.byteLength(message)}\r\n\r\n`;
-      
+
       this.serverProcess!.stdin!.write(header + message);
-      
+
       // Set timeout for request
       setTimeout(() => {
         if (this.pendingRequests.has(id)) {
@@ -171,7 +172,7 @@ export class LanguageServerTestHelper {
     const notification: LSPNotification = { method, params };
     const message = JSON.stringify(notification);
     const header = `Content-Length: ${Buffer.byteLength(message)}\r\n\r\n`;
-    
+
     this.serverProcess.stdin.write(header + message);
   }
 
@@ -215,7 +216,7 @@ export class LanguageServerTestHelper {
       // Force kill if still running
       if (!this.serverProcess.killed) {
         this.serverProcess.kill("SIGTERM");
-        
+
         // Wait a bit, then force kill
         setTimeout(() => {
           if (this.serverProcess && !this.serverProcess.killed) {
@@ -223,7 +224,7 @@ export class LanguageServerTestHelper {
           }
         }, 2000);
       }
-      
+
       this.serverProcess = null;
     }
   }

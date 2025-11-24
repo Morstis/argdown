@@ -1,7 +1,7 @@
 //var argdown = require("@argdown/core/dist/argdown.js").argdown;
 //var SaysWhoPlugin = require("@argdown/core/dist/plugins/SaysWhoPlugin.js")
 //  .SaysWhoPlugin;
-var { argdown, SaysWhoPlugin } = require("@argdown/core");  
+var { argdown, SaysWhoPlugin } = require("@argdown/core");
 argdown.addPlugin(new SaysWhoPlugin(), "add-proponents");
 argdown.defaultProcesses["says-who-map"] = [
   "parse-input",
@@ -16,7 +16,7 @@ argdown.defaultProcesses["says-who-map"] = [
   "export-web-component"
 ];
 
-module.exports = md => {
+module.exports = (md) => {
   function removeFrontMatter(str) {
     return str.replace(/[\s]*===+[\s\S]*===+[\s]*/, "");
   }

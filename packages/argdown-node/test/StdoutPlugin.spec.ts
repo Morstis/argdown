@@ -25,7 +25,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -49,7 +49,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -73,7 +73,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -105,7 +105,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });

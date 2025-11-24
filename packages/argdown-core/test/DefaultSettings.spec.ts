@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { DefaultSettings, ensure, mergeDefaults } from "../src";
 import { isObject } from "util";
 
-describe("DefaultSettings", function() {
-  it("can create default settings with nested ensure.object merge functions", function() {
+describe("DefaultSettings", function () {
+  it("can create default settings with nested ensure.object merge functions", function () {
     interface ITestSettings {
       obj: {
         obj: {
@@ -29,7 +29,7 @@ describe("DefaultSettings", function() {
     expect(settings.obj.nr).to.equal(1);
     expect(settings.bool).to.be.true;
   });
-  it("can merge default settings with config settings", function() {
+  it("can merge default settings with config settings", function () {
     interface ITestSettings {
       obj: {
         obj: {
@@ -58,7 +58,7 @@ describe("DefaultSettings", function() {
     expect(settings.obj.nr).to.equal(1);
     expect(settings.bool).to.be.true;
   });
-  it("can overwrite config settings with default settings", function() {
+  it("can overwrite config settings with default settings", function () {
     interface ITestSettings {
       obj: {
         obj: {

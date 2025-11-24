@@ -140,7 +140,7 @@ export class SaveAsFilePlugin implements IAsyncArgdownPlugin {
     const outputPath = path.resolve(absoluteOutputDir, fileName + extension);
     await mkdirp(absoluteOutputDir);
     await new Promise<void>((resolve, reject) => {
-      fs.writeFile(outputPath, data, function(err: Error | null) {
+      fs.writeFile(outputPath, data, function (err: Error | null) {
         if (err) {
           reject(err);
         }

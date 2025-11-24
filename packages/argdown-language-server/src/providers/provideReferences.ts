@@ -18,5 +18,5 @@ export const provideReferences = (
     return [];
   }
   const nodes = findReferences(response, nodeAtPosition, includeDeclaration);
-  return nodes.map(n => createLocation(uri, n));
+  return nodes.map((n) => createLocation(uri, n));
 };

@@ -32,8 +32,8 @@ const mapPlugin = new MapPlugin();
 app.addPlugin(mapPlugin, "build-map");
 app.addPlugin(new MapNodeImagesPlugin(), "add-images");
 
-describe("MapNodeImagesPlugin", function() {
-  it("can add images to nodes from metadata", function() {
+describe("MapNodeImagesPlugin", function () {
+  it("can add images to nodes from metadata", function () {
     let source = `
     ===
     images:
@@ -44,7 +44,7 @@ describe("MapNodeImagesPlugin", function() {
     <Argument 1> {images: ["test1.png"]}
       + [Statement 1]: Hello World! {images: ["test2.svg", "short-id"]}
     `;
-    const request:IArgdownRequest = {
+    const request: IArgdownRequest = {
       process: ["parse-input", "build-model", "build-map", "add-images"],
       input: source
     };
@@ -63,7 +63,7 @@ describe("MapNodeImagesPlugin", function() {
     expect(request.images!.files!["test2.svg"].path).to.equal("test2.svg");
     expect(request.images!.files!["short-id"].path).to.equal("test3.jpg");
   });
-  it("can add images to nodes from tags", function() {
+  it("can add images to nodes from tags", function () {
     let source = `
     ===
     images:
@@ -76,7 +76,7 @@ describe("MapNodeImagesPlugin", function() {
     <Argument 1> #tag1
       + [Statement 1]: Hello World! #tag2 #tag3
     `;
-    const request:IArgdownRequest = {
+    const request: IArgdownRequest = {
       process: ["parse-input", "build-model", "build-map", "add-images"],
       input: source
     };

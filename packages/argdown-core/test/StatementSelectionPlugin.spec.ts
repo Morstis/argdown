@@ -20,8 +20,8 @@ app.addPlugin(preselectionPlugin, "build-map");
 const statementSelectionPlugin = new StatementSelectionPlugin();
 app.addPlugin(statementSelectionPlugin, "build-map");
 
-describe("StatementSelectionPlugin", function() {
-  it("can exclude disconnected nodes.", function() {
+describe("StatementSelectionPlugin", function () {
+  it("can exclude disconnected nodes.", function () {
     let source = `
         ===
         title: Including disconnected nodes
@@ -43,7 +43,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(0);
     expect(result.selection!.arguments.length).to.equal(0);
   });
-  it("can include disconnected nodes.", function() {
+  it("can include disconnected nodes.", function () {
     let source = `
     ===
     title: Including disconnected nodes
@@ -65,7 +65,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(3);
     expect(result.selection!.arguments.length).to.equal(0);
   });
-  it("can include nodes connected by logical relations.", function() {
+  it("can include nodes connected by logical relations.", function () {
     let source = `    
     [s1]
         - [s2]
@@ -82,7 +82,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(4);
     expect(result.selection!.arguments.length).to.equal(0);
   });
-  it("can include statements connected to pcs statements.", function() {
+  it("can include statements connected to pcs statements.", function () {
     let source = `
 
     (1) s1
@@ -103,7 +103,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(3);
     expect(result.selection!.arguments.length).to.equal(1);
   });
-  it("can include statements connected to arguments.", function() {
+  it("can include statements connected to arguments.", function () {
     let source = `
 
 <a>
@@ -123,7 +123,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(5);
     expect(result.selection!.arguments.length).to.equal(1);
   });
-  it("includes all statements in 'all' mode.", function() {
+  it("includes all statements in 'all' mode.", function () {
     let source = `
     ===
     selection:
@@ -152,7 +152,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(5);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("includes all statements not used in argument in 'not-used-in-argument' mode.", function() {
+  it("includes all statements not used in argument in 'not-used-in-argument' mode.", function () {
     let source = `
     ===
     selection:
@@ -181,7 +181,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(2);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("includes all statements with title in 'with-title' mode.", function() {
+  it("includes all statements with title in 'with-title' mode.", function () {
     let source = `
     ===
     selection:
@@ -210,7 +210,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(3);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("includes all statements with relations in 'with-relation' mode.", function() {
+  it("includes all statements with relations in 'with-relation' mode.", function () {
     let source = `
     ===
     selection:
@@ -239,7 +239,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(3);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("includes all statements with more than 1 relation in 'with-more-than-one-relation' mode.", function() {
+  it("includes all statements with more than 1 relation in 'with-more-than-one-relation' mode.", function () {
     let source = `
     ===
     selection:
@@ -268,7 +268,7 @@ describe("StatementSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(2);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("selects top-level statement if statementSelectionMode is 'top-level'", function() {
+  it("selects top-level statement if statementSelectionMode is 'top-level'", function () {
     let source = `
     ===
     selection:
@@ -298,8 +298,9 @@ describe("StatementSelectionPlugin", function() {
     let result = app.run(request);
 
     expect(result.selection!.statements.length).to.equal(3);
-    expect(result.selection!.statements.find(s => s.title! === "another title"))
-      .to.exist;
+    expect(
+      result.selection!.statements.find((s) => s.title! === "another title")
+    ).to.exist;
     expect(result.selection!.arguments.length).to.equal(2);
   });
 });

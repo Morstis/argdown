@@ -44,7 +44,7 @@ export interface IWebComponentCliOptions {
   inputGlob?: string;
   outputDir?: string;
 }
-export const handler = async function(
+export const handler = async function (
   args: Arguments<IGeneralCliOptions & IWebComponentCliOptions>
 ) {
   const config = await argdown.loadConfig(args.config);

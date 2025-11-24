@@ -19,7 +19,9 @@ declare module "@aduh95/viz.js" {
     worker: Worker; // For browser environments
   };
 
-  export type VizConstructorOptions = VizConstructorOptionsWorkerURL | VizConstructorOptionsWorker;
+  export type VizConstructorOptions =
+    | VizConstructorOptionsWorkerURL
+    | VizConstructorOptionsWorker;
 
   export default class Viz {
     constructor(options: VizConstructorOptions);

@@ -5,10 +5,10 @@ import {
   argdown as defaultArgdownApplication
 } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
-import {Renderer, MarkedOptions, Tokens } from "marked";
+import { Renderer, MarkedOptions, Tokens } from "marked";
 
 export const addArgdownSupportToMarked = (
-  markedFn: (src: string, options?: MarkedOptions) => Promise<string>, 
+  markedFn: (src: string, options?: MarkedOptions) => Promise<string>,
   renderer: Renderer,
   config?: ((options: any) => IArgdownRequest) | IArgdownRequest
 ) => {
@@ -50,7 +50,7 @@ export const addArgdownSupportToMarked = (
   };
   const tempCode = renderer.code.bind(renderer as any);
   renderer.code = (token: Tokens.Code) => {
-    const { text, lang} = token; 
+    const { text, lang } = token;
 
     if (lang === "argdown-map") {
       return generateWebComponent(text.trim(), "map") || "";
@@ -59,7 +59,7 @@ export const addArgdownSupportToMarked = (
     }
     return tempCode(token);
   };
-  return (src: string, options?: MarkedOptions  ) => {
+  return (src: string, options?: MarkedOptions) => {
     if (typeof config === "function") {
       currentConfig = config(options);
     }

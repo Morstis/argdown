@@ -2,7 +2,10 @@ import { tokenMatcher } from "chevrotain";
 import * as argdownLexer from "./../lexer.js";
 import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
 import { IRuleNodeHandler, ITokenNodeHandler } from "../ArgdownTreeWalker.js";
-import { ArgdownPluginError, checkResponseFields } from "../ArgdownPluginError.js";
+import {
+  ArgdownPluginError,
+  checkResponseFields
+} from "../ArgdownPluginError.js";
 import { IArgdownRequest, IArgdownResponse } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
 import last from "lodash.last";
@@ -139,7 +142,7 @@ export class ModelPlugin implements IArgdownPlugin {
     }
     return request.model;
   };
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
   /**
@@ -181,7 +184,8 @@ export class ModelPlugin implements IArgdownPlugin {
         this.removeRelationFromSource(relation);
 
         const conclusionStatement = argument.pcs[argument.pcs.length - 1];
-        const equivalenceClass = response.statements![conclusionStatement.title!];
+        const equivalenceClass =
+          response.statements![conclusionStatement.title!];
         //change to relation of main conclusion
         relation.from = equivalenceClass;
 
@@ -260,7 +264,7 @@ export class ModelPlugin implements IArgdownPlugin {
         if (relation.relationType === RelationType.SUPPORT) {
           relation.relationType = RelationType.ENTAILS;
         } else if (relation.relationType === RelationType.ATTACK) {
-          const relationExists = relation.from!.relations!.find(r => {
+          const relationExists = relation.from!.relations!.find((r) => {
             return (
               r.relationType === RelationType.CONTRARY &&
               ((r.from === relation.from && r.to === relation.to) ||
@@ -313,14 +317,14 @@ export class ModelPlugin implements IArgdownPlugin {
       }
       const ec = relation.from as IEquivalenceClass;
       const ec2ecRelation = ec.relations!.find(
-        otherRelation =>
+        (otherRelation) =>
           other(otherRelation, ec).type === ArgdownTypes.EQUIVALENCE_CLASS &&
           ((otherRelation.relationType === RelationType.ATTACK &&
             otherRelation.from === ec) ||
             otherRelation.relationType === RelationType.CONTRADICTORY ||
             otherRelation.relationType === RelationType.CONTRARY) &&
           !!argument.pcs.find(
-            s =>
+            (s) =>
               s.title === other(otherRelation, ec).title &&
               s.role === StatementRole.PREMISE
           )
@@ -385,7 +389,8 @@ export class ModelPlugin implements IArgdownPlugin {
     // const statementDefinitionByNumberPattern = /<(.+)>\((.+)\):/;
     // const statementMentionByNumberPattern = /@<(.+)>\((.+)\)/;
     const linkPattern = /\[(.+)\]\((.+)\)/;
-    const tagPattern = /#(?:\(([^)]+)\)|([a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+))/;
+    const tagPattern =
+      /#(?:\(([^)]+)\)|([a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+))/;
 
     let uniqueTitleCounter = 0;
     function getUniqueTitle() {
@@ -394,11 +399,8 @@ export class ModelPlugin implements IArgdownPlugin {
     }
 
     let currentStatement: IStatement | null = null;
-    let currentRelationParent:
-      | IArgument
-      | IStatement
-      | IInference
-      | null = null;
+    let currentRelationParent: IArgument | IStatement | IInference | null =
+      null;
     let currentArgument: IArgument | null = null;
     let currentPCS: IArgument | null = null;
     let currentInference: IInference | null = null;
@@ -424,12 +426,17 @@ export class ModelPlugin implements IArgdownPlugin {
             relationParent.title
           );
         }
-      } else if (relationParent.type === ArgdownTypes.ARGUMENT || relationParent.type === ArgdownTypes.INFERENCE) {
+      } else if (
+        relationParent.type === ArgdownTypes.ARGUMENT ||
+        relationParent.type === ArgdownTypes.INFERENCE
+      ) {
         // IArgument and IInference are already valid RelationMember types
         return target as IArgument | IInference;
       } else {
         // This should not happen, but provide a fallback
-        throw new Error(`Unexpected relation parent type: ${(relationParent as any).type}`);
+        throw new Error(
+          `Unexpected relation parent type: ${(relationParent as any).type}`
+        );
       }
     };
     const getArgument = (
@@ -1058,7 +1065,7 @@ export class ModelPlugin implements IArgdownPlugin {
           ec.isUsedAsMainConclusion = true;
           if (
             !ec.members.find(
-              s => s.role === StatementRole.INTERMEDIARY_CONCLUSION
+              (s) => s.role === StatementRole.INTERMEDIARY_CONCLUSION
             )
           ) {
             ec.isUsedAsIntermediaryConclusion = false;
@@ -1095,7 +1102,9 @@ export class ModelPlugin implements IArgdownPlugin {
         if (node.children && node.children.length > 1) {
           //first node is ArgumentStatementStart
           const statementNode = node.children[1] as IRuleNode;
-          const statement: IPCSStatement = <IPCSStatement>statementNode.statement;
+          const statement: IPCSStatement = <IPCSStatement>(
+            statementNode.statement
+          );
           if (!statement) {
             throw new ArgdownPluginError(
               this.name,
@@ -1103,7 +1112,10 @@ export class ModelPlugin implements IArgdownPlugin {
               "Missing statement."
             );
           }
-          const ec = getEquivalenceClass(response.statements ?? {}, statement.title ?? "untitled");
+          const ec = getEquivalenceClass(
+            response.statements ?? {},
+            statement.title ?? "untitled"
+          );
           statement.role = StatementRole.PREMISE;
           statement.argumentTitle = currentPCS.title;
           if (
@@ -1286,9 +1298,8 @@ export class ModelPlugin implements IArgdownPlugin {
                 node.text += child.image.substring(1, child.image.length);
               } else if (tokenMatcher(child, argdownLexer.SpecialChar)) {
                 const specialCharTrimmed = child.image.trim();
-                const specialCharInfo = settings.shortcodes![
-                  specialCharTrimmed
-                ];
+                const specialCharInfo =
+                  settings.shortcodes![specialCharTrimmed];
                 if (specialCharInfo) {
                   const startPos = node.text ? node.text.length : 0;
                   node.text += specialCharInfo.unicode;

@@ -75,10 +75,13 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
 
-  runAsync: IAsyncRequestHandler = async (request: IArgdownRequest, response: IArgdownResponse) => {
+  runAsync: IAsyncRequestHandler = async (
+    request: IArgdownRequest,
+    response: IArgdownResponse
+  ) => {
     const settings = this.getSettings(request);
     const svgString = response.svg ?? "";
-    
+
     if (!svgString) {
       throw new Error("No SVG data found in response");
     }
@@ -87,19 +90,23 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
       // Set up Sharp with SVG input and high-quality rendering
       const density = settings.density || 150; // Default to 150 DPI for crisp text
       const scale = settings.scale || 1;
-      
+
       // Create Sharp instance from SVG with density setting for better text rendering
-      let sharpInstance = sharp(Buffer.from(svgString), { 
-        density: density 
+      let sharpInstance = sharp(Buffer.from(svgString), {
+        density: density
       });
 
       // Apply scaling for higher resolution if specified
       if (scale > 1) {
         // First get the SVG dimensions to calculate scaled size
         const metadata = await sharpInstance.metadata();
-        const scaledWidth = metadata.width ? Math.round(metadata.width * scale) : undefined;
-        const scaledHeight = metadata.height ? Math.round(metadata.height * scale) : undefined;
-        
+        const scaledWidth = metadata.width
+          ? Math.round(metadata.width * scale)
+          : undefined;
+        const scaledHeight = metadata.height
+          ? Math.round(metadata.height * scale)
+          : undefined;
+
         if (scaledWidth && scaledHeight) {
           sharpInstance = sharpInstance.resize(scaledWidth, scaledHeight, {
             kernel: sharp.kernel.lanczos3, // High-quality resampling
@@ -111,7 +118,7 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
       // Apply custom resize if width or height specified (overrides scale)
       if (settings.width || settings.height) {
         sharpInstance = sharpInstance.resize(settings.width, settings.height, {
-          fit: 'inside', // Maintain aspect ratio
+          fit: "inside", // Maintain aspect ratio
           withoutEnlargement: false,
           kernel: sharp.kernel.lanczos3 // High-quality resampling
         });
@@ -119,7 +126,9 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
 
       // Apply background if specified
       if (settings.background) {
-        sharpInstance = sharpInstance.flatten({ background: settings.background });
+        sharpInstance = sharpInstance.flatten({
+          background: settings.background
+        });
       }
 
       // Generate output based on format with high-quality settings
@@ -130,16 +139,16 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
           progressive: settings.progressive || false,
           effort: settings.effort || 7
         };
-        
+
         response.png = await sharpInstance.png(pngOptions).toBuffer();
       } else if (settings.format === "jpg") {
         const jpegOptions: sharp.JpegOptions = {
           quality: Math.max(settings.quality || 90, 85), // Ensure minimum quality for text
           progressive: settings.progressive || false,
           mozjpeg: settings.mozjpeg || false,
-          chromaSubsampling: '4:4:4' // Prevent chroma subsampling for better text quality
+          chromaSubsampling: "4:4:4" // Prevent chroma subsampling for better text quality
         };
-        
+
         response.jpg = await sharpInstance.jpeg(jpegOptions).toBuffer();
       } else if (settings.format === "webp") {
         const webpOptions: sharp.WebpOptions = {
@@ -147,11 +156,13 @@ export class ImageExportPlugin implements IAsyncArgdownPlugin {
           lossless: settings.lossless || false,
           effort: settings.effort || 6
         };
-        
+
         response.webp = await sharpInstance.webp(webpOptions).toBuffer();
       }
     } catch (error) {
-      throw new Error(`Image export failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Image export failed: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   };
 }

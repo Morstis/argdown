@@ -5,7 +5,7 @@ Website: https://argdown.org
 Category: common, markup
 */
 
-export default function(hljs: any) {
+export default function (hljs: any) {
   const FRONTMATTER = {
     begin: "===",
     end: "===",

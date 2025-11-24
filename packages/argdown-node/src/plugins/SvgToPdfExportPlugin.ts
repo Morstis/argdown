@@ -142,7 +142,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
           if (bold) face = `${face} Bold`;
           if (italic) face = `${face} Italic`;
           const re = new RegExp(`${face}( Regular)?$`);
-          const match = settings.fonts!.find(fontObj => {
+          const match = settings.fonts!.find((fontObj) => {
             return re.test(fontObj.name);
           });
           if (match !== undefined) {
@@ -167,7 +167,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
   };
   // https://github.com/devongovett/pdfkit/issues/265
   async savePdfToFile(pdf: any, fileName: string) {
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       // To determine when the PDF has finished being written successfully
       // we need to confirm the following 2 conditions:
       //

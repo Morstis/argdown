@@ -11,7 +11,7 @@ const pinia = createPinia();
 app.config.globalProperties.$filters = {
   tokenName: function (token) {
     return token.tokenType.name;
-  },
+  }
 };
 
 app.use(pinia);

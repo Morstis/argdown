@@ -18,8 +18,8 @@ export const provideDefinitions = (
       // collect locations of all equivalenceClass members
       const equivalenceClass = response.statements![nodeAtPosition.title!];
       const definitions: Location[] = equivalenceClass.members
-        .filter(m => !m.isReference)
-        .map(m => {
+        .filter((m) => !m.isReference)
+        .map((m) => {
           return createLocation(uri, m);
         });
       return definitions;
@@ -27,8 +27,8 @@ export const provideDefinitions = (
       // collect locations of pcs and all descriptions
       const argument = response.arguments![nodeAtPosition.title!];
       const definitions: Location[] = argument.members
-        .filter(m => !m.isReference)
-        .map(m => {
+        .filter((m) => !m.isReference)
+        .map((m) => {
           return createLocation(uri, m);
         });
       if (argument.pcs && argument.pcs.length > 0) {

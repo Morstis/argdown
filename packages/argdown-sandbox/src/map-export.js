@@ -16,7 +16,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
 
         callback(new Blob([arr], { type: type || "image/png" }));
       });
-    },
+    }
   });
 }
 
@@ -33,7 +33,7 @@ function getSvgString(el, width, height, scale) {
   if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
     source = source.replace(
       /^<svg/,
-      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"',
+      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
     );
   }
 
@@ -49,7 +49,7 @@ function getSvgString(el, width, height, scale) {
       width +
       " " +
       height +
-      '" preserveAspectRatio="xMinYMin meet"',
+      '" preserveAspectRatio="xMinYMin meet"'
   );
 
   // add xml declaration
@@ -61,7 +61,7 @@ function svgString2Image(svgString, width, height, callback) {
   // Try using Blob and ObjectURL first (more reliable)
   try {
     const svgBlob = new Blob([svgString], {
-      type: "image/svg+xml;charset=utf-8",
+      type: "image/svg+xml;charset=utf-8"
     });
     const url = URL.createObjectURL(svgBlob);
 

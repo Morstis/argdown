@@ -41,7 +41,9 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
               path.resolve(baseDir, image.path),
               constants.F_OK | constants.R_OK
             );
-            const fileBuffer = await fs.readFile(path.resolve(baseDir, image.path));
+            const fileBuffer = await fs.readFile(
+              path.resolve(baseDir, image.path)
+            );
             dimensions = imageSize(fileBuffer);
           } catch (err) {
             dimensions = await this.getSizeFromRemoteFile(image.path);
@@ -63,7 +65,9 @@ export class ImageSizePlugin implements IAsyncArgdownPlugin {
       }
     }
   };
-  getSizeFromRemoteFile = async (path: string): Promise<ISizeCalculationResult> => {
+  getSizeFromRemoteFile = async (
+    path: string
+  ): Promise<ISizeCalculationResult> => {
     const response = await axios.get(path, {
       responseType: "arraybuffer"
     });

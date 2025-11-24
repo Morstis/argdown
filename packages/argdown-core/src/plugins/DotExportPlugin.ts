@@ -478,7 +478,8 @@ const getLabel = (
       } else if (node.images.length > 1) {
         img = `<TR><TD><TABLE ALIGN="CENTER" BORDER="0" CELLSPACING="${imagesPadding}"><TR>${node.images
           ?.map(
-            image => `<TD><IMG SRC="${imageSettings.files![image].path}"/></TD>`
+            (image) =>
+              `<TD><IMG SRC="${imageSettings.files![image].path}"/></TD>`
           )
           .join("")}</TR></TABLE></TD></TR>`;
       }

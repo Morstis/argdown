@@ -2,7 +2,12 @@ import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
 } from "../IAsyncArgdownPlugin.js";
-import { ArgdownPluginError, IArgdownRequest, IArgdownResponse, IArgdownLogger } from "@argdown/core";
+import {
+  ArgdownPluginError,
+  IArgdownRequest,
+  IArgdownResponse,
+  IArgdownLogger
+} from "@argdown/core";
 import isSvg from "is-svg";
 import imageType from "image-type";
 import { imageUtils } from "./utils.js";
@@ -10,7 +15,11 @@ import path from "path";
 
 export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
   name = "GenerateDataUrlsPlugin";
-  runAsync: IAsyncRequestHandler = async (request: IArgdownRequest, _response: IArgdownResponse, _logger: IArgdownLogger) => {
+  runAsync: IAsyncRequestHandler = async (
+    request: IArgdownRequest,
+    _response: IArgdownResponse,
+    _logger: IArgdownLogger
+  ) => {
     if (
       !request.images ||
       !request.images.files ||
@@ -20,7 +29,12 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
     }
     for (const image of Object.values(request.images.files)) {
       // Access properties with proper null checking for unknown object structure
-      if (!image || typeof image !== 'object' || !('path' in image) || !(image as { path?: string }).path) {
+      if (
+        !image ||
+        typeof image !== "object" ||
+        !("path" in image) ||
+        !(image as { path?: string }).path
+      ) {
         return;
       }
       const imageObj = image as { path: string; dataUrl?: string };
@@ -32,7 +46,7 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
         const buffer = await imageUtils.getImage(imageObj.path, baseDir);
         let mimeType = "";
         if (buffer) {
-          const bufferString = buffer.toString("utf-8"); 
+          const bufferString = buffer.toString("utf-8");
           if (isSvg(bufferString)) {
             mimeType = "svg+xml";
           } else {
