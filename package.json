@@ -50,6 +50,7 @@
     "@vuepress/plugin-pwa": "1.9.10",
     "eslint": "^9.15.0",
     "esm": "^3.2.25",
+    "lerna": "^9.0.1",
     "nyc": "^17.1.0",
     "stream-browserify": "^3.0.0",
     "tsx": "4.20.6",

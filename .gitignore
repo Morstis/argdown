@@ -8,6 +8,7 @@ coverage
 
 
 .nyc_output
+.nx
 
 # local env files
 .env.local
@@ -35,3 +36,5 @@ lerna-debug.log*
 .vscode
 .parcel-cache
 .cache
+
+.nx/cache
