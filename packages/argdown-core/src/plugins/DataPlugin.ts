@@ -129,7 +129,7 @@ export class DataPlugin implements IArgdownPlugin {
       return request.data;
     }
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
   //   run: IRequestHandler = (request, response, logger) => {};

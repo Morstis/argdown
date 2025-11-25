@@ -20,8 +20,8 @@ app.addPlugin(preselectionPlugin, "build-map");
 const argumentSelectionPlugin = new ArgumentSelectionPlugin();
 app.addPlugin(argumentSelectionPlugin, "build-map");
 
-describe("ArgumentSelectionPlugin", function() {
-  it("can exclude disconnected nodes.", function() {
+describe("ArgumentSelectionPlugin", function () {
+  it("can exclude disconnected nodes.", function () {
     let source = `
         ===
         title: Including disconnected nodes
@@ -43,7 +43,7 @@ describe("ArgumentSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(0);
     expect(result.selection!.arguments.length).to.equal(0);
   });
-  it("can include disconnected nodes.", function() {
+  it("can include disconnected nodes.", function () {
     let source = `
     ===
     title: Including disconnected nodes
@@ -65,7 +65,7 @@ describe("ArgumentSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(0);
     expect(result.selection!.arguments.length).to.equal(3);
   });
-  it("can include nodes connected by undercut.", function() {
+  it("can include nodes connected by undercut.", function () {
     let source = `    
     <a>
 
@@ -93,7 +93,7 @@ describe("ArgumentSelectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(5);
     expect(result.selection!.arguments.length).to.equal(6);
   });
-  it("can include nodes connected by support and attack.", function() {
+  it("can include nodes connected by support and attack.", function () {
     let source = `    
     <a>
 

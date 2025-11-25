@@ -16,9 +16,9 @@ export default {
   name: "app-header",
   data() {
     return {
-      title: "Argdown Editor",
+      title: "Argdown Editor"
     };
-  },
+  }
 };
 </script>
 

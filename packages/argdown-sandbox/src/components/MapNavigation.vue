@@ -89,9 +89,9 @@ export default {
       openSaveAsPngDialog,
       showSaveAsPngDialog,
       pngScale,
-      closeSaveAsPngDialog,
+      closeSaveAsPngDialog
     };
-  },
+  }
 };
 </script>
 

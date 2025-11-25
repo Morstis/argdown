@@ -20,7 +20,7 @@ import * as fs from "fs";
 
 let app = new ArgdownApplication();
 
-describe("ModelPlugin", function() {
+describe("ModelPlugin", function () {
   const parserPlugin = new ParserPlugin();
   const dataPlugin = new DataPlugin();
   let modelPlugin = new ModelPlugin();
@@ -28,7 +28,7 @@ describe("ModelPlugin", function() {
   app.addPlugin(dataPlugin, "build-model");
   app.addPlugin(modelPlugin, "build-model");
 
-  it("can create statements dictionary and save statement by title", function() {
+  it("can create statements dictionary and save statement by title", function () {
     const source = `
     [Test]: Hello Earth!
 
@@ -61,7 +61,7 @@ describe("ModelPlugin", function() {
     expect(statements["Test"].members[1].ranges![0].start).to.equal(6);
     expect(statements["Test"].members[1].ranges![0].stop).to.equal(10);
   });
-  it("can create arguments dictionary and save argument by title", function() {
+  it("can create arguments dictionary and save argument by title", function () {
     let source = `
     <Test>: Hello Earth!
 
@@ -85,7 +85,7 @@ describe("ModelPlugin", function() {
     expect(description.ranges![0].start).to.equal(6);
     expect(description.ranges![0].stop).to.equal(10);
   });
-  it("can create statement relations and ignore duplicates", function() {
+  it("can create statement relations and ignore duplicates", function () {
     let source = `
     [A]: The Beatles are the best!
       + [B]: The Beatles made 'Rubber Soul'!
@@ -136,7 +136,7 @@ describe("ModelPlugin", function() {
       result.arguments!["C"]
     );
   });
-  it("can ignore duplicates of argument relations", function() {
+  it("can ignore duplicates of argument relations", function () {
     let source = `
     [A]: text
       + <Argument 1>
@@ -158,7 +158,7 @@ describe("ModelPlugin", function() {
     //console.log(result.relations);
     expect(result.relations!.length).to.equal(1);
   });
-  it("can create sketched argument relations", function() {
+  it("can create sketched argument relations", function () {
     let source =
       "<A>: The Beatles are the best!\n  +<B>: The Beatles made 'Rubber Soul'!\n  ->[C]: The Rolling Stones were cooler!";
     let result = app.run({
@@ -190,7 +190,7 @@ describe("ModelPlugin", function() {
       result.statements!["C"]
     );
   });
-  it("does not create duplicate relations for contradictions", function() {
+  it("does not create duplicate relations for contradictions", function () {
     let source = `[A]: A
       >< [B]: B
     
@@ -204,7 +204,7 @@ describe("ModelPlugin", function() {
     expect(Object.keys(result.statements!).length).to.equal(2);
     expect(Object.keys(result.relations!).length).to.equal(1);
   });
-  it("can parse undercuts for unreconstructed arguments", function() {
+  it("can parse undercuts for unreconstructed arguments", function () {
     let source = `[A]: A
       _> <B>
     
@@ -251,7 +251,7 @@ describe("ModelPlugin", function() {
       RelationType.UNDERCUT
     );
   });
-  it("can process a single argument", function() {
+  it("can process a single argument", function () {
     let source = "(1) [s1]: A\n(2) [s2]: B\n----\n(3) [s3]: C";
     let result = app.run({
       process: ["parse-input", "build-model"],
@@ -263,7 +263,7 @@ describe("ModelPlugin", function() {
     expect(result.statements!["s3"]).to.exist;
   });
 
-  it("can create premise-conclusion-structures", function() {
+  it("can create premise-conclusion-structures", function () {
     let source = `
   <Reconstructed Argument>
   
@@ -387,7 +387,7 @@ describe("ModelPlugin", function() {
     expect(sketchedArgument).to.exist;
     expect(sketchedArgument.relations!.length).to.equal(2);
   });
-  it("can create the section hierarchy and set section property of statements and arguments", function() {
+  it("can create the section hierarchy and set section property of statements and arguments", function () {
     let source = `# Section 1
   
   ## Section 2
@@ -461,7 +461,7 @@ describe("ModelPlugin", function() {
     expect(result.arguments!["C"].section).to.exist;
     expect(result.arguments!["C"].section!.title).to.equal("Section 2");
   });
-  it("assigns sections with isGroup === false", function() {
+  it("assigns sections with isGroup === false", function () {
     let source = `
 # h1
 
@@ -491,7 +491,7 @@ describe("ModelPlugin", function() {
     expect(result.arguments!["a"].section!.title).to.equal("h2");
     expect(result.arguments!["b"].section!.title).to.equal("h3");
   });
-  it("puts equivalence class and argument in section if isInGroup is true", function() {
+  it("puts equivalence class and argument in section if isInGroup is true", function () {
     let source = `
 # h1
 
@@ -516,7 +516,7 @@ describe("ModelPlugin", function() {
     expect(result.arguments!["a"].section!.title).to.equal("h2");
     expect(result.statements!["p"].section!.title).to.equal("h1");
   });
-  it("can create tags lists", function() {
+  it("can create tags lists", function () {
     let source = `[Statement 1]: #tag-1 text
   
   [Statement 2]: text #tag-1 #(tag 2)
@@ -540,7 +540,7 @@ describe("ModelPlugin", function() {
     expect(result.statements!["Statement 2"].tags!.length).to.equal(2);
     expect(result.arguments!["Argument 1"].tags!.length).to.equal(3);
   });
-  it("can collect tags from references", function() {
+  it("can collect tags from references", function () {
     let source = `[Statement 1]: #tag-1
   
   [Statement 1] #tag-2
@@ -570,7 +570,7 @@ describe("ModelPlugin", function() {
     expect(result.arguments!["Argument 1"].tags!.includes("tag-5")).to.be.true;
     expect(result.arguments!["Argument 1"].tags!.includes("tag-6")).to.be.true;
   });
-  it("can identify duplicates in outgoing relations of reconstructed argument and main conclusion", function() {
+  it("can identify duplicates in outgoing relations of reconstructed argument and main conclusion", function () {
     let source = `<A1>: A1
   - <A2>: A2
     
@@ -589,7 +589,7 @@ describe("ModelPlugin", function() {
     expect(result.relations).to.exist;
     expect(result.relations!.length).to.equal(1);
   });
-  it("can create section titles from headings with mentions, tags and ranges", function() {
+  it("can create section titles from headings with mentions, tags and ranges", function () {
     let source = `# @[A] @<B> #tag **bold** _italic_
   
   [A]
@@ -608,7 +608,7 @@ describe("ModelPlugin", function() {
     expect(result.arguments!["B"]).to.exist;
     expect(result.statements!["A"]).to.exist;
   });
-  it("can parse escaped chars", function() {
+  it("can parse escaped chars", function () {
     let source = fs.readFileSync("./test/model-escaped-chars.argdown", "utf8");
 
     //let source = `[A]: \\[text\\] text`;
@@ -621,7 +621,7 @@ describe("ModelPlugin", function() {
       IEquivalenceClass.getCanonicalMemberText(result.statements!["A"])
     ).to.equal("[text] text");
   });
-  it("can return error with token location for incomplete reconstruction", function() {
+  it("can return error with token location for incomplete reconstruction", function () {
     let source = `sdsadad
 
 (1) adasdasd`;
@@ -632,7 +632,7 @@ describe("ModelPlugin", function() {
       5
     );
   });
-  it("throws exception on parser error", function() {
+  it("throws exception on parser error", function () {
     const source = `(1)
     
     
@@ -651,7 +651,7 @@ describe("ModelPlugin", function() {
       "parser-error"
     );
   });
-  it("throws exception if AST is missing", function() {
+  it("throws exception if AST is missing", function () {
     const source = "[Test]: Hello _World_!";
     const result = app.run({
       process: ["build-model"],
@@ -664,7 +664,7 @@ describe("ModelPlugin", function() {
       "missing-ast-response-field"
     );
   });
-  it("throws exception if statements are missing", function() {
+  it("throws exception if statements are missing", function () {
     const source = "[Test]: Hello _World_!";
     const result = app.run(
       {
@@ -680,7 +680,7 @@ describe("ModelPlugin", function() {
       "missing-statements-response-field"
     );
   });
-  it("throws exception if arguments are missing", function() {
+  it("throws exception if arguments are missing", function () {
     const source = "[Test]: Hello _World_!";
     const result = app.run(
       {
@@ -696,7 +696,7 @@ describe("ModelPlugin", function() {
       "missing-arguments-response-field"
     );
   });
-  it("throws exception if relations are missing", function() {
+  it("throws exception if relations are missing", function () {
     const source = "[Test]: Hello _World_!";
     const result = app.run(
       {
@@ -712,7 +712,7 @@ describe("ModelPlugin", function() {
       "missing-relations-response-field"
     );
   });
-  it("throws exception if relation source is missing", function() {
+  it("throws exception if relation source is missing", function () {
     const source = "[Test]: Hello _World_!";
     const result = app.run(
       {
@@ -731,7 +731,7 @@ describe("ModelPlugin", function() {
     expect(result.exceptions!.length).to.equal(1);
     expect(result.exceptions![0].message).to.contain("without source");
   });
-  it("throws exception if relation target is missing", function() {
+  it("throws exception if relation target is missing", function () {
     const source = "[Test]: Hello _World_!";
     const rel = <IRelation>{ relationType: RelationType.SUPPORT };
     rel.from = {
@@ -752,7 +752,7 @@ describe("ModelPlugin", function() {
     expect(result.exceptions!.length).to.equal(1);
     expect(result.exceptions![0].message).to.contain("without target");
   });
-  it("adds two members for main conclusion and relation statement", function() {
+  it("adds two members for main conclusion and relation statement", function () {
     const source = `
         [S1]: test
             - [S2]: test
@@ -771,7 +771,7 @@ describe("ModelPlugin", function() {
     expect(Object.keys(result.statements!).length).to.equal(4);
     expect(result.statements!["S2"].members.length).to.equal(2);
   });
-  it("can lex multiline statements", function() {
+  it("can lex multiline statements", function () {
     let source = `
     I 
     am 

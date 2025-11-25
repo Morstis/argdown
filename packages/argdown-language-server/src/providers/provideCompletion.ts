@@ -57,8 +57,8 @@ export const provideCompletion = (
         return [];
       }
       return eqClass.members
-        .filter(member => !member.isReference)
-        .map(member => {
+        .filter((member) => !member.isReference)
+        .map((member) => {
           const item = CompletionItem.create(member.text!);
           item.kind = CompletionItemKind.Value;
           item.detail = `[${title}]: ${member.text}`;
@@ -73,8 +73,8 @@ export const provideCompletion = (
         const argument = response.arguments[title];
         if (argument.members) {
           return argument.members
-            .filter(member => !member.isReference)
-            .map(member => {
+            .filter((member) => !member.isReference)
+            .map((member) => {
               const item = CompletionItem.create(member.text!);
               item.kind = CompletionItemKind.Value;
               item.detail = `<${title}>: ${member.text}`;

@@ -3,7 +3,7 @@
 
 declare module "@aduh95/viz.js/sync" {
   export default function renderStringSync(
-    src: string, 
+    src: string,
     options?: {
       format?: string;
       engine?: string;

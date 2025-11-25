@@ -667,9 +667,12 @@ tokenList.push(UnderscoreItalicEnd);
 // 1) skip all trailing linebreaks if the comment is preceded by an Emptyline
 // 2) skip trailing linebreaks if the comment is preceded by a Newline and is followed by a single Newline (and not an Emptyline)
 // This makes it necessary to use a custom pattern matcher to check the type of the last token
-const commentPattern = /(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r))/y;
-const commentWithTrailingLinebreaksPattern = /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*\r\n|\n|\r)*/y;
-const commentWithOneTrailingLinebreakPattern = /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*(?:\r\n|\n|\r)(?!([ \t]*(\r\n|\n|\r))))?/y;
+const commentPattern =
+  /(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r))/y;
+const commentWithTrailingLinebreaksPattern =
+  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*\r\n|\n|\r)*/y;
+const commentWithOneTrailingLinebreakPattern =
+  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*(?:\r\n|\n|\r)(?!([ \t]*(\r\n|\n|\r))))?/y;
 const matchComment = (
   text: string,
   offset?: number,
@@ -706,7 +709,8 @@ tokenList.push(Link);
 
 export const Tag = createToken({
   name: TokenNames.TAG,
-  pattern: /#(?:\([^)]+\)|[a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)[ \t]?/,
+  pattern:
+    /#(?:\([^)]+\)|[a-zA-z0-9-\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)[ \t]?/,
   label: "#tag-text or #(tag text) (Tag)"
 });
 tokenList.push(Tag);

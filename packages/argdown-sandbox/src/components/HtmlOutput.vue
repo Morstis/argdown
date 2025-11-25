@@ -18,15 +18,15 @@ export default {
   props: {
     source: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   setup() {
     const store = useArgdownStore();
     const html = computed(() => store.html);
 
     return { html };
-  },
+  }
 };
 </script>
 

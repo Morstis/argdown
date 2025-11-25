@@ -89,7 +89,7 @@ export class ParserPlugin implements IArgdownPlugin {
     }
     return request.parser;
   };
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
 

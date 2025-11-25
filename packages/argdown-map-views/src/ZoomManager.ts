@@ -10,8 +10,18 @@ export type OnZoomChangedHandler = (data: {
 }) => void;
 export class ZoomManager {
   zoom?: ZoomBehavior<SVGSVGElement, Record<string, never>>;
-  svg?: Selection<SVGSVGElement, Record<string, never>, null | HTMLElement, any>;
-  svgGraph?: Selection<SVGGraphicsElement, Record<string, never>, null | HTMLElement, any>;
+  svg?: Selection<
+    SVGSVGElement,
+    Record<string, never>,
+    null | HTMLElement,
+    any
+  >;
+  svgGraph?: Selection<
+    SVGGraphicsElement,
+    Record<string, never>,
+    null | HTMLElement,
+    any
+  >;
   state: IMapState;
   moveToDuration: number;
   onZoomChanged?: OnZoomChangedHandler;
@@ -37,20 +47,23 @@ export class ZoomManager {
 
     this.svg = svg;
     this.svgGraph = svgGraph;
-    this.zoom = zoom<SVGSVGElement, Record<string, never>>().on("zoom", (event) => {
-      // eslint-disable-next-line
-      this.svgGraph!.attr("transform", event.transform);
-      this.state.scale = event.transform.k;
-      this.state.position.x = event.transform.x;
-      this.state.position.y = event.transform.y;
-      if (this.onZoomChanged) {
-        this.onZoomChanged({
-          scale: this.state.scale,
-          position: this.state.position,
-          size: this.state.size
-        });
+    this.zoom = zoom<SVGSVGElement, Record<string, never>>().on(
+      "zoom",
+      (event) => {
+        // eslint-disable-next-line
+        this.svgGraph!.attr("transform", event.transform);
+        this.state.scale = event.transform.k;
+        this.state.position.x = event.transform.x;
+        this.state.position.y = event.transform.y;
+        if (this.onZoomChanged) {
+          this.onZoomChanged({
+            scale: this.state.scale,
+            position: this.state.position,
+            size: this.state.size
+          });
+        }
       }
-    });
+    );
     this.svg.call(this.zoom as any).on("dblclick.zoom", null);
   }
   showAllAndCenterMap() {
@@ -85,11 +98,7 @@ export class ZoomManager {
     const svgNode = this.svg!.node();
     const svgGraphNode = this.svgGraph!.node();
     if (svgNode && svgGraphNode) {
-      const point = convertCoordsL2L(
-        svgNode,
-        element,
-        svgGraphNode
-      );
+      const point = convertCoordsL2L(svgNode, element, svgGraphNode);
       const x = -point.x * this.state.scale + positionInfo.width / 2;
       const y = -point.y * this.state.scale + positionInfo.height / 2;
 
@@ -105,7 +114,7 @@ export class ZoomManager {
       .duration(duration)
       .call(
         (this.zoom as any).transform,
-         
+
         zoomIdentity.translate(x, y).scale(scale)
       );
   };

@@ -24,8 +24,8 @@ export default {
   name: "app-navigation",
   data() {
     return {
-      title: "Argdown Test Environment",
+      title: "Argdown Test Environment"
     };
-  },
+  }
 };
 </script>

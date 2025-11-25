@@ -24,7 +24,7 @@ const execPromise = (cmd: string, callback: IExecCallback) => {
   });
 };
 
-describe("argdown-cli", function() {
+describe("argdown-cli", function () {
   this.timeout(60000); // Increased timeout to accommodate image generation during concurrent test execution
   it("can create dot output", () => {
     let filePath = path.resolve(__dirname, "./test.argdown");
@@ -97,7 +97,7 @@ describe("argdown-cli", function() {
       expect(stdout).to.not.equal(null);
     });
   });
-  it("can create png output", function() {
+  it("can create png output", function () {
     this.timeout(60000); // Extended timeout for image generation
     let filePath = path.resolve(__dirname, "./test.argdown");
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
@@ -110,7 +110,7 @@ describe("argdown-cli", function() {
       expect(stdout).to.not.equal(null);
     });
   });
-  it("can create jpg output", function() {
+  it("can create jpg output", function () {
     this.timeout(60000); // Extended timeout for image generation
     let filePath = path.resolve(__dirname, "./test.argdown");
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
@@ -123,7 +123,7 @@ describe("argdown-cli", function() {
       expect(stdout).to.not.equal(null);
     });
   });
-  it("can create webp output", function() {
+  it("can create webp output", function () {
     this.timeout(60000); // Extended timeout for image generation
     let filePath = path.resolve(__dirname, "./test.argdown");
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
@@ -194,16 +194,16 @@ describe("argdown-cli", function() {
       "node " + filePathToCli + " html " + filePath + " " + htmlFolder;
     return rimraf(htmlFolder)
       .then(() => {
-        return execPromise(cmd, function(error, _stdout, stderr) {
+        return execPromise(cmd, function (error, _stdout, stderr) {
           expect(error).to.equal(null);
           expect(stderr).to.equal("");
           (<any>expect(filePathToHtml).to.be.a).file();
           (<any>expect(filePathToCss).to.be.a).file();
         });
       })
-      .then(()=>{
+      .then(() => {
         // Let's do it a second time to check if the copy css plugin swallows the eexist error
-        return execPromise(cmd, function(error, _stdout, stderr) {
+        return execPromise(cmd, function (error, _stdout, stderr) {
           expect(error).to.equal(null);
           expect(stderr).to.equal("");
           (<any>expect(filePathToHtml).to.be.a).file();
@@ -226,7 +226,7 @@ describe("argdown-cli", function() {
       "node " + filePathToCli + " web-component " + filePath + " " + htmlFolder;
     return rimraf(htmlFolder)
       .then(() => {
-        return execPromise(cmd, function(error, _stdout, stderr) {
+        return execPromise(cmd, function (error, _stdout, stderr) {
           expect(error).to.equal(null);
           expect(stderr).to.equal("");
           (<any>expect(filePathToWebComponentHtml).to.be.a).file();
@@ -336,7 +336,7 @@ describe("argdown-cli", function() {
         return rimraf(jsonFolder);
       });
   });
-  it("can create png file from map", function() {
+  it("can create png file from map", function () {
     this.timeout(60000); // Extended timeout for image generation
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePath = path.resolve(__dirname, "./test.argdown");
@@ -356,7 +356,7 @@ describe("argdown-cli", function() {
         return rimraf(imagesFolder);
       });
   });
-  it("can create jpg file from map", function() {
+  it("can create jpg file from map", function () {
     this.timeout(60000); // Extended timeout for image generation
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePath = path.resolve(__dirname, "./test.argdown");
@@ -376,7 +376,7 @@ describe("argdown-cli", function() {
         return rimraf(imagesFolder);
       });
   });
-  it("can create webp file from map", function() {
+  it("can create webp file from map", function () {
     this.timeout(60000); // Extended timeout for image generation
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePath = path.resolve(__dirname, "./test.argdown");

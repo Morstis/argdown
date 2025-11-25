@@ -23,8 +23,7 @@ export class OpenDocumentLinkCommand implements Command {
     );
   }
 
-  public constructor() //private readonly engine: ArgdownEngine
-  {}
+  public constructor() {} //private readonly engine: ArgdownEngine
 
   public execute(args: OpenDocumentLinkArgs) {
     const p = decodeURIComponent(args.path);

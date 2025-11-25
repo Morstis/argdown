@@ -4,14 +4,14 @@ const fs = require("fs");
 fs.copyFile(
   "../argdown-web-components/dist/argdown-map.js",
   "./docs/.vuepress/public/argdown-map.js",
-  err => {
+  (err) => {
     if (err) throw err;
   }
 );
 fs.copyFile(
   "../argdown-web-components/dist/argdown-map.css",
   "./docs/.vuepress/public/argdown-map.css",
-  err => {
+  (err) => {
     if (err) throw err;
   }
 );

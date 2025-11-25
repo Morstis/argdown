@@ -72,7 +72,7 @@ export class GroupPlugin implements IArgdownPlugin {
     const minGroupLevel =
       (response.maxSectionLevel || 0) - settings.groupDepth! + 1;
     if (response.sections) {
-      response.sections = response.sections.map(s =>
+      response.sections = response.sections.map((s) =>
         setIsGroupRecursive(s, minGroupLevel)
       );
     }
@@ -90,12 +90,12 @@ const createMapNodeTree = (
   const groupMap = createGroups(response, nodes);
   [...groupMap.values()].reduce(createAncestorGroups, groupMap);
   const groups = [...groupMap.values()];
-  const topLevelGroups = groups.filter(g => !g.parent);
+  const topLevelGroups = groups.filter((g) => !g.parent);
   for (const group of topLevelGroups) {
     setGroupLevelsRecursive(group);
   }
   const nodesWithoutSection: IMapNode[] = nodes.filter(
-    n => !findSection(response, n)
+    (n) => !findSection(response, n)
   );
   return [...topLevelGroups, ...nodesWithoutSection];
 };

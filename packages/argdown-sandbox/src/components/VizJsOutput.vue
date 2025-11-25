@@ -21,7 +21,7 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
-  nextTick,
+  nextTick
 } from "vue";
 import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
@@ -114,7 +114,7 @@ export default {
 
         const workerURL = basePath + "render.browser.js";
         vizJsMap.value = new VizJsMap(svgElement.value, null, {
-          workerURL: workerURL,
+          workerURL: workerURL
         });
 
         // Initial render
@@ -152,7 +152,7 @@ export default {
 
       const props = {
         dot: dot.value,
-        settings: { ...configData.value.vizJs, images },
+        settings: { ...configData.value.vizJs, images }
       };
 
       vizJsMap.value.render(props).catch((error) => {
@@ -201,9 +201,9 @@ export default {
       container,
       svgElement,
       svgWidth,
-      svgHeight,
+      svgHeight
     };
-  },
+  }
 };
 </script>
 

@@ -12,7 +12,10 @@ declare class BrowserMessageWriter {
 }
 
 // Declare the browser-specific createConnection function
-declare function createConnection(reader: BrowserMessageReader, writer: BrowserMessageWriter): any;
+declare function createConnection(
+  reader: BrowserMessageReader,
+  writer: BrowserMessageWriter
+): any;
 
 import * as path from "path";
 import {
@@ -81,60 +84,58 @@ let workspaceFolders: WorkspaceFolder[];
 
 // After the server has started the client sends an initilize request. The server receives
 // in the passed params the rootPath of the workspace plus the client capabilites.
-connection.onInitialize(
-  (params: InitializeParams): InitializeResult => {
-    const capabilities = params.capabilities;
+connection.onInitialize((params: InitializeParams): InitializeResult => {
+  const capabilities = params.capabilities;
 
-    // Does the client support the `workspace/configuration` request?
-    // If not, we will fall back using global settings
-    hasWorkspaceFolderCapability = !!(
-      capabilities.workspace && !!capabilities.workspace.workspaceFolders
-    );
-    hasConfigurationCapability = !!(
-      capabilities.workspace && !!capabilities.workspace.configuration
-    );
-    // hasDiagnosticRelatedInformationCapability = !!(
-    //   capabilities.textDocument &&
-    //   capabilities.textDocument.publishDiagnostics &&
-    //   capabilities.textDocument.publishDiagnostics.relatedInformation
-    // );
-    if (params.workspaceFolders) {
-      workspaceFolders = params.workspaceFolders;
+  // Does the client support the `workspace/configuration` request?
+  // If not, we will fall back using global settings
+  hasWorkspaceFolderCapability = !!(
+    capabilities.workspace && !!capabilities.workspace.workspaceFolders
+  );
+  hasConfigurationCapability = !!(
+    capabilities.workspace && !!capabilities.workspace.configuration
+  );
+  // hasDiagnosticRelatedInformationCapability = !!(
+  //   capabilities.textDocument &&
+  //   capabilities.textDocument.publishDiagnostics &&
+  //   capabilities.textDocument.publishDiagnostics.relatedInformation
+  // );
+  if (params.workspaceFolders) {
+    workspaceFolders = params.workspaceFolders;
 
-      // Sort folders.
-      sortWorkspaceFolders();
-    }
-    return {
-      capabilities: {
-        // Tell the client that the server works in FULL text document sync mode
-        textDocumentSync: TextDocumentSyncKind.Full,
-        // Tell the client that the server support code complete
-        // completionProvider: {
-        // 	resolveProvider: true,
-        // },
-        documentSymbolProvider: true,
-        foldingRangeProvider: true,
-        // workspaceSymbolProvider: true,
-        definitionProvider: true,
-        referencesProvider: true,
-        documentHighlightProvider: true,
-        hoverProvider: true,
-        renameProvider: true,
-        completionProvider: {
-          triggerCharacters: ["[", "<", ":", "#"]
-        },
-        executeCommandProvider: {
-          commands: [
-            EXPORT_DOCUMENT_COMMAND,
-            EXPORT_CONTENT_COMMAND,
-            RETURN_DOCUMENT_COMMAND,
-            RUN_COMMAND
-          ]
-        }
-      }
-    };
+    // Sort folders.
+    sortWorkspaceFolders();
   }
-);
+  return {
+    capabilities: {
+      // Tell the client that the server works in FULL text document sync mode
+      textDocumentSync: TextDocumentSyncKind.Full,
+      // Tell the client that the server support code complete
+      // completionProvider: {
+      // 	resolveProvider: true,
+      // },
+      documentSymbolProvider: true,
+      foldingRangeProvider: true,
+      // workspaceSymbolProvider: true,
+      definitionProvider: true,
+      referencesProvider: true,
+      documentHighlightProvider: true,
+      hoverProvider: true,
+      renameProvider: true,
+      completionProvider: {
+        triggerCharacters: ["[", "<", ":", "#"]
+      },
+      executeCommandProvider: {
+        commands: [
+          EXPORT_DOCUMENT_COMMAND,
+          EXPORT_CONTENT_COMMAND,
+          RETURN_DOCUMENT_COMMAND,
+          RUN_COMMAND
+        ]
+      }
+    }
+  };
+});
 
 connection.onInitialized(() => {
   connection.console.log("Argdown language server initialized.");
@@ -150,7 +151,7 @@ connection.onInitialized(() => {
       // Removed folders.
       for (const workspaceFolder of event.removed) {
         const index = workspaceFolders.findIndex(
-          folder => folder.uri === workspaceFolder.uri
+          (folder) => folder.uri === workspaceFolder.uri
         );
 
         if (index !== -1) {
@@ -349,11 +350,9 @@ connection.onDocumentHighlight(async (params: TextDocumentPositionParams) => {
   const { textDocument, position } = params;
   const response = await processDocForProviders(textDocument);
   if (response) {
-    return provideReferences(
-      response,
-      textDocument.uri,
-      position
-    ).map((l: Location) => DocumentHighlight.create(l.range, 1));
+    return provideReferences(response, textDocument.uri, position).map(
+      (l: Location) => DocumentHighlight.create(l.range, 1)
+    );
   }
   return null;
 });
@@ -381,16 +380,17 @@ connection.onDocumentSymbol((params: DocumentSymbolParams) => {
   const path = params.textDocument.uri;
   const doc = documents.get(params.textDocument.uri);
   if (doc) {
-    const request: IArgdownRequest & { inputUri: string; inputPath?: string } = {
-      inputPath: path,
-      input: doc.getText(),
-      process: ["parse-input", "build-model", "add-document-symbols"],
-      inputUri: params.textDocument.uri,
-      parser: {
+    const request: IArgdownRequest & { inputUri: string; inputPath?: string } =
+      {
+        inputPath: path,
+        input: doc.getText(),
+        process: ["parse-input", "build-model", "add-document-symbols"],
+        inputUri: params.textDocument.uri,
+        parser: {
+          throwExceptions: true
+        },
         throwExceptions: true
-      },
-      throwExceptions: true
-    };
+      };
     try {
       return argdown.run(request).documentSymbols;
     } catch (e) {

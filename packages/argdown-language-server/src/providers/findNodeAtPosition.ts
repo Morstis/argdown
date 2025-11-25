@@ -36,7 +36,7 @@ export const findNodeAtPosition = (
     line,
     character
   );
-  return containingNodes.reverse().find(n => {
+  return containingNodes.reverse().find((n) => {
     if (!n.tokenType) {
       return false;
     }

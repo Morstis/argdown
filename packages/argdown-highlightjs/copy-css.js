@@ -4,7 +4,7 @@ import fs from "fs";
 fs.copyFile(
   "./src/snow-in-spring.argdown-theme.css",
   "./dist/snow-in-spring.argdown-theme.css",
-  err => {
+  (err) => {
     if (err) throw err;
     console.log("CSS file copied to dist/");
   }

@@ -1,4 +1,4 @@
-declare module 'import-fresh' {
+declare module "import-fresh" {
   const importFresh: any;
   export = importFresh;
 }

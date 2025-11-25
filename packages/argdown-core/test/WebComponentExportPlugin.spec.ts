@@ -16,7 +16,7 @@ import {
   WebComponentExportPlugin
 } from "../src";
 import { SyncDotToSvgExportPlugin } from "../src/plugins/SyncDotToSvgExportPlugin";
-describe("WebComponentExportPlugin", function() {
+describe("WebComponentExportPlugin", function () {
   const app = new ArgdownApplication();
   app.addPlugin(new ParserPlugin(), "parse-input");
   app.addPlugin(new ModelPlugin(), "build-model");

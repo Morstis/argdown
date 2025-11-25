@@ -12,10 +12,7 @@ function createContainer(klass, defaultTitle) {
     {
       render(tokens, idx) {
         const token = tokens[idx];
-        const info = token.info
-          .trim()
-          .slice(klass.length)
-          .trim();
+        const info = token.info.trim().slice(klass.length).trim();
         let title = "";
         if (info || defaultTitle) {
           title = `<p class="custom-block-title">${info || defaultTitle}</p>`;
@@ -29,7 +26,7 @@ function createContainer(klass, defaultTitle) {
     }
   ];
 }
-module.exports = md => {
+module.exports = (md) => {
   md.use(...createContainer("buttonlist"));
   md.use(...createContainer("definition"));
   md.use(

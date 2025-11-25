@@ -15,7 +15,7 @@ import {
 } from "../src";
 import { SyncDotToSvgExportPlugin } from "../src/plugins/SyncDotToSvgExportPlugin";
 
-describe("SyncDotToSvgExportPlugin", function() {
+describe("SyncDotToSvgExportPlugin", function () {
   const app = new ArgdownApplication();
   app.addPlugin(new ParserPlugin(), "parse-input");
   app.addPlugin(new ModelPlugin(), "build-model");
@@ -76,7 +76,7 @@ describe("SyncDotToSvgExportPlugin", function() {
       logLevel: "error"
     };
     const response = await app.run(request);
-    
+
     try {
       // Verify the SVG is generated successfully
       expect(response.svg).to.exist;

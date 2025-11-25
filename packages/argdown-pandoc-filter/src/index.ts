@@ -74,7 +74,7 @@ void stdio(async (ele, _format, meta) => {
     const [, [language]] = headers;
     if (language === "argdown-map") {
       const settings: IArgdownFilterSettings = { ...getFilterSettings(meta) };
-      headers[2].map(item => {
+      headers[2].map((item) => {
         (settings as any)[item[0]] = item[1];
       });
       const config = await getArgdownConfig(settings.config);
@@ -148,7 +148,7 @@ void stdio(async (ele, _format, meta) => {
     } else if (language === "argdown") {
       const settings: IArgdownFilterSettings = { ...getFilterSettings(meta) };
       let sourceMode = settings.sourceHighlighter;
-      headers[2].map(item => {
+      headers[2].map((item) => {
         if (item[0] === "mode") {
           (<string>sourceMode) = item[1];
         }

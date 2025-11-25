@@ -144,17 +144,14 @@ class ArgdownParser extends EmbeddedActionsParser {
     });
     return IRuleNode.create(RuleNames.INFERENCE, children);
   });
-  private inferenceRules = this.RULE(
-    RuleNames.INFERENCE_RULES,
-    () => {
-      const children: IAstNode[] = [];
-      this.AT_LEAST_ONE_SEP1({
-        SEP: lexer.ListDelimiter,
-        DEF: () => children.push(this.SUBRULE(this.freestyleText))
-      });
-      return IRuleNode.create(RuleNames.INFERENCE_RULES, children);
-    }
-  );
+  private inferenceRules = this.RULE(RuleNames.INFERENCE_RULES, () => {
+    const children: IAstNode[] = [];
+    this.AT_LEAST_ONE_SEP1({
+      SEP: lexer.ListDelimiter,
+      DEF: () => children.push(this.SUBRULE(this.freestyleText))
+    });
+    return IRuleNode.create(RuleNames.INFERENCE_RULES, children);
+  });
 
   private orderedList = this.RULE(RuleNames.ORDERED_LIST, () => {
     const children: IAstNode[] = [];

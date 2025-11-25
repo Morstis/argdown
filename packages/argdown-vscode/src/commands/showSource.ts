@@ -1,19 +1,18 @@
-import * as vscode from 'vscode';
-import { Command } from './Command';
-import { ArgdownPreviewManager } from '../preview/ArgdownPreviewManager';
+import * as vscode from "vscode";
+import { Command } from "./Command";
+import { ArgdownPreviewManager } from "../preview/ArgdownPreviewManager";
 
 export class ShowSourceCommand implements Command {
-	public readonly id = 'argdown.showSource';
+  public readonly id = "argdown.showSource";
 
-	public constructor(
-		private readonly previewManager: ArgdownPreviewManager
-	) { }
+  public constructor(private readonly previewManager: ArgdownPreviewManager) {}
 
-	public execute() {
-		if (this.previewManager.activePreviewResource) {
-			void vscode.workspace.openTextDocument(this.previewManager.activePreviewResource)
-				.then(document => vscode.window.showTextDocument(document));
-		}
-		return undefined;
-	}
+  public execute() {
+    if (this.previewManager.activePreviewResource) {
+      void vscode.workspace
+        .openTextDocument(this.previewManager.activePreviewResource)
+        .then((document) => vscode.window.showTextDocument(document));
+    }
+    return undefined;
+  }
 }

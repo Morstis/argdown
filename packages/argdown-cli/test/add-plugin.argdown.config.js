@@ -1,6 +1,6 @@
 var testPlugin = {
   name: "TestPlugin",
-  run: function() {
+  run: function () {
     console.log("Hallo World!");
   }
 };

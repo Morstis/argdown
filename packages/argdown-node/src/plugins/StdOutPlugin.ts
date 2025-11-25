@@ -20,7 +20,7 @@ export class StdOutPlugin implements IArgdownPlugin {
   constructor(config?: IStdoutSettings) {
     this.defaults = defaultsDeep({}, config, {});
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     defaultsDeep(this.getSettings(request), this.defaults);
   };
   // there can be several instances of this plugin in the same ArgdownApplication

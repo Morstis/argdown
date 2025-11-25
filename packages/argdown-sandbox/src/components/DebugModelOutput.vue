@@ -59,7 +59,7 @@ export default {
     const relations = computed(() => store.relations);
 
     return { statements, arguments: arguments_, relations };
-  },
+  }
 };
 </script>
 

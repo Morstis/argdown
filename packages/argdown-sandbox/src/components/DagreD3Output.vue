@@ -20,7 +20,7 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
-  nextTick,
+  nextTick
 } from "vue";
 import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
@@ -112,7 +112,7 @@ export default {
 
       const props = {
         settings: configData.value.dagre,
-        map: map.value,
+        map: map.value
       };
 
       try {
@@ -157,9 +157,9 @@ export default {
       map,
       configData,
       argdownData,
-      pngScale,
+      pngScale
     };
-  },
+  }
 };
 </script>
 

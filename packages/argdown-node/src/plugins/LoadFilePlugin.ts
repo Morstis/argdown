@@ -2,7 +2,12 @@ import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
 } from "../IAsyncArgdownPlugin.js";
-import { ArgdownPluginError, IArgdownRequest, IArgdownResponse, IArgdownLogger } from "@argdown/core";
+import {
+  ArgdownPluginError,
+  IArgdownRequest,
+  IArgdownResponse,
+  IArgdownLogger
+} from "@argdown/core";
 import { promisify } from "util";
 
 import { readFile } from "fs";
@@ -11,7 +16,11 @@ const readFileAsync = promisify(readFile);
 
 export class LoadFilePlugin implements IAsyncArgdownPlugin {
   name = "LoadFilePlugin";
-  runAsync: IAsyncRequestHandler = async (request: IArgdownRequest, _response: IArgdownResponse, logger: IArgdownLogger) => {
+  runAsync: IAsyncRequestHandler = async (
+    request: IArgdownRequest,
+    _response: IArgdownResponse,
+    logger: IArgdownLogger
+  ) => {
     const file = request.inputPath;
     if (!file) {
       throw new ArgdownPluginError(

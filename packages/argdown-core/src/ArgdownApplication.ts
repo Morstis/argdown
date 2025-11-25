@@ -189,7 +189,9 @@ export class ArgdownApplication {
       }
       processor.plugins.splice(index, 1);
     } else {
-      console.warn(`Could not find plugin "${plugin.name}" in processor "${processorId}"`);
+      console.warn(
+        `Could not find plugin "${plugin.name}" in processor "${processorId}"`
+      );
     }
   }
   /**

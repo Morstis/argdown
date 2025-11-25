@@ -39,9 +39,10 @@ export const relationMemberIsInSelection = (
     return (
       undefined !==
       relationMember.members.find(
-        s =>
+        (s) =>
           (isSymmetric || s.role === role) &&
-          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !== undefined
+          selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !==
+            undefined
       )
     );
   } else if (

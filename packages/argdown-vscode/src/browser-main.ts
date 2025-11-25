@@ -78,7 +78,7 @@ export function activate(context: ExtensionContext) {
   commandManager.register(new commands.ExportContentToDagrePngCommand());
   commandManager.register(new commands.ExportContentToDagrePdfCommand());
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(e => {
+    vscode.workspace.onDidChangeConfiguration((e) => {
       logger.updateConfiguration();
       previewManager.updateConfiguration();
       if (e.affectsConfiguration("argdown.markdownWebComponent")) {
@@ -101,7 +101,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(client);
   void client.start();
-  
+
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
@@ -116,13 +116,11 @@ export function activate(context: ExtensionContext) {
               "argdown.markdownWebComponent",
               null
             );
-            const withoutHeader = webComponentConfig.get<boolean>(
-              "withoutHeader"
-            );
+            const withoutHeader =
+              webComponentConfig.get<boolean>("withoutHeader");
             const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
-            const withoutMaximize = webComponentConfig.get<boolean>(
-              "withoutMaximize"
-            );
+            const withoutMaximize =
+              webComponentConfig.get<boolean>("withoutMaximize");
             // const withoutHeader = false;
             // const withoutLogo = false;
             // const withoutMaximize = false;
