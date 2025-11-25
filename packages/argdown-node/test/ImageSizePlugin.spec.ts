@@ -23,6 +23,7 @@ describe("ImageSizePlugin", function () {
     expect(request.images!.files!["./argdown-mark.svg"].width).to.equal(208);
     expect(request.images!.files!["./argdown-mark.svg"].height).to.equal(128);
   });
+  // prettier-ignore: Mocha requires regular function for this.skip() context
   it("can set image size from url", async function() {
     const url =
       "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
