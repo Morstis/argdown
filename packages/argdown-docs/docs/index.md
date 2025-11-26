@@ -1,29 +1,30 @@
 ---
-home: true
-tagline: A simple syntax for complex argumentation
-heroText: Argdown
-heroImage: /argdown-arrow.png
-actionText: Get Started →
-actionLink: /guide/
+layout: home
+
+hero:
+  name: Argdown
+  tagline: A simple syntax for complex argumentation
+  image:
+    src: /argdown-mark.svg
+    alt: Argdown Logo
+  actions:
+    - theme: brand
+      text: Get Started →
+      link: /guide/
+      
+features:
+  - title: Simple
+    details: Writing pros & cons in Argdown is as simple as writing a Twitter message. You don't have to learn anything new, except a few simple rules that will feel very natural.
+  - title: Expressive
+    details: With these simple rules you will be able to define more complex relations between arguments or dive into the details of their logical premise-conclusion structures.
+  - title: Powerful
+    details: Argdown can even be used within Markdown! Your code is transformed into an argument map while you are typing. When your are ready, you can publish your analysis as pdf, embed it as a web-component in a webpage or simply export your map as an image.
 
 footer: MIT Licensed | Copyright © 2018-present Christian Voigt | Funded by Debatelab, KIT Karlsuhe
 ---
 
 <p class="latest-news">December 2025: v2.0 has been released (<a href="/changes">changelog</a>)</p>
-<div class="features">
-  <div class="feature">
-    <h2>Simple</h2>
-    <p>Writing pros & cons in Argdown is as simple as writing a Twitter message. You don't have to learn anything new, except a <a href="#learn-argdown-in-3-minutes">few simple rules</a> that will feel very natural.</p>
-  </div>
-  <div class="feature">
-    <h2>Expressive</h2>
-    <p>With these simple rules you will be able to define more complex relations between arguments or <a href="/guide/a-first-example">dive into the details</a> of their logical premise-conclusion structures.</p>
-  </div>
-  <div class="feature">
-    <h2>Powerful</h2>
-    <p>Argdown can even be used within Markdown! Your code is transformed into an <a href="https://en.wikipedia.org/wiki/Argument_map">argument map</a> while you are typing. When your are ready, you can publish your analysis as pdf, embed it as a web-component in a webpage or simply export your map as an image.</p>
-  </div>
-</div>
+
 
 ```argdown-map
 
