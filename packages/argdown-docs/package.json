@@ -12,12 +12,13 @@
     "documentation"
   ],
   "scripts": {
-    "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
+    "dev": "vitepress dev docs",
     "build": "yarn run docs:build && ./build-docs.sh",
-    "docs:build": "yarn run copy-web-component && vuepress build docs",
+    "docs:build": "vitepress build docs",
     "docs:deploy": "./deploy-docs.sh",
     "copy-web-component": "node ./copy-web-component.js",
-    "test": "echo \"No tests to run here\""
+    "test": "echo \"No tests to run here\"",
+    "docs:preview": "vitepress preview docs"
   },
   "author": "Christian Voigt",
   "license": "MIT",
@@ -32,7 +33,7 @@
     "chalk": "^2.4.2",
     "commander": "^2.20.3",
     "esm": "^3.2.25",
-    "vuepress": "1.8.2",
+    "vitepress": "^1.6.4",
     "vuepress-plugin-sitemap": "2.3.1"
   },
   "dependencies": {
