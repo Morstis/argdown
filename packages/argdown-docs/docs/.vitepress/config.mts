@@ -79,7 +79,9 @@ export default defineConfig({
   // },
   themeConfig: {
     logo: "/argdown-mark.svg",
-    // docsDir: "docs",
+    search: {
+      provider: "local"
+    },
     sidebar: {
       "/changes/": [
         {
