@@ -18,6 +18,7 @@ const MarkdownItPlugin = createArgdownPlugin({
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Argdown",
+  ignoreDeadLinks: true,
   description:
     "Argdown is a simple syntax for complex argumentation. Writing lists of pros & cons in Argdown is as simple as writing a twitter message, but you can also use it to logically reconstruct whole debates and visualize them as argument maps.",
   // base: "/",
@@ -65,21 +66,9 @@ export default defineConfig({
       }
     }
   },
-  // plugins: [
-  //   [
-  //     // "@vuepress/pwa",
-  //     // {
-  //     //   serviceWorker: true,
-  //     //   updatePopup: true
-  //     // }
-  //   ],
-  //   [
-  //     "sitemap",
-  //     {
-  //       hostname: "https://argdown.org"
-  //     }
-  //   ]
-  // ],
+  sitemap: {
+    hostname: domain
+  },
 
   markdown: {
     config: (md) => {
@@ -94,7 +83,9 @@ export default defineConfig({
     search: {
       provider: "local"
     },
-
+    outline: {
+      level: "deep"
+    },
     sidebar: {
       "/changes/": [
         {
@@ -284,7 +275,10 @@ export default defineConfig({
         text: "API",
         items: [
           { text: "Overview", link: "/api/" },
-          { text: "@argdown/core", link: domain + "/argdown-core/index.html" },
+          {
+            text: "@argdown/core",
+            link: domain + "/argdown-core/index.html"
+          },
           { text: "@argdown/node", link: domain + "/argdown-node/index.html" }
         ]
       },

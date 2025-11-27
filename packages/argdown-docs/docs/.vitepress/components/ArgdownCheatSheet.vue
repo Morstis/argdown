@@ -14,12 +14,12 @@
 <style lang="css">
 .cheat-sheet-item {
   box-sizing: border-box;
-  color: #000;
+  color: var(--vp-code-block-color);
   display: flex;
   flex-direction: row;
-  border: 1px solid #eaecef;
+  border: 1px solid var(--vp-code-block-divider-color);
   margin-top: -1px;
-  background: #fff;
+  background: var(--vp-code-block-bg);
 }
 @media (max-width: 419px) {
   .cheat-sheet-item .language-argdown.extra-class {
@@ -34,14 +34,14 @@
 .cheat-sheet-item pre {
   margin: 0;
   padding: 0;
-  background-color: #fff;
+  background-color: var(--vp-code-block-bg);
 }
 .cheat-sheet-item .source-view {
   box-sizing: border-box;
   flex-grow: 1;
   flex-basis: 0;
   width: 50%;
-  padding: 0rem;
+  padding: 1rem 0rem;
   overflow: auto;
 }
 @media (max-width: 1024px) and (orientation: portrait) {
@@ -68,7 +68,7 @@
   flex-grow: 1;
   flex-basis: 0;
   width: 50%;
-  border-left: 1px solid #eaecef;
+  border-left: 1px solid var(--vp-code-block-divider-color);
   padding: 1rem;
   line-height: 1.5rem;
 }

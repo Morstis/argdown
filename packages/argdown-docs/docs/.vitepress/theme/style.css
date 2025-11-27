@@ -1,38 +1,53 @@
 /* Define CSS variables in :root */
 :root {
-  --vp-layout-max-width: 100%;
+  /*--vp-layout-max-width: 100%;*/
   --vp-c-accent-color: #3e8eaf;
   --vp-c-text-color: #2c3e50;
-  --vp-c-border-color: #eaecef;
-  --vp-c-code-bg-color: #232230;
-  --vp-c-code-color: #000;
+  /*--vp-c-border-color: #eaecef;*/
+  /*--vp-c-code-bg-color: #232230;
+  --vp-c-code-color: #000;*/
 
   /* Default theme overrides */
   --vp-c-default-1: var(--vp-c-text-color);
   --vp-c-default-2: #4e6e8e; /* Adjusted for button list text */
   --vp-c-default-3: var(--vp-c-accent-color);
-  --vp-c-default-soft: #f4f4f4;
+  /*--vp-c-default-soft: #f4f4f4;*/
 
   --vp-c-brand-1: var(--vp-c-accent-color);
   --vp-c-brand-2: #387e9c; /* Hover state for buttons */
   --vp-c-brand-3: var(--vp-c-accent-color);
-  --vp-c-brand-soft: #f4f4f4;
-
+  /*--vp-c-brand-soft: #f4f4f4;*/
+  /*
   --vp-c-tip-1: var(--vp-c-brand-1);
   --vp-c-tip-2: var(--vp-c-brand-2);
   --vp-c-tip-3: var(--vp-c-brand-3);
-  --vp-c-tip-soft: var(--vp-c-brand-soft);
+  --vp-c-tip-soft: var(--vp-c-brand-soft);*/
 
   --vp-c-warning-1: var(--vp-c-border-color);
   --vp-c-warning-2: #e6b800;
   --vp-c-warning-3: #ffcc00;
-  --vp-c-warning-soft: #fff8e1;
+  /*--vp-c-warning-soft: #fff8e1;*/
 
   --vp-c-danger-1: #d32f2f;
   --vp-c-danger-2: #c62828;
   --vp-c-danger-3: #b71c1c;
-  --vp-c-danger-soft: #ffebee;
+  /*--vp-c-danger-soft: #ffebee;*/
 }
+
+/* Override argdown code blocks to enable dark mode */
+
+.argdown-figure {
+  border-color: var(--vp-code-block-divider-color) !important;
+  background-color: var(--vp-code-block-bg) !important;
+}
+.language-argdown {
+  background-color: var(--vp-code-block-bg) !important;
+}
+:root {
+  --argdown-bg-color: var(--vp-code-block-bg);
+  --argdown-logo-color: #3e8eaf;
+}
+/*End argdown code block override*/
 
 .latest-news {
   margin: 0 auto;

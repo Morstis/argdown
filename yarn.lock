@@ -316,13 +316,10 @@ __metadata:
     "@argdown/markdown-it-plugin": "workspace:^"
     "@argdown/web-components": "workspace:^"
     "@types/markdown-it-container": "npm:^2.0.10"
-    "@vuepress/plugin-pwa": "npm:1.8.2"
     chalk: "npm:^2.4.2"
     commander: "npm:^2.20.3"
-    esm: "npm:^3.2.25"
-    markdown-it-container: "npm:4.0.0"
+    markdown-it-container: "npm:^4.0.0"
     vitepress: "npm:^1.6.4"
-    vuepress-plugin-sitemap: "npm:2.3.1"
   languageName: unknown
   linkType: soft
 
@@ -9792,17 +9789,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vuepress/plugin-pwa@npm:1.8.2":
-  version: 1.8.2
-  resolution: "@vuepress/plugin-pwa@npm:1.8.2"
-  dependencies:
-    "@vuepress/shared-utils": "npm:1.8.2"
-    register-service-worker: "npm:^1.7.0"
-    workbox-build: "npm:^4.3.1"
-  checksum: 10c0/2e9b7b5c76fb38df05abdc757d94507e38a791ea3934b8c2d74f5fdc4af63a22e3e10aeb43c864bed0ba750eb68c314ce05cd4ba008886118e5e000d5bc7dd0b
-  languageName: node
-  linkType: hard
-
 "@vuepress/plugin-pwa@npm:1.9.10":
   version: 1.9.10
   resolution: "@vuepress/plugin-pwa@npm:1.9.10"
@@ -9831,23 +9817,6 @@ __metadata:
   dependencies:
     "@vuepress/types": "npm:1.9.10"
   checksum: 10c0/9dd89e5dab7bc886bb7652c0821f9e403e938095d542c6348349dca1cbcb41a73f08318f8fecfce6981a0d8ff37f7f09edaefd7b0aa26b9132200a385039599e
-  languageName: node
-  linkType: hard
-
-"@vuepress/shared-utils@npm:1.8.2":
-  version: 1.8.2
-  resolution: "@vuepress/shared-utils@npm:1.8.2"
-  dependencies:
-    chalk: "npm:^2.3.2"
-    escape-html: "npm:^1.0.3"
-    fs-extra: "npm:^7.0.1"
-    globby: "npm:^9.2.0"
-    gray-matter: "npm:^4.0.1"
-    hash-sum: "npm:^1.0.2"
-    semver: "npm:^6.0.0"
-    toml: "npm:^3.0.0"
-    upath: "npm:^1.1.0"
-  checksum: 10c0/07a8b48ab8db221b3e443aba23a2c457c4ce56bada7802be131d7505a472e2637f5440edf8d077bd92c07aec372931b79e47be5ca2f719bf90a6d9e6522b558c
   languageName: node
   linkType: hard
 
@@ -22002,7 +21971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-it-container@npm:4.0.0":
+"markdown-it-container@npm:4.0.0, markdown-it-container@npm:^4.0.0":
   version: 4.0.0
   resolution: "markdown-it-container@npm:4.0.0"
   checksum: 10c0/768390a6e2c182996b4d0be8dd1a7279d266ca2f29936dd8265ef0954a97606bc3514802cc3576db59e119e241e61924a4a1e601a91480be1c12bef5e28797ae

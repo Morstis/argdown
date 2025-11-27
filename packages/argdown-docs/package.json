@@ -12,11 +12,10 @@
     "documentation"
   ],
   "scripts": {
-    "dev": "vitepress dev docs",
-    "build": "yarn run docs:build && ./build-docs.sh",
+    "build": "yarn run docs:build",
+    "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:deploy": "./deploy-docs.sh",
-    "copy-web-component": "node ./copy-web-component.js",
     "test": "echo \"No tests to run here\"",
     "docs:preview": "vitepress preview docs"
   },
@@ -31,15 +30,10 @@
     "@argdown/markdown-it-plugin": "workspace:^",
     "@argdown/web-components": "workspace:^",
     "@types/markdown-it-container": "^2.0.10",
-    "@vuepress/plugin-pwa": "1.8.2",
     "chalk": "^2.4.2",
     "commander": "^2.20.3",
-    "esm": "^3.2.25",
-    "vitepress": "^1.6.4",
-    "vuepress-plugin-sitemap": "2.3.1"
-  },
-  "dependencies": {
-    "markdown-it-container": "4.0.0"
+    "markdown-it-container": "^4.0.0",
+    "vitepress": "^1.6.4"
   },
   "engines": {
     "node": ">= 22.11.0"
