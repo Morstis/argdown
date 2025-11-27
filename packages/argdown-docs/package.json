@@ -29,6 +29,7 @@
   "devDependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
+    "@argdown/web-components": "workspace:^",
     "@types/markdown-it-container": "^2.0.10",
     "@vuepress/plugin-pwa": "1.8.2",
     "chalk": "^2.4.2",

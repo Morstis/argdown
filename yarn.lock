@@ -314,6 +314,7 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
+    "@argdown/web-components": "workspace:^"
     "@types/markdown-it-container": "npm:^2.0.10"
     "@vuepress/plugin-pwa": "npm:1.8.2"
     chalk: "npm:^2.4.2"

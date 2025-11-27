@@ -5,10 +5,12 @@ import { ArgdownCheatSheetPlugin } from "./markdown-it-plugin-argdown-cheat-shee
 
 const domain = "http://localhost:5173";
 const discord = "https://discord.gg/rFe7nuDbzs";
+
+// Don't include webcomponent scripts, because vitepress does not allow <script> tags inside of markdown plugins. We add the scripts in the theme.
 const MarkdownItPlugin = createArgdownPlugin({
   webComponent: {
     addWebComponentScript: false,
-    addGlobalStyles: false,
+    addGlobalStyles: true,
     addWebComponentPolyfill: false
   }
 });
@@ -53,22 +55,16 @@ export default defineConfig({
         rel: "apple-touch-icon-precomposed",
         href: `/apple-touch-icon.png`
       }
-    ],
-    [
-      "script",
-      {
-        src: `/argdown-map.js`
-      }
-    ],
-    [
-      "link",
-      {
-        rel: "stylesheet",
-        type: "text/css",
-        href: `/argdown-map.css`
-      }
     ]
   ],
+  // Exclude argdown-map webcomponent. See: https://github.com/vuejs/vitepress/discussions/468
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => tag === "argdown-map"
+      }
+    }
+  },
   // plugins: [
   //   [
   //     // "@vuepress/pwa",
