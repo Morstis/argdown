@@ -314,6 +314,7 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
+    "@types/markdown-it-container": "npm:^2.0.10"
     "@vuepress/plugin-pwa": "npm:1.8.2"
     chalk: "npm:^2.4.2"
     commander: "npm:^2.20.3"
@@ -8283,6 +8284,15 @@ __metadata:
   version: 4.17.20
   resolution: "@types/lodash@npm:4.17.20"
   checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
+  languageName: node
+  linkType: hard
+
+"@types/markdown-it-container@npm:^2.0.10":
+  version: 2.0.10
+  resolution: "@types/markdown-it-container@npm:2.0.10"
+  dependencies:
+    "@types/markdown-it": "npm:*"
+  checksum: 10c0/a2e0548974586c463993167dd43a5435c945e86bbd541695d3a7c19a8f18a559c69958d87b9d00e59735bb9a85b82f006932bf24f01e4c27b4c89554797d3d2e
   languageName: node
   linkType: hard
 

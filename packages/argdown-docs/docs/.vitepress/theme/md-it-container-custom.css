@@ -1,0 +1,76 @@
+/**
+* Custom styles for the markdown-it-container plugin.
+* See: https://www.npmjs.com/package/markdown-it-container
+* Code that uses this is defined in .vitepress/markdown-it-containers-config.ts
+*/
+
+/* Button list styles */
+.buttonlist ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: stretch;
+  justify-content: space-between;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.buttonlist ul li {
+  flex-grow: 1;
+  flex-basis: 30%;
+  max-width: 30%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  color: var(--vp-c-default-2);
+  line-height: 1.7;
+}
+
+.buttonlist ul li a {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #fff;
+  background-color: var(--vp-c-brand-3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+  box-sizing: border-box;
+  border-bottom: 1px solid #38809d;
+  margin: 0 3px;
+  display: table;
+  margin-bottom: 2rem;
+  margin-top: 2.5rem;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.buttonlist ul li a:hover {
+  background-color: var(--vp-c-brand-2);
+  color: white;
+}
+
+.buttonlist ul li a svg {
+  height: 0.8rem;
+  width: auto;
+  color: #fff;
+}
+
+.buttonlist ul li a svg.icon.outbound {
+  display: none;
+}
+
+/* Definition styles */
+.definition {
+  background-color: var(--vp-c-default-soft);
+  padding: 0.5rem 2rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 719px) {
+  .buttonlist ul {
+    flex-direction: column;
+  }
+  .buttonlist ul li {
+    max-width: 100%;
+  }
+}

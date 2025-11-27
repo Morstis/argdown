@@ -1,7 +1,16 @@
 import { defineConfig } from "vitepress";
+import createArgdownPlugin from "@argdown/markdown-it-plugin";
+import { customBlockContainer } from "./markdown-it-container-config";
 
 const domain = "http://localhost:5173";
 const discord = "https://discord.gg/rFe7nuDbzs";
+const markdownItPlugin = createArgdownPlugin({
+  webComponent: {
+    addWebComponentScript: false,
+    addGlobalStyles: false,
+    addWebComponentPolyfill: false
+  }
+});
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -77,11 +86,19 @@ export default defineConfig({
   // markdown: {
   //   extendMarkdown: extendMarkdown
   // },
+  markdown: {
+    config: (md) => {
+      md.use(...customBlockContainer("buttonlist"));
+      md.use(...customBlockContainer("definition"));
+      md.use(markdownItPlugin);
+    }
+  },
   themeConfig: {
     logo: "/argdown-mark.svg",
     search: {
       provider: "local"
     },
+
     sidebar: {
       "/changes/": [
         {
