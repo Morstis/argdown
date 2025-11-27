@@ -4,6 +4,7 @@ import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import "./style.css";
 import "./md-it-container-custom.css";
+import ArgdownCheatSheet from "../components/ArgdownCheatSheet.vue";
 
 export default {
   extends: DefaultTheme,
@@ -13,6 +14,6 @@ export default {
     });
   },
   enhanceApp({ app, router, siteData }) {
-    // ...
+    app.component("ArgdownCheatSheet", ArgdownCheatSheet);
   }
 } satisfies Theme;
