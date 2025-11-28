@@ -18,15 +18,21 @@ export default {
         "says-who-map": {
             // We could add additional configuration settings here.
             // But currently we only want to define our process here:
+            inputPath: "./test.argdown",
+            // process: "export-svg",
             process: [
-            "load-file", // loads Argdown files (request.input)
-            "parse-input", // parses them (response.ast)
-            "build-model", // builds the data model (response.arguments, response.statements...)
-            "build-map", // creates the map (response.map)
-            "add-proponents", // our new processor with the SaysWhoPlugin
-            "export-dot", // exports the map into dot format
-            "export-svg" // exports the dot file into svg format
-            ]
+                "load-file", // loads Argdown files (request.input)
+                "parse-input", // parses them (response.ast)
+                "build-model", // builds the data model (response.arguments, response.statements...)
+                "build-map", // creates the map (response.map)
+                "add-proponents", // our new processor with the SaysWhoPlugin
+                "export-dot", // exports the map into dot format
+                "export-svg", // exports the dot file into svg format
+                "save-svg-as-svg"
+            ],
+            svg: {
+                outputDir: "."
+            }
         }
     }
 }
@@ -60,7 +66,7 @@ sourceHighlighter:
 We can now run our plugin with the commandline tool, assuming that the config file and our Argdown document are in the current working directory:
 
 ```sh
-argdown run says-who-map
+argdown run says-who-map --config ./argdown.config.js
 ```
 
 This should create an svg file with a map where proponent names have been added:

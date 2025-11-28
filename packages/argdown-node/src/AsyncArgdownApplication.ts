@@ -255,12 +255,14 @@ export class AsyncArgdownApplication extends ArgdownApplication {
         requestForFile.inputPath = file;
         promises.push(this.runAsync(requestForFile));
       }
-      // Remove plugins added by request
-      if (req.plugins) {
-        for (const pluginData of req.plugins) {
-          this.removePlugin(pluginData.plugin, pluginData.processor);
-        }
-      }
+      // Unsure of why plugins are removed here, but it is preventing custom plugins from running hence commenting
+      // Needs to be further investigated
+      // // Remove plugins added by request
+      // if (req.plugins) {
+      //   for (const pluginData of req.plugins) {
+      //     this.removePlugin(pluginData.plugin, pluginData.processor);
+      //   }
+      // }
       return await Promise.all(promises);
     }
     return;
