@@ -59,7 +59,7 @@ jobs:
       - name: Run build
         run: yarn build
       - name: Run lint
-        run: yarn lint
+        run: yarn lint:all
       - name: Run prettier check
         run: yarn prettier:check
       - name: Run tests
