@@ -5,11 +5,11 @@ name: Node.js Test CI
 
 on:
   workflow_dispatch:
-# Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
+  # Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
   push:
-    branches: [ $default-branch, dev ]
+    branches: [$default-branch, dev]
   pull_request:
-    branches: [ $default-branch, dev ]
+    branches: [$default-branch, dev]
 
 jobs:
   build:
