@@ -25,7 +25,6 @@ jobs:
       # Perform a shallow clone of a specific branch
       - uses: actions/checkout@v4
         with:
-          ref: yarn-berry
           fetch-depth: 1
       - name: Install rsvg-convert and tex
         run: |
