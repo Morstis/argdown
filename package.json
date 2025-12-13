@@ -51,6 +51,7 @@
     "eslint": "^9.15.0",
     "esm": "^3.2.25",
     "nyc": "^17.1.0",
+    "prettier": "^3.7.4",
     "stream-browserify": "^3.0.0",
     "tsx": "4.20.6",
     "typescript": "5.9.3",
