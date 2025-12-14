@@ -22,8 +22,8 @@ describe("DefaultSettings", function () {
       bool: true
     };
     const settings = mergeDefaults({}, defaults);
-    expect(settings.obj && typeof settings.obj === 'object').to.be.true;
-    expect(settings.obj.obj && typeof settings.obj.obj === 'object').to.be.true;
+    expect(settings.obj && typeof settings.obj === "object").to.be.true;
+    expect(settings.obj.obj && typeof settings.obj.obj === "object").to.be.true;
     expect(settings.obj.obj.str).to.equal("Hallo world!");
     expect(settings.obj.nr).to.equal(1);
     expect(settings.bool).to.be.true;
@@ -51,8 +51,8 @@ describe("DefaultSettings", function () {
       { obj: { obj: { str: "Hallo universe!" } } },
       defaults
     );
-    expect(settings.obj && typeof settings.obj === 'object').to.be.true;
-    expect(settings.obj.obj && typeof settings.obj.obj === 'object').to.be.true;
+    expect(settings.obj && typeof settings.obj === "object").to.be.true;
+    expect(settings.obj.obj && typeof settings.obj.obj === "object").to.be.true;
     expect(settings.obj.obj.str).to.equal("Hallo universe!");
     expect(settings.obj.nr).to.equal(1);
     expect(settings.bool).to.be.true;
@@ -77,8 +77,8 @@ describe("DefaultSettings", function () {
       bool: true
     };
     const settings = mergeDefaults({ obj: "Hallo universe!" }, defaults);
-    expect(settings.obj && typeof settings.obj === 'object').to.be.true;
-    expect(settings.obj.obj && typeof settings.obj.obj === 'object').to.be.true;
+    expect(settings.obj && typeof settings.obj === "object").to.be.true;
+    expect(settings.obj.obj && typeof settings.obj.obj === "object").to.be.true;
     expect(settings.obj.obj.str).to.equal("Hallo world!");
     expect(settings.obj.nr).to.equal(1);
     expect(settings.bool).to.be.true;
