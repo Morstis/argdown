@@ -5,11 +5,11 @@ name: Node.js Test CI
 
 on:
   workflow_dispatch:
-# Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
+  # Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
   push:
-    branches: [ $default-branch, dev ]
+    branches: [$default-branch, dev]
   pull_request:
-    branches: [ $default-branch, dev ]
+    branches: [$default-branch, dev]
 
 jobs:
   build:
@@ -25,7 +25,6 @@ jobs:
       # Perform a shallow clone of a specific branch
       - uses: actions/checkout@v4
         with:
-          ref: yarn-berry
           fetch-depth: 1
       - name: Install rsvg-convert and tex
         run: |

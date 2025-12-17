@@ -24,7 +24,7 @@ describe("ImageSizePlugin", function () {
     expect(request.images!.files!["./argdown-mark.svg"].height).to.equal(128);
   });
   // prettier-ignore: Mocha requires regular function for this.skip() context
-  it("can set image size from url", async function() {
+  it("can set image size from url", async function () {
     const url =
       "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
 
@@ -47,7 +47,7 @@ describe("ImageSizePlugin", function () {
       expect(request.images!.files![url].height).to.equal(260);
     } catch (error: any) {
       // Skip test if external resource is unavailable (503, network errors, etc.)
-      if (error.message?.includes('503') || error.message?.includes('failed')) {
+      if (error.message?.includes("503") || error.message?.includes("failed")) {
         this.skip();
       } else {
         throw error;

@@ -54,9 +54,8 @@ export class CopyDefaultCssPlugin implements IAsyncArgdownPlugin {
       : (settings.outputDir ?? "");
     const absoluteOutputDir = path.resolve(rootPath, outputDir);
     await mkdirp(absoluteOutputDir);
-    const pathToDefaultCssFile = require.resolve(
-      "@argdown/core/dist/plugins/argdown.css"
-    );
+    const pathToDefaultCssFile =
+      require.resolve("@argdown/core/dist/plugins/argdown.css");
     logger.log(
       "verbose",
       "Copying default argdown.css to folder: " + absoluteOutputDir
