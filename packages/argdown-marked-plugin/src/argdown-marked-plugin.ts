@@ -2,7 +2,8 @@ import {
   IArgdownRequest,
   WebComponentExportPlugin,
   IWebComponentExportSettings,
-  argdown as defaultArgdownApplication
+  argdown as defaultArgdownApplication,
+  init
 } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
 import { Renderer, MarkedOptions, Tokens } from "marked";
@@ -83,6 +84,7 @@ export const addArgdownSupportToMarked = (
       polyfill = `<script src="${pluginSettings.webComponentPolyfillUrl}" type="module"></script>`;
     }
     return (async () => {
+      await init();
       const parsed = await markedFn(src, { ...options, renderer, async: true });
       return `${script}${styles}${polyfill}${parsed}`;
     })();

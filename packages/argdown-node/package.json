@@ -36,7 +36,6 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "dependencies": {
-    "@aduh95/viz.js": "3.4.0",
     "@argdown/core": "workspace:^",
     "@hpcc-js/wasm-graphviz": "^1.18.0",
     "axios": "^1.8.2",

@@ -14,7 +14,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeStringify from "rehype-stringify";
 
 describe("Remark Argdown Plugin", function () {
-  this.timeout(10000);
+  // this.timeout(10000);
 
   describe("Plugin Registration and AST Processing", function () {
     it("should register without errors", function () {

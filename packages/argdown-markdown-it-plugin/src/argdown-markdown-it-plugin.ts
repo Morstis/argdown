@@ -3,16 +3,18 @@ import {
   WebComponentExportPlugin,
   IWebComponentExportSettings,
   ArgdownApplication,
-  argdown as defaultArgdownApplication
+  argdown as defaultArgdownApplication,
+  init
 } from "@argdown/core";
 import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token.mjs";
 import defaultsDeep from "lodash.defaultsdeep";
 
-const createArgdownPlugin = (
+const createArgdownPlugin = async (
   config?: ((env: any) => IArgdownRequest) | IArgdownRequest,
   customArgdownApplication?: ArgdownApplication
 ) => {
+  await init();
   const argdown = customArgdownApplication || defaultArgdownApplication;
 
   const webComponentPlugin = argdown.getPlugin(
@@ -101,19 +103,13 @@ const createArgdownPlugin = (
         webComponentDefaults
       );
       if (pluginSettings.addWebComponentScript) {
-        script = `<script src="${
-          pluginSettings.webComponentScriptUrl
-        }"></script>`;
+        script = `<script src="${pluginSettings.webComponentScriptUrl}"></script>`;
       }
       if (pluginSettings.addGlobalStyles) {
-        styles = `<link rel="stylesheet" type="text/css" href="${
-          pluginSettings.globalStylesUrl
-        }">`;
+        styles = `<link rel="stylesheet" type="text/css" href="${pluginSettings.globalStylesUrl}">`;
       }
       if (pluginSettings.addWebComponentPolyfill) {
-        polyfill = `<script src="${
-          pluginSettings.webComponentPolyfillUrl
-        }"></script>`;
+        polyfill = `<script src="${pluginSettings.webComponentPolyfillUrl}"></script>`;
       }
       return `${script}${styles}${polyfill}${tempRender(tokens, options, env)}`;
     };

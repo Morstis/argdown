@@ -47,7 +47,14 @@ argdown.addPlugin(new GraphMLExportPlugin(), "export-graphml");
 argdown.addPlugin(new HighlightSourcePlugin(), "highlight-source");
 argdown.addPlugin(new WebComponentExportPlugin(), "export-web-component");
 
+/**
+ * Initializes the argdown application by loading Graphviz and adding the SyncDotToSvgExportPlugin.
+ *
+ */
 export async function init() {
+  if (argdown.getPlugin("SyncDotToSvgExportPlugin", "export-svg")) {
+    return;
+  }
   const graphviz = await Graphviz.load();
   argdown.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-svg");
 }

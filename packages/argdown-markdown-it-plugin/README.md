@@ -22,7 +22,7 @@ Configure the markdown-it instance:
 import MarkdownIt from "markdown-it";
 import createArgdownPlugin from "@argdown/markdown-it-plugin";
 
-const markdownItPlugin = createArgdownPlugin(env => {
+const markdownItPlugin = await createArgdownPlugin(env => {
     return env.argdownConfig;
 });
 mdi.use(markdownItPlugin);

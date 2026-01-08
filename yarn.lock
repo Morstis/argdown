@@ -313,7 +313,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@argdown/node@workspace:packages/argdown-node"
   dependencies:
-    "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
     "@hpcc-js/wasm-graphviz": "npm:^1.18.0"
     "@types/chai": "npm:^5.2.2"

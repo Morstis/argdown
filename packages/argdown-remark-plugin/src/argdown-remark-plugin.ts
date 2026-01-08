@@ -2,7 +2,8 @@ import {
   IArgdownRequest,
   WebComponentExportPlugin,
   IWebComponentExportSettings,
-  argdown as defaultArgdownApplication
+  argdown as defaultArgdownApplication,
+  init
 } from "@argdown/core";
 import defaultsDeep from "lodash.defaultsdeep";
 import { visit } from "unist-util-visit";
@@ -48,7 +49,8 @@ export interface RemarkArgdownOptions {
 export const remarkArgdownPlugin = (
   options: RemarkArgdownOptions = {}
 ): Transformer => {
-  return function transformer(tree, file) {
+  return async function transformer(tree, file) {
+    await init();
     const config =
       typeof options.argdownConfig === "function"
         ? options.argdownConfig(file.cwd)
