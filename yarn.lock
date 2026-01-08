@@ -315,6 +315,7 @@ __metadata:
   dependencies:
     "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
+    "@hpcc-js/wasm-graphviz": "npm:^1.18.0"
     "@types/chai": "npm:^5.2.2"
     "@types/chai-fs": "npm:^2.0.5"
     "@types/lodash.clonedeep": "npm:^4.5.9"
@@ -2380,6 +2381,13 @@ __metadata:
   version: 1.16.0
   resolution: "@hpcc-js/wasm-graphviz@npm:1.16.0"
   checksum: 10c0/4e1a3914659b66f349e88d4fc54be1af2c78a4dcf794520dd3c1927fa1244092a647963581be52776745082caf2a5d7f78994df5dec1b1a504654c1a279d5606
+  languageName: node
+  linkType: hard
+
+"@hpcc-js/wasm-graphviz@npm:^1.18.0":
+  version: 1.18.0
+  resolution: "@hpcc-js/wasm-graphviz@npm:1.18.0"
+  checksum: 10c0/b0940bc93aca2ed7a4c1de9900c582570fc7d13f08e102f387c3e35a9c24238aa2ec185ddb391cec399eb09bdf095b109d2ac4170f39218162105772497e7a88
   languageName: node
   linkType: hard
 

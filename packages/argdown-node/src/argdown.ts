@@ -32,6 +32,7 @@ import { IncludePlugin } from "./plugins/IncludePlugin.js";
 import { LoadFilePlugin } from "./plugins/LoadFilePlugin.js";
 import { ImageSizePlugin } from "./plugins/ImageSizePlugin.js";
 import { GenerateDataUrlsPlugin } from "./plugins/GenerateDataUrlsPlugin.js";
+import { AsyncSvgExportPlugin } from "./plugins/AsyncSvgExportPlugin.js";
 
 export const argdown = new AsyncArgdownApplication();
 
@@ -128,7 +129,7 @@ argdown.addPlugin(saveAsGraphML, "save-as-graphml");
 const stdoutGraphML = new StdOutPlugin({ dataKey: "graphml" });
 argdown.addPlugin(stdoutGraphML, "stdout-graphml");
 
-const dotToSvgExport = new SyncDotToSvgExportPlugin();
+const dotToSvgExport = new AsyncSvgExportPlugin();
 argdown.addPlugin(dotToSvgExport, "export-svg");
 const saveSvgAsSvg = new SaveAsFilePlugin({
   outputDir: "./svg",
