@@ -20,6 +20,7 @@ import { WebComponentExportPlugin } from "./plugins/WebComponentExportPlugin.js"
 import { ExplodeArgumentsPlugin } from "./plugins/ExplodeArgumentsPlugin.js";
 import { MapNodeImagesPlugin } from "./plugins/MapNodeImagesPlugin.js";
 
+import { Graphviz } from "@hpcc-js/wasm-graphviz";
 /***
  * Default instance of a sync ArgdownApplication with all plugins of @argdown/core loaded and default processes defined.
  *
@@ -43,9 +44,13 @@ argdown.addPlugin(new HtmlExportPlugin(), "export-html");
 argdown.addPlugin(new JSONExportPlugin(), "export-json");
 argdown.addPlugin(new DotExportPlugin(), "export-dot");
 argdown.addPlugin(new GraphMLExportPlugin(), "export-graphml");
-argdown.addPlugin(new SyncDotToSvgExportPlugin(), "export-svg");
 argdown.addPlugin(new HighlightSourcePlugin(), "highlight-source");
 argdown.addPlugin(new WebComponentExportPlugin(), "export-web-component");
+
+export async function init() {
+  const graphviz = await Graphviz.load();
+  argdown.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-svg");
+}
 
 argdown.defaultProcesses = {
   "export-svg": [

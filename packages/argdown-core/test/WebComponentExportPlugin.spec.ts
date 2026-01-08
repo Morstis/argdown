@@ -16,7 +16,8 @@ import {
   WebComponentExportPlugin
 } from "../src";
 import { SyncDotToSvgExportPlugin } from "../src/plugins/SyncDotToSvgExportPlugin";
-describe("WebComponentExportPlugin", function () {
+import { Graphviz } from "@hpcc-js/wasm-graphviz";
+describe("WebComponentExportPlugin", async function () {
   const app = new ArgdownApplication();
   app.addPlugin(new ParserPlugin(), "parse-input");
   app.addPlugin(new ModelPlugin(), "build-model");
@@ -27,7 +28,9 @@ describe("WebComponentExportPlugin", function () {
   app.addPlugin(new GroupPlugin(), "create-map");
   app.addPlugin(new ColorPlugin(), "add-colors");
   app.addPlugin(new DotExportPlugin(), "export-dot");
-  app.addPlugin(new SyncDotToSvgExportPlugin(), "export-dot-as-svg");
+
+  const graphviz = await Graphviz.load();
+  app.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-dot-as-svg");
   app.addPlugin(new HighlightSourcePlugin(), "highlight-source");
   app.addPlugin(new WebComponentExportPlugin(), "export-web-component");
   it("can generate component html (sanity test)", async () => {

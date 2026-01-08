@@ -159,7 +159,6 @@ export * from "./plugins/WebComponentExportPlugin.js";
 export * from "./plugins/ExplodeArgumentsPlugin.js";
 export * from "./plugins/MapNodeImagesPlugin.js";
 export * from "./plugins/SyncDotToSvgExportPlugin.js";
-export * from "./plugins/VizJsSettings.js";
 export * from "./plugins/SaysWhoPlugin.js";
 export * from "./plugins/shortcodes.js";
 export * from "./IArgdownPlugin.js";

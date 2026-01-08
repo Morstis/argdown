@@ -77,8 +77,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@argdown/core@workspace:packages/argdown-core"
   dependencies:
-    "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/highlightjs": "workspace:^"
+    "@hpcc-js/wasm-graphviz": "npm:^1.16.0"
     "@types/chai": "npm:^5.2.2"
     "@types/js-yaml": "npm:^4.0.0"
     "@types/lodash.clonedeep": "npm:^4.5.9"
@@ -2373,6 +2373,13 @@ __metadata:
   dependencies:
     "@hapi/hoek": "npm:^9.0.0"
   checksum: 10c0/b16b06d9357947149e032bdf10151eb71aea8057c79c4046bf32393cb89d0d0f7ca501c40c0f7534a5ceca078de0700d2257ac855c15e59fe4e00bba2f25c86f
+  languageName: node
+  linkType: hard
+
+"@hpcc-js/wasm-graphviz@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "@hpcc-js/wasm-graphviz@npm:1.16.0"
+  checksum: 10c0/4e1a3914659b66f349e88d4fc54be1af2c78a4dcf794520dd3c1927fa1244092a647963581be52776745082caf2a5d7f78994df5dec1b1a504654c1a279d5606
   languageName: node
   linkType: hard
 
