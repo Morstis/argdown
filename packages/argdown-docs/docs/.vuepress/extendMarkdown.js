@@ -26,11 +26,11 @@ function createContainer(klass, defaultTitle) {
     }
   ];
 }
-module.exports = (md) => {
+module.exports = async (md) => {
   md.use(...createContainer("buttonlist"));
   md.use(...createContainer("definition"));
   md.use(
-    createArgdownPlugin({
+    await createArgdownPlugin({
       webComponent: {
         addWebComponentScript: false,
         addGlobalStyles: false,
