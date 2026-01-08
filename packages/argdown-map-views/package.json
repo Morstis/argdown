@@ -36,8 +36,8 @@
   "license": "MIT",
   "readmeFilename": "Readme.md",
   "dependencies": {
-    "@aduh95/viz.js": "3.4.0",
     "@argdown/core": "workspace:^",
+    "@hpcc-js/wasm-graphviz": "^1.18.0",
     "babel-polyfill": "^6.26.0",
     "d3-selection": "3.0.0",
     "d3-transition": "3.0.1",

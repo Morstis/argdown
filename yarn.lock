@@ -223,8 +223,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@argdown/map-views@workspace:packages/argdown-map-views"
   dependencies:
-    "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
+    "@hpcc-js/wasm-graphviz": "npm:^1.18.0"
     "@parcel/config-default": "npm:^2.15.4"
     "@parcel/core": "npm:^2.16.0"
     "@parcel/transformer-typescript-tsc": "npm:^2.15.4"

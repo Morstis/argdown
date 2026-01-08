@@ -1,5 +1,3 @@
-import Viz, { VizConstructorOptions } from "@aduh95/viz.js";
-
 import { select } from "d3-selection";
 import "d3-transition";
 // import { Module, render } from "viz.js/full.render";
@@ -7,16 +5,8 @@ import "d3-transition";
 import { ZoomManager, OnZoomChangedHandler } from "./ZoomManager.js";
 import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode.js";
 import { mergeDefaults, isObject } from "@argdown/core";
-import { IVizJsSettings } from "@argdown/core";
-
-export enum GraphvizEngine {
-  CIRCO = "circo",
-  DOT = "dot",
-  FDP = "fdp",
-  NEATO = "neato",
-  OSAGE = "osage",
-  TWOPI = "twopi"
-}
+import { IVizSettings } from "@argdown/core";
+import { Graphviz } from "@hpcc-js/wasm-graphviz";
 
 // old:
 // export interface IVizJsSettings {
@@ -27,7 +17,7 @@ export enum GraphvizEngine {
 // }
 
 // Extended interface to support additional features
-export interface IVizJsSettingsExtended extends IVizJsSettings {
+export interface IVizJsSettingsExtended extends IVizSettings {
   images?: Array<{ path: string; width: number; height: number }>;
 }
 
@@ -44,9 +34,7 @@ export const vizJsDefaultSettings = {
   // format: "svg"
 };
 export class VizJsMap implements CanSelectNode {
-  vizJsConfig?: VizConstructorOptions;
-  viz: any;
-  renderSync?: (str: string, settings: IVizJsSettings) => string;
+  viz: Graphviz | undefined;
   zoomManager: ZoomManager;
   svgContainer: HTMLElement;
   selectedElement?: SVGGraphicsElement | null;
@@ -54,36 +42,27 @@ export class VizJsMap implements CanSelectNode {
   onSelectionChanged?: OnSelectionChangedHandler;
   constructor(
     svgContainer: HTMLElement,
-    renderSync: ((str: string, settings: IVizJsSettings) => string) | null, // sync render mode still needed for vscode as long as webviews do not support web workers, set vizjsConfig to null if renderSync is used.
-    config: any, // VizConstructorOptions | null, // should be used if web workers are supported, renderSync should be set null in that case
     onZoomChanged?: OnZoomChangedHandler,
     onSelectionChanged?: OnSelectionChangedHandler
   ) {
-    if (!renderSync && config) {
-      this.vizJsConfig = config;
-      this.viz = new Viz(config);
-    } else if (renderSync) {
-      this.renderSync = renderSync;
-    }
     this.svgContainer = svgContainer;
     this.zoomManager = new ZoomManager(onZoomChanged, true);
     this.onSelectionChanged = onSelectionChanged;
   }
-  async renderAsync(dot: string, options: IVizJsSettings) {
-    if (this.viz === undefined && this.vizJsConfig) {
-      this.viz = new Viz(this.vizJsConfig);
+  async renderAsync(dot: string, options: IVizSettings) {
+    if (!this.viz) {
+      this.viz = await Graphviz.load();
     }
-    return await this.viz.renderString(dot, options);
+
+    return this.viz.layout(dot, "svg", options.engine || "dot", {
+      nop: options.nop
+    });
   }
   async render(props: VizJsMapProps) {
     const settings = isObject(props.settings) ? props.settings : {};
     mergeDefaults(settings, vizJsDefaultSettings);
     let svgString = "";
-    if (this.renderSync) {
-      svgString = this.renderSync(props.dot, settings);
-    } else {
-      svgString = await this.renderAsync(props.dot, settings);
-    }
+    svgString = await this.renderAsync(props.dot, settings);
     if (settings.removeProlog) {
       svgString = svgString.replace(
         /<\?[ ]*xml[\S ]+?\?>[\s]*<![ ]*DOCTYPE[\S\s]+?\.dtd"[ ]*>/,
