@@ -20,6 +20,7 @@ export interface IArgdownPreviewState {
       y?: number;
     };
     scale?: number;
+    svg?: string;
     dot?: string;
     settings?: IVizSettings;
     images?: [
