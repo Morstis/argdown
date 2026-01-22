@@ -1,5 +1,4 @@
 import { select } from "d3-selection";
-import vizRenderStringSync from "@aduh95/viz.js/sync";
 import { onceDocumentLoaded } from "./events";
 import { createPosterForVsCode } from "./messaging";
 import { getSettings } from "./settings";
@@ -59,8 +58,6 @@ const updateMap = () => {
 onceDocumentLoaded(() => {
   vizJsMap = new VizJsMap(
     svgContainer,
-    vizRenderStringSync,
-    null,
     onZoomChanged,
     onSelectionChanged
   );

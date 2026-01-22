@@ -1,5 +1,5 @@
 import { IDagreSettings } from "@argdown/map-views";
-import { IMap, IVizJsSettings } from "@argdown/core";
+import { IMap, IVizSettings } from "@argdown/core";
 import { Uri } from "vscode";
 export interface IArgdownPreviewState {
   resource?: Uri;
@@ -22,7 +22,7 @@ export interface IArgdownPreviewState {
     };
     scale?: number;
     dot?: string;
-    settings?: IVizJsSettings;
+    settings?: IVizSettings;
   };
   html: {
     line: number;

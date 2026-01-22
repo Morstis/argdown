@@ -16,13 +16,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aduh95/viz.js@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@aduh95/viz.js@npm:3.4.0"
-  checksum: 10c0/6acb40e881dc0b7ac7a6800a1508e8c420e1f6b09bd42e3289aa2199345729af8aec6ffc52dc72cfe678476fcc341f4a83bc2c3d59cd223232e8495f3a414ab0
-  languageName: node
-  linkType: hard
-
 "@arcanis/slice-ansi@npm:^1.1.1":
   version: 1.1.1
   resolution: "@arcanis/slice-ansi@npm:1.1.1"
@@ -10442,7 +10435,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "argdown-vscode@workspace:packages/argdown-vscode"
   dependencies:
-    "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
     "@argdown/language-server": "workspace:^"
     "@argdown/map-views": "workspace:^"

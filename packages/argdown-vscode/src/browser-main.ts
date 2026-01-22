@@ -103,7 +103,7 @@ export function activate(context: ExtensionContext) {
   void client.start();
 
   return {
-    extendMarkdownIt(md: any) {
+    async extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
         "argdown.markdownWebComponent",
         null
@@ -111,7 +111,7 @@ export function activate(context: ExtensionContext) {
       const enabled = webComponentConfig.get<boolean>("enabled");
       if (enabled) {
         return md.use(
-          createArgdownMarkdownItPlugin(() => {
+          await createArgdownMarkdownItPlugin(() => {
             const webComponentConfig = vscode.workspace.getConfiguration(
               "argdown.markdownWebComponent",
               null

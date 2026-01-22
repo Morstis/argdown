@@ -48,6 +48,14 @@ export class VizJsMap implements CanSelectNode {
     this.svgContainer = svgContainer;
     this.zoomManager = new ZoomManager(onZoomChanged, true);
     this.onSelectionChanged = onSelectionChanged;
+    // Try to load viz immediately
+    Graphviz.load()
+      .catch(console.error)
+      .then((viz) => {
+        if (!viz) return;
+        this.viz = viz;
+      })
+      .catch(console.error);
   }
   async renderAsync(dot: string, options: IVizSettings) {
     if (!this.viz) {
@@ -61,14 +69,14 @@ export class VizJsMap implements CanSelectNode {
   async render(props: VizJsMapProps) {
     const settings = isObject(props.settings) ? props.settings : {};
     mergeDefaults(settings, vizJsDefaultSettings);
-    let svgString = "";
-    svgString = await this.renderAsync(props.dot, settings);
+    let svgString = await this.renderAsync(props.dot, settings);
     if (settings.removeProlog) {
       svgString = svgString.replace(
         /<\?[ ]*xml[\S ]+?\?>[\s]*<![ ]*DOCTYPE[\S\s]+?\.dtd"[ ]*>/,
         ""
       );
     }
+    console.log(svgString);
     if (settings.images) {
       for (const image of settings.images) {
         if ((image as any).dataUrl) {
