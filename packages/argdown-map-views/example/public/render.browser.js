@@ -671,7 +671,6 @@ var n = function (n) {
                 o = 16384 * Math.ceil(r / 16384),
                 t = Vt(o);
               r < o;
-
             )
               _[t + r++] = 0;
             if (!(r = t)) throw new _n(48);
@@ -2444,7 +2443,6 @@ var n = function (n) {
           for (
             n = "number" == typeof n ? n.toString() : n || "";
             n.length < t;
-
           )
             n = r[0] + n;
           return n;
@@ -2841,7 +2839,6 @@ var n = function (n) {
           for (
             "function" == typeof t.postRun && (t.postRun = [t.postRun]);
             t.postRun.length;
-
           ) {
             var n = t.postRun.shift();
             N.unshift(n);
@@ -2854,7 +2851,6 @@ var n = function (n) {
         for (
           "function" == typeof t.preRun && (t.preRun = [t.preRun]);
           t.preRun.length;
-
         )
           V();
       (rn(Y),
@@ -2901,7 +2897,6 @@ var n = function (n) {
     for (
       "function" == typeof t.preInit && (t.preInit = [t.preInit]);
       0 < t.preInit.length;
-
     )
       t.preInit.pop()();
   return (tr(), n.ready);

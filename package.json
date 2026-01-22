@@ -54,6 +54,7 @@
     "esm": "^3.2.25",
     "lerna": "^9.0.1",
     "nyc": "^17.1.0",
+    "prettier": "^3.7.4",
     "stream-browserify": "^3.0.0",
     "tsx": "4.20.6",
     "typescript": "5.9.3",

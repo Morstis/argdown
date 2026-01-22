@@ -126,11 +126,7 @@ export interface HasFontColor {
  * Has either other [[IRuleNode]]s or [[ITokenNode]]s as children.
  */
 export interface IRuleNode
-  extends HasLocation,
-    HasData,
-    HasText,
-    HasTags,
-    HasTitle {
+  extends HasLocation, HasData, HasText, HasTags, HasTitle {
   type: ArgdownTypes.RULE_NODE;
   name: RuleNames;
   children?: IAstNode[];
@@ -187,7 +183,8 @@ export type IAstNode = IRuleNode | ITokenNode;
  * (the last statement in the argument's pcs).
  */
 export interface IArgument
-  extends HasTitle,
+  extends
+    HasTitle,
     HasRelations,
     HasTags,
     HasData,
@@ -266,12 +263,7 @@ export namespace IArgument {
  * For further details on the relationship between equivalence classes and statements, see [[IEquivalenceClass]].
  */
 export interface IStatement
-  extends HasTitle,
-    HasTags,
-    HasData,
-    HasLocation,
-    HasSection,
-    HasText {
+  extends HasTitle, HasTags, HasData, HasLocation, HasSection, HasText {
   type: ArgdownTypes.STATEMENT;
   role?: StatementRole;
   isReference?: boolean;
@@ -337,7 +329,8 @@ export interface IArgumentDescription extends IStatement {
  *
  */
 export interface IEquivalenceClass
-  extends HasTitle,
+  extends
+    HasTitle,
     HasRelations,
     HasTags,
     HasData,
@@ -426,11 +419,7 @@ export namespace IEquivalenceClass {
  * Inferences can be identified by their argument's title and their conclusion's index in the argument's pcs.
  */
 export interface IInference
-  extends HasTitle,
-    HasRelations,
-    HasData,
-    HasLocation,
-    HasSection {
+  extends HasTitle, HasRelations, HasData, HasLocation, HasSection {
   type: ArgdownTypes.INFERENCE;
   inferenceRules?: string[];
   /**
@@ -493,7 +482,8 @@ export namespace IRelation {
  * and used to derive groups (clusters) in argument maps.
  */
 export interface ISection
-  extends HasTitle,
+  extends
+    HasTitle,
     HasTags,
     HasText,
     HasLocation,

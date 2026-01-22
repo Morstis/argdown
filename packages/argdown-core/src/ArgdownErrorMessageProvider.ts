@@ -125,8 +125,7 @@ const isRelationRule = (ruleName: string): boolean => {
     ruleName == "Contradiction"
   );
 };
-export interface IArgdownErrorMessageProvider
-  extends IParserErrorMessageProvider {
+export interface IArgdownErrorMessageProvider extends IParserErrorMessageProvider {
   isRelationToken(token: IToken): boolean;
   isRelationRule(ruleName: string): boolean;
   getTokenDescription(token: IToken): string;
