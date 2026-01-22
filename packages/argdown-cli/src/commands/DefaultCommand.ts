@@ -6,10 +6,10 @@ import { runArgdown } from "./runArgdown.js";
 export interface IDefaultCliOptions {
   inputGlob?: string;
 }
-export class DefaultCommand
-  implements
-    CommandModule<IGeneralCliOptions, IDefaultCliOptions & IGeneralCliOptions>
-{
+export class DefaultCommand implements CommandModule<
+  IGeneralCliOptions,
+  IDefaultCliOptions & IGeneralCliOptions
+> {
   builder: Record<keyof IDefaultCliOptions, Options> = {
     inputGlob: {
       describe: "Input file pattern",

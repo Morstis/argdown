@@ -15,10 +15,10 @@ export interface IMarkdownCliOptions {
   outputDir?: string;
 }
 
-export class MarkdownCommand
-  implements
-    CommandModule<IGeneralCliOptions, IMarkdownCliOptions & IGeneralCliOptions>
-{
+export class MarkdownCommand implements CommandModule<
+  IGeneralCliOptions,
+  IMarkdownCliOptions & IGeneralCliOptions
+> {
   constructor() {
     const mdi = new MarkdownIt();
     const markdownItPlugin = createArgdownPlugin(

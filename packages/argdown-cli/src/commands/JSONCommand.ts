@@ -11,10 +11,10 @@ export interface IJSONCliOptions {
   removeEmbeddedRelations?: boolean;
 }
 
-export class JSONCommand
-  implements
-    CommandModule<IGeneralCliOptions, IJSONCliOptions & IGeneralCliOptions>
-{
+export class JSONCommand implements CommandModule<
+  IGeneralCliOptions,
+  IJSONCliOptions & IGeneralCliOptions
+> {
   command = "json [inputGlob] [outputDir]";
   desc = "export Argdown input as JSON files";
   builder: Record<keyof IJSONCliOptions, Options> = {

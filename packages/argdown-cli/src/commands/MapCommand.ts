@@ -20,10 +20,10 @@ export interface IMapCliOptions {
   outputDir?: string;
 }
 
-export class MapCommand
-  implements
-    CommandModule<IGeneralCliOptions, IMapCliOptions & IGeneralCliOptions>
-{
+export class MapCommand implements CommandModule<
+  IGeneralCliOptions,
+  IMapCliOptions & IGeneralCliOptions
+> {
   command = "map [inputGlob] [outputDir]";
   desc = "export Argdown input as DOT files";
 

@@ -9,10 +9,10 @@ export interface IRunCliOptions {
   process?: string;
 }
 
-export class RunCommand
-  implements
-    CommandModule<IGeneralCliOptions, IRunCliOptions & IGeneralCliOptions>
-{
+export class RunCommand implements CommandModule<
+  IGeneralCliOptions,
+  IRunCliOptions & IGeneralCliOptions
+> {
   command = "run [process]";
   desc = "run a process you have defined in your config file";
   builder: Record<keyof IRunCliOptions, Options> = {

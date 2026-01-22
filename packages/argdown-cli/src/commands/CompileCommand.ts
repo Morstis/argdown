@@ -8,10 +8,10 @@ export interface ICompileCliOptions {
   outputDir?: string;
 }
 
-export class CompileCommand
-  implements
-    CommandModule<IGeneralCliOptions, ICompileCliOptions & IGeneralCliOptions>
-{
+export class CompileCommand implements CommandModule<
+  IGeneralCliOptions,
+  ICompileCliOptions & IGeneralCliOptions
+> {
   command = "compile [inputGlob] [outputDir]";
   desc = "compile included Argdown files into main file";
   builder = {};

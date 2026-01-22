@@ -13,13 +13,10 @@ export interface IWebComponentCliOptions {
   logParserErrors?: boolean;
 }
 
-export class WebComponentCommand
-  implements
-    CommandModule<
-      IGeneralCliOptions,
-      IWebComponentCliOptions & IGeneralCliOptions
-    >
-{
+export class WebComponentCommand implements CommandModule<
+  IGeneralCliOptions,
+  IWebComponentCliOptions & IGeneralCliOptions
+> {
   command = "web-component [inputGlob] [outputDir]";
   desc = "export Argdown input as argdown-map web component";
 

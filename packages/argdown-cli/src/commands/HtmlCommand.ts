@@ -14,10 +14,10 @@ export interface IHtmlCliOptions {
   head?: string;
 }
 
-export class HtmlCommand
-  implements
-    CommandModule<IGeneralCliOptions, IHtmlCliOptions & IGeneralCliOptions>
-{
+export class HtmlCommand implements CommandModule<
+  IGeneralCliOptions,
+  IHtmlCliOptions & IGeneralCliOptions
+> {
   command = "html [inputGlob] [outputDir]";
   desc = "export Argdown input as HTML files";
 
