@@ -76,7 +76,6 @@ export class VizJsMap implements CanSelectNode {
         ""
       );
     }
-    console.log(svgString);
     if (settings.images) {
       for (const image of settings.images) {
         if ((image as any).dataUrl) {

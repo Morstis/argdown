@@ -11,8 +11,7 @@ import {
   ColorPlugin,
   DotExportPlugin
 } from "@argdown/core";
-import { VizJsMap, DagreMap } from "../../src/index";
-import "babel-polyfill";
+import { VizJsMap, DagreMap } from "../src";
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -95,9 +94,8 @@ window.onload = function () {
   const dagreButton = document.getElementById("dagre-button");
   dagreButton!.addEventListener("click", () => createDagreMap(container));
   const vizJsButton = document.getElementById("viz-js-button");
-  vizJsButton!.addEventListener(
-    "click",
-    async () => await createVizJsMap(container)
-  );
+  vizJsButton!.addEventListener("click", () => {
+    void createVizJsMap(container);
+  });
   document.body.appendChild(container);
 };
