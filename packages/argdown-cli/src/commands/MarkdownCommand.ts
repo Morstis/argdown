@@ -19,24 +19,11 @@ export class MarkdownCommand implements CommandModule<
   IGeneralCliOptions,
   IMarkdownCliOptions & IGeneralCliOptions
 > {
+  private mdi: MarkdownIt = new MarkdownIt();
+
   constructor() {
-    const mdi = new MarkdownIt();
-    const markdownItPlugin = createArgdownPlugin(
-      (env: { argdownConfig: IArgdownRequest }) => {
-        return env.argdownConfig;
-      }
-    );
-    mdi.use(markdownItPlugin);
-    const markdownPlugin: IAsyncArgdownPlugin = {
-      name: "RenderMarkdownPlugin",
-      runAsync: async (request, response) => {
-        response.html = mdi.render(request.input || "", {
-          argdownConfig: request
-        });
-        return Promise.resolve();
-      }
-    };
-    argdown.addPlugin(markdownPlugin, "render-markdown");
+    // Try to load the plugin on construction -> fallsafe in handler as well
+    this.initMarkdownItPlugin().catch(console.error);
   }
   command = "markdown [inputGlob] [outputDir]";
   desc =
@@ -53,9 +40,10 @@ export class MarkdownCommand implements CommandModule<
     }
   };
 
-  handler = async function (
+  handler = async (
     args: Arguments<IGeneralCliOptions & IMarkdownCliOptions>
-  ) {
+  ) => {
+    await this.initMarkdownItPlugin();
     const config = await argdown.loadConfig(args.config);
 
     if (args.inputGlob) {
@@ -90,5 +78,27 @@ export class MarkdownCommand implements CommandModule<
       "exported",
       `to html`
     );
+  };
+  initMarkdownItPlugin = async () => {
+    // Check if the renderMarkdown plugin is already registered and return. Aka only run this method once.
+    if (argdown.getPlugin("RenderMarkdownPlugin", "render-markdown")) {
+      return;
+    }
+    const markdownItPlugin = createArgdownPlugin(
+      (env: { argdownConfig: IArgdownRequest }) => {
+        return env.argdownConfig;
+      }
+    );
+    this.mdi.use(await markdownItPlugin);
+    const markdownPlugin: IAsyncArgdownPlugin = {
+      name: "RenderMarkdownPlugin",
+      runAsync: async (request, response) => {
+        response.html = this.mdi.render(request.input || "", {
+          argdownConfig: request
+        });
+        return Promise.resolve();
+      }
+    };
+    argdown.addPlugin(markdownPlugin, "render-markdown");
   };
 }
