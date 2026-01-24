@@ -47,7 +47,7 @@ declare module "@argdown/core" {
 
 export const findElementAtPositionPlugin: IArgdownPlugin = {
   name: "FindElementAtPositionPlugin",
-  prepare: <IRequestHandler>(request => {
+  prepare: <IRequestHandler>((request) => {
     request.findElementAtPosition = request.findElementAtPosition || {};
   }),
   tokenListeners: {

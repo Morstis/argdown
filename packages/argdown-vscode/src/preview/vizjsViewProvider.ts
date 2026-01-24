@@ -48,10 +48,12 @@ export const vizjsViewProvider: IViewProvider = {
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
-    const { svg, request} = await argdownEngine.exportSvg(argdownDocument, config);
+    const { svg, request } = await argdownEngine.exportSvg(
+      argdownDocument,
+      config
+    );
 
     const settings = buildVizSettings(config, request);
-
 
     return { svg, settings };
   },

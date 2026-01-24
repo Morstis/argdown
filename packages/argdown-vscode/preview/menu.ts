@@ -3,7 +3,7 @@ import { MessagePoster } from "./messaging";
 export const initMenu = (messaging: MessagePoster) => {
   document.addEventListener(
     "click",
-    event => {
+    (event) => {
       if (!event) {
         return;
       }

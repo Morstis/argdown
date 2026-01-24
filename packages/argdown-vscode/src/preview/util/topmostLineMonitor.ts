@@ -30,7 +30,7 @@ export class TopmostLineMonitor extends Disposable {
     }
 
     this._register(
-      vscode.window.onDidChangeTextEditorVisibleRanges(event => {
+      vscode.window.onDidChangeTextEditorVisibleRanges((event) => {
         if (isArgdownFile(event.textEditor.document)) {
           const line = getVisibleLine(event.textEditor);
           if (typeof line === "number") {

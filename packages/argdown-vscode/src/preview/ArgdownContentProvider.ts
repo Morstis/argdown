@@ -133,17 +133,17 @@ export class ArgdownContentProvider {
           "pre.js"
         ).toString()}" nonce="${nonce}"></script>
 				<script nonce="${nonce}">window.initialState = ${JSON.stringify(
-      initialState,
-      jsonReplacer
-    )};</script>
+          initialState,
+          jsonReplacer
+        )};</script>
 				${this.getStyles(resourceProvider, sourceUri, config)}
 				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri).toString()}">
 			</head>
 			<body class="vscode-body argdown ${view}-active ${
-      menuLocked ? "locked" : "unlocked"
-    }-menu ${config.scrollBeyondLastLine ? "scrollBeyondLastLine" : ""} ${
-      config.wordWrap ? "wordWrap" : ""
-    } ${config.markEditorSelection ? "showEditorSelection" : ""}">
+        menuLocked ? "locked" : "unlocked"
+      }-menu ${config.scrollBeyondLastLine ? "scrollBeyondLastLine" : ""} ${
+        config.wordWrap ? "wordWrap" : ""
+      } ${config.markEditorSelection ? "showEditorSelection" : ""}">
 				${body}
 				${this.getScriptsForView(resourceProvider, viewProvider.scripts, nonce)}
 				${this.getScripts(resourceProvider, nonce)}
@@ -161,8 +161,8 @@ export class ArgdownContentProvider {
 	<li><a title="Show Dagre Map" data-message="didChangeView" data-view="${
     PreviewViews.DAGRE
   }" class="${
-      activeView == PreviewViews.DAGRE ? "active" : "inactive"
-    }" href="#">Dagre Map</a></li>
+    activeView == PreviewViews.DAGRE ? "active" : "inactive"
+  }" href="#">Dagre Map</a></li>
     <li><a title="Show HTML" data-message="didChangeView" data-view="${
       PreviewViews.HTML
     }" class="${
@@ -192,13 +192,15 @@ export class ArgdownContentProvider {
     let subdirectory: string;
     if (mediaFile === "pre.js") {
       subdirectory = "dist/preview";
-    } else if (["htmlView.js", "dagreView.js", "vizjsView.js"].includes(mediaFile)) {
+    } else if (
+      ["htmlView.js", "dagreView.js", "vizjsView.js"].includes(mediaFile)
+    ) {
       subdirectory = "dist/preview";
     } else {
       // Default to media for other files (CSS, images, etc.)
       subdirectory = "media";
     }
-    
+
     return resourceProvider.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, subdirectory, mediaFile)
     );
@@ -296,7 +298,7 @@ export class ArgdownContentProvider {
   ): string {
     return scripts
       .map(
-        script =>
+        (script) =>
           `<script src="${escapeAttribute(
             resourceProvider.asWebviewUri(
               this.extensionResourcePath(resourceProvider, script)
