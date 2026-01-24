@@ -3073,15 +3073,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@koa/router@npm:^14.0.0":
-  version: 14.0.0
-  resolution: "@koa/router@npm:14.0.0"
+"@koa/router@npm:^15.2.0":
+  version: 15.2.0
+  resolution: "@koa/router@npm:15.2.0"
   dependencies:
-    debug: "npm:^4.4.1"
-    http-errors: "npm:^2.0.0"
+    debug: "npm:^4.4.3"
+    http-errors: "npm:^2.0.1"
     koa-compose: "npm:^4.1.0"
-    path-to-regexp: "npm:^8.2.0"
-  checksum: 10c0/b3d542bca5839e2125521f7a7c913393fc2cab85d6c7ef247832caf2fce61bccf711b809ebafffa181207039d148d3e24f4ea92041e76a3f0a586ea6ca85649c
+    path-to-regexp: "npm:^8.3.0"
+  peerDependencies:
+    koa: ^2.0.0 || ^3.0.0
+  peerDependenciesMeta:
+    koa:
+      optional: false
+  checksum: 10c0/671679ea4ca5c0755136ecf02a43dde55730e4783d39f53f8f5176878b957d0d4526bea829f164c2ea1c8c45c5bfd858b9b8faa711a17872d632cc5cb568e70e
   languageName: node
   linkType: hard
 
@@ -6572,12 +6577,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/browser-chromium@npm:^1.55.1":
-  version: 1.56.1
-  resolution: "@playwright/browser-chromium@npm:1.56.1"
+"@playwright/browser-chromium@npm:^1.57.0":
+  version: 1.58.0
+  resolution: "@playwright/browser-chromium@npm:1.58.0"
   dependencies:
-    playwright-core: "npm:1.56.1"
-  checksum: 10c0/6025a9afbc8312f9b94bdf2b6431384236d7d253328ec2392aa3991803fc62d3ddfcd5882a06d202fc8f4a49c3b1fc110a2d9620994b28893378d594b1f0ad86
+    playwright-core: "npm:1.58.0"
+  checksum: 10c0/7a77c63f8bea9a0331313075b0e8de1a6d72ae610c490539e42337ab53033570a6ca3bf7c31bf2c539680d6203001765c5fc6634ebb0dd9e2023182854149d26
   languageName: node
   linkType: hard
 
@@ -8463,28 +8468,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/test-web@npm:^0.0.74":
-  version: 0.0.74
-  resolution: "@vscode/test-web@npm:0.0.74"
+"@vscode/test-web@npm:^0.0.78":
+  version: 0.0.78
+  resolution: "@vscode/test-web@npm:0.0.78"
   dependencies:
     "@koa/cors": "npm:^5.0.0"
-    "@koa/router": "npm:^14.0.0"
-    "@playwright/browser-chromium": "npm:^1.55.1"
+    "@koa/router": "npm:^15.2.0"
+    "@playwright/browser-chromium": "npm:^1.57.0"
     gunzip-maybe: "npm:^1.4.2"
     http-proxy-agent: "npm:^7.0.2"
     https-proxy-agent: "npm:^7.0.6"
-    koa: "npm:^3.0.1"
+    koa: "npm:^3.1.1"
     koa-morgan: "npm:^1.0.1"
     koa-mount: "npm:^4.2.0"
     koa-static: "npm:^5.0.0"
     minimist: "npm:^1.2.8"
-    playwright: "npm:^1.55.1"
+    playwright: "npm:^1.57.0"
     tar-fs: "npm:^3.1.1"
-    tinyglobby: "npm:0.2.14"
+    tinyglobby: "npm:^0.2.15"
     vscode-uri: "npm:^3.1.0"
   bin:
     vscode-test-web: out/server/index.js
-  checksum: 10c0/653f90651e5ead10161306bce2d0d49cff147f89beb9271ef488cf70a05f0cbf9c0cf9722c2e95e673e27ae7fa038c822f9e221312a55a586f66397a996ae245
+  checksum: 10c0/5b7744675a03099517f6ea96e3715de5a32447faa6e382ec40f4b6558febadffeb26cc990f5488a636069d89860ffe8c3057cbf17782b5d883d09245ec9a9e69
   languageName: node
   linkType: hard
 
@@ -10442,7 +10447,7 @@ __metadata:
     "@types/vscode": "npm:^1.99.1"
     "@vscode/test-cli": "npm:^0.0.11"
     "@vscode/test-electron": "npm:^2.5.2"
-    "@vscode/test-web": "npm:^0.0.74"
+    "@vscode/test-web": "npm:^0.0.78"
     babel-loader: "npm:10.0.0"
     brfs: "npm:^2.0.2"
     crypto-browserify: "npm:^3.12.1"
@@ -14186,7 +14191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.0.1":
+"debug@npm:^4.0.1, debug@npm:^4.4.3":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
   dependencies:
@@ -16285,7 +16290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.4.3, fdir@npm:^6.4.4, fdir@npm:^6.5.0":
+"fdir@npm:^6.4.3, fdir@npm:^6.5.0":
   version: 6.5.0
   resolution: "fdir@npm:6.5.0"
   peerDependencies:
@@ -18160,6 +18165,19 @@ __metadata:
     statuses: "npm:>= 1.5.0 < 2"
     toidentifier: "npm:1.0.1"
   checksum: 10c0/f01aeecd76260a6fe7f08e192fcbe9b2f39ed20fc717b852669a69930167053b01790998275c6297d44f435cf0e30edd50c05223d1bec9bc484e6cf35b2d6f43
+  languageName: node
+  linkType: hard
+
+"http-errors@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "http-errors@npm:2.0.1"
+  dependencies:
+    depd: "npm:~2.0.0"
+    inherits: "npm:~2.0.4"
+    setprototypeof: "npm:~1.2.0"
+    statuses: "npm:~2.0.2"
+    toidentifier: "npm:~1.0.1"
+  checksum: 10c0/fb38906cef4f5c83952d97661fe14dc156cb59fe54812a42cd448fa57b5c5dfcb38a40a916957737bd6b87aab257c0648d63eb5b6a9ca9f548e105b6072712d4
   languageName: node
   linkType: hard
 
@@ -20049,7 +20067,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"koa@npm:^3.0.1":
+"koa@npm:^3.1.1":
   version: 3.1.1
   resolution: "koa@npm:3.1.1"
   dependencies:
@@ -24248,7 +24266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^8.2.0":
+"path-to-regexp@npm:^8.3.0":
   version: 8.3.0
   resolution: "path-to-regexp@npm:8.3.0"
   checksum: 10c0/ee1544a73a3f294a97a4c663b0ce71bbf1621d732d80c9c9ed201b3e911a86cb628ebad691b9d40f40a3742fe22011e5a059d8eed2cf63ec2cb94f6fb4efe67c
@@ -24455,27 +24473,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.56.1":
-  version: 1.56.1
-  resolution: "playwright-core@npm:1.56.1"
+"playwright-core@npm:1.58.0":
+  version: 1.58.0
+  resolution: "playwright-core@npm:1.58.0"
   bin:
     playwright-core: cli.js
-  checksum: 10c0/ffd40142b99c68678b387445d5b42f1fee4ab0b65d983058c37f342e5629f9cdbdac0506ea80a0dfd41a8f9f13345bad54e9a8c35826ef66dc765f4eb3db8da7
+  checksum: 10c0/72f59ffed79357f3042ba8ebced54d63a1bdb01e4422e1d3238415ac1ee25254d4a1809f77c562045fc25805e71ad3de8e8ac0e3521e48b9c6f108cd5419ec48
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.55.1":
-  version: 1.56.1
-  resolution: "playwright@npm:1.56.1"
+"playwright@npm:^1.57.0":
+  version: 1.58.0
+  resolution: "playwright@npm:1.58.0"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.56.1"
+    playwright-core: "npm:1.58.0"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/8e9965aede86df0f4722063385748498977b219630a40a10d1b82b8bd8d4d4e9b6b65ecbfa024331a30800163161aca292fb6dd7446c531a1ad25f4155625ab4
+  checksum: 10c0/f0565966a485f0bf0748897c19aa403f97c4c83bb936b7dfc6b2f1c056d4befb24810f451e4b8cb760db3733bfef1cf7f00b369664637e48befd6fe9e42f541a
   languageName: node
   linkType: hard
 
@@ -27478,7 +27496,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"setprototypeof@npm:1.2.0":
+"setprototypeof@npm:1.2.0, setprototypeof@npm:~1.2.0":
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: 10c0/68733173026766fa0d9ecaeb07f0483f4c2dc70ca376b3b7c40b7cda909f94b0918f6c5ad5ce27a9160bdfb475efaa9d5e705a11d8eaae18f9835d20976028bc
@@ -28197,7 +28215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"statuses@npm:^2.0.1":
+"statuses@npm:^2.0.1, statuses@npm:~2.0.2":
   version: 2.0.2
   resolution: "statuses@npm:2.0.2"
   checksum: 10c0/a9947d98ad60d01f6b26727570f3bcceb6c8fa789da64fe6889908fe2e294d57503b14bf2b5af7605c2d36647259e856635cd4c49eab41667658ec9d0080ec3f
@@ -29126,17 +29144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:0.2.14":
-  version: 0.2.14
-  resolution: "tinyglobby@npm:0.2.14"
-  dependencies:
-    fdir: "npm:^6.4.4"
-    picomatch: "npm:^4.0.2"
-  checksum: 10c0/f789ed6c924287a9b7d3612056ed0cda67306cd2c80c249fd280cf1504742b12583a2089b61f4abbd24605f390809017240e250241f09938054c9b363e51c0a6
-  languageName: node
-  linkType: hard
-
-"tinyglobby@npm:^0.2.12":
+"tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.15":
   version: 0.2.15
   resolution: "tinyglobby@npm:0.2.15"
   dependencies:
@@ -29231,7 +29239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"toidentifier@npm:1.0.1":
+"toidentifier@npm:1.0.1, toidentifier@npm:~1.0.1":
   version: 1.0.1
   resolution: "toidentifier@npm:1.0.1"
   checksum: 10c0/93937279934bd66cc3270016dd8d0afec14fb7c94a05c72dc57321f8bd1fa97e5bea6d1f7c89e728d077ca31ea125b78320a616a6c6cd0e6b9cb94cb864381c1
