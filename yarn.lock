@@ -111,7 +111,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/docs@workspace:packages/argdown-docs":
+"@argdown/docs@workspace:^, @argdown/docs@workspace:packages/argdown-docs":
   version: 0.0.0-use.local
   resolution: "@argdown/docs@workspace:packages/argdown-docs"
   dependencies:
@@ -419,6 +419,7 @@ __metadata:
   dependencies:
     "@argdown/codemirror-mode": "workspace:^"
     "@argdown/core": "workspace:^"
+    "@argdown/docs": "workspace:^"
     "@argdown/map-views": "workspace:^"
     "@babel/core": "npm:^7.24.1"
     "@babel/eslint-parser": "npm:^7.24.1"
