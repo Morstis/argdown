@@ -16,6 +16,7 @@
     "@argdown/core": "workspace:^",
     "@argdown/docs": "workspace:^",
     "@argdown/map-views": "workspace:^",
+    "@argdown/docs": "workspace:^",
     "axios": "^1.7.9",
     "codemirror": "^5.65.19",
     "file-saver": "^2.0.5",
