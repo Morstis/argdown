@@ -31,8 +31,6 @@
     "@argdown/web-components": "workspace:^",
     "@types/markdown-it-container": "^2.0.10",
     "@vite-pwa/vitepress": "^1.0.1",
-    "chalk": "^2.4.2",
-    "commander": "^2.20.3",
     "markdown-it-container": "^4.0.0",
     "vite-plugin-pwa": "^1.1.0",
     "vitepress": "^1.6.4"
