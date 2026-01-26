@@ -289,5 +289,4 @@ export default withPwa(
         { text: "Discord", link: discord }
       ]
     }
-  })
-);
+  }));
