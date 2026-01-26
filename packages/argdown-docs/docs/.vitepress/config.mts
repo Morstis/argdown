@@ -73,10 +73,10 @@ export default withPwa(
     },
 
     markdown: {
-      config: (md) => {
+      config: async (md) => {
         md.use(...customBlockContainer("buttonlist"));
         md.use(...customBlockContainer("definition"));
-        md.use(MarkdownItPlugin);
+        md.use(await MarkdownItPlugin);
         md.use(ArgdownCheatSheetPlugin);
       }
     },
