@@ -10,7 +10,7 @@
   "engines": {
     "node": ">= 22.11.0"
   },
-  "version": "1.7.5",
+  "version": "1.7.6",
   "license": "MIT",
   "type": "module",
   "main": "./dist/cli.js",
@@ -42,16 +42,13 @@
     "email": "1pxsolidblack@gmail.com"
   },
   "scripts": {
-    "deploy": "npm run version:patch && git push --tags origin HEAD:master",
-    "build": "npm run clean && tsc",
-    "test": "NODE_OPTIONS=--no-deprecation tsc --noEmit && NODE_OPTIONS=--no-deprecation mocha",
-    "test:build": "NODE_OPTIONS=--no-deprecation npm run build && NODE_OPTIONS=--no-deprecation mocha",
-    "test:custom-process": "NODE_OPTIONS=--no-deprecation mocha --fgrep \"custom process\"",
-    "coverage": "NODE_OPTIONS=--no-deprecation nyc mocha --bail",
-    "report": "nyc report",
-    "prepublishOnly": "npm run-script build",
-    "clean": "rimraf \"dist/*\" --glob",
-    "version:patch": "npm version patch"
+    "deploy": "yarn run version:patch && git push --tags origin HEAD:master",
+    "build": "yarn run clean && tsc",
+    "test": "tsc --noEmit && mocha",
+    "test:build": "yarn build && mocha",
+    "test:custom-process": "mocha --fgrep \"custom process\"",
+    "prepublishOnly": "yarn run-script build",
+    "clean": "rimraf \"dist/*\" --glob"
   },
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
@@ -68,30 +65,10 @@
     "intercept-stdout": "^0.1.2",
     "mkdirp": "^3.0.1",
     "mocha": "^11.1.0",
-    "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
     "source-map-support": "^0.5.21",
     "typedoc": "0.28.14",
     "typescript": "5.9.3"
-  },
-  "nyc": {
-    "include": [
-      "dist/**/*.js",
-      "dist/**/*.jsx"
-    ],
-    "extension": [
-      ".js",
-      ".jsx"
-    ],
-    "require": [
-      "tsx"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ],
-    "sourceMap": true,
-    "instrument": true
   },
   "packageManager": "yarn@4.9.4"
 }

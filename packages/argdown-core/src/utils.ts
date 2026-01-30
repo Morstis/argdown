@@ -10,7 +10,7 @@ import { IToken } from "chevrotain";
 import pixelWidth from "string-pixel-width";
 import cloneDeep from "lodash.clonedeep";
 import * as mdurl from "mdurl";
-import * as punycode from "punycode";
+import * as punycode from "punycode/punycode.js";
 
 // taken from: https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 

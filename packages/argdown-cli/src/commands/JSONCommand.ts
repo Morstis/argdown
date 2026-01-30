@@ -1,35 +1,47 @@
 import { argdown } from "@argdown/node";
-import { Arguments } from "yargs";
+import { Arguments, CommandModule, Options } from "yargs";
 import { IGeneralCliOptions } from "../IGeneralCliOptions.js";
 import { runArgdown } from "./runArgdown.js";
 
-export const command = "json [inputGlob] [outputDir]";
-export const desc = "export Argdown input as JSON files";
-export const builder = {
-  logParserErrors: {
-    alias: "e",
-    describe: "Log parser errors to console",
-    type: "boolean",
-    default: true
-  },
-  spaces: {
-    alias: "s",
-    describe: "Spaces used for indentation",
-    type: "number"
-  },
-  removeMap: {
-    describe: "Remove map data",
-    type: "boolean"
-  },
-  removeEmbeddedRelations: {
-    describe: "Remove relations embedded in statement and relation objects",
-    type: "boolean"
-  }
-};
 export interface IJSONCliOptions {
   inputGlob?: string;
   outputDir?: string;
   spaces?: number;
+  removeMap?: boolean;
+  removeEmbeddedRelations?: boolean;
+}
+
+export class JSONCommand implements CommandModule<
+  IGeneralCliOptions,
+  IJSONCliOptions & IGeneralCliOptions
+> {
+  command = "json [inputGlob] [outputDir]";
+  desc = "export Argdown input as JSON files";
+  builder: Record<keyof IJSONCliOptions, Options> = {
+    inputGlob: {
+      describe: "Input file pattern",
+      type: "string"
+    },
+    outputDir: {
+      describe: "Output directory for JSON files",
+      type: "string"
+    },
+    spaces: {
+      alias: "s",
+      describe: "Spaces used for indentation",
+      type: "number"
+    },
+    removeMap: {
+      describe: "Remove map data",
+      type: "boolean"
+    },
+    removeEmbeddedRelations: {
+      describe: "Remove relations embedded in statement and relation objects",
+      type: "boolean"
+    }
+  };
+
+  handler = handler;
 }
 export const handler = async (
   args: Arguments<IGeneralCliOptions & IJSONCliOptions>
