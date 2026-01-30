@@ -4,3 +4,4 @@ coverage
 dist
 *.md
 public
+__snapshots__
