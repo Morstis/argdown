@@ -10763,6 +10763,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"amator@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "amator@npm:1.1.0"
+  dependencies:
+    bezier-easing: "npm:^2.0.3"
+  checksum: 10c0/5a423e4447631aeac0810720cf6cf3a7c58cd5f2694266f6b12396625a2ecca13459d9a4f6d1fca1718421ad138718a31943bb897727872277b7461ff8e8770f
+  languageName: node
+  linkType: hard
+
 "ansi-align@npm:^3.0.0":
   version: 3.0.1
   resolution: "ansi-align@npm:3.0.1"
@@ -11032,6 +11041,10 @@ __metadata:
     "@sveltejs/vite-plugin-svelte": "npm:^6.2.1"
     "@tsconfig/svelte": "npm:^5.0.6"
     "@types/node": "npm:^24.10.1"
+    eslint-config-prettier: "npm:^10.1.8"
+    panzoom: "npm:^9.4.3"
+    prettier: "npm:^3.8.1"
+    prettier-plugin-svelte: "npm:^3.4.1"
     svelte: "npm:^5.43.8"
     svelte-check: "npm:^4.3.4"
     typescript: "npm:~5.9.3"
@@ -11712,6 +11725,13 @@ __metadata:
   dependencies:
     is-windows: "npm:^1.0.0"
   checksum: 10c0/7335130729d59a14b8e4753fea180ca84e287cccc20cb5f2438a95667abc5810327c414eee7b3c79ed1b5a348a40284ea872958f50caba69432c40405eb0acce
+  languageName: node
+  linkType: hard
+
+"bezier-easing@npm:^2.0.3":
+  version: 2.1.0
+  resolution: "bezier-easing@npm:2.1.0"
+  checksum: 10c0/138a160698de3c12501479cc80280d5cc0ab47df73e20d7b5058cba6d62c0876eb97e63aa1e398233269aa2a6bb396fb0ee394da391de7258c9da20729df5158
   languageName: node
   linkType: hard
 
@@ -16183,6 +16203,17 @@ __metadata:
     escodegen: bin/escodegen.js
     esgenerate: bin/esgenerate.js
   checksum: 10c0/e1450a1f75f67d35c061bf0d60888b15f62ab63aef9df1901cffc81cffbbb9e8b3de237c5502cf8613a017c1df3a3003881307c78835a1ab54d8c8d2206e01d3
+  languageName: node
+  linkType: hard
+
+"eslint-config-prettier@npm:^10.1.8":
+  version: 10.1.8
+  resolution: "eslint-config-prettier@npm:10.1.8"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 10c0/e1bcfadc9eccd526c240056b1e59c5cd26544fe59feb85f38f4f1f116caed96aea0b3b87868e68b3099e55caaac3f2e5b9f58110f85db893e83a332751192682
   languageName: node
   linkType: hard
 
@@ -23267,6 +23298,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ngraph.events@npm:^1.2.2":
+  version: 1.4.0
+  resolution: "ngraph.events@npm:1.4.0"
+  checksum: 10c0/bb028299c7fd6732737286f7a7b50ca42121052193ea63c2d4adb0bae292d8948d64be919718ccf6a71eac3f1b93e58cda9a14965c8354da1c2095448e692ccd
+  languageName: node
+  linkType: hard
+
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -24650,6 +24688,17 @@ __metadata:
   dependencies:
     get-stdin: "npm:~7.0.0"
   checksum: 10c0/f20d797a0f79345e0567acd9426f3c126a61f15f11051b6ec510efbdb0103fa3008c37d360a836a47d8053cddabbf138e5d312643c6386f1cf323f8a74493de8
+  languageName: node
+  linkType: hard
+
+"panzoom@npm:^9.4.3":
+  version: 9.4.3
+  resolution: "panzoom@npm:9.4.3"
+  dependencies:
+    amator: "npm:^1.1.0"
+    ngraph.events: "npm:^1.2.2"
+    wheel: "npm:^1.0.0"
+  checksum: 10c0/5e721f18c1f8e77fb21a5f088343822aa32d345dc1e9777c1ad51095b82311c6469ad6df9eebdd7063ee6363301b9ff418c773fcf53ebcb7ab8e3bf9e1bccfbe
   languageName: node
   linkType: hard
 
@@ -26462,6 +26511,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-svelte@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "prettier-plugin-svelte@npm:3.4.1"
+  peerDependencies:
+    prettier: ^3.0.0
+    svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
+  checksum: 10c0/ae19ea425458ae26b79eba303a9dd9ffacfb17bf233fa9879a108d4be63929459b226d693e972514afd2fd3c9fa8ee31f9a1bb4749d6dce9012f70f282704c5d
+  languageName: node
+  linkType: hard
+
 "prettier@npm:^1.18.2 || ^2.0.0, prettier@npm:^2.7.1":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
@@ -26486,6 +26545,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10c0/9675d2cd08eacb1faf1d1a2dbfe24bfab6a912b059fc9defdb380a408893d88213e794a40a2700bd29b140eb3172e0b07c852853f6e22f16f3374659a1a13389
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.8.1":
+  version: 3.8.1
+  resolution: "prettier@npm:3.8.1"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/33169b594009e48f570471271be7eac7cdcf88a209eed39ac3b8d6d78984039bfa9132f82b7e6ba3b06711f3bfe0222a62a1bfb87c43f50c25a83df1b78a2c42
   languageName: node
   linkType: hard
 
@@ -32169,6 +32237,13 @@ __metadata:
     tr46: "npm:^1.0.1"
     webidl-conversions: "npm:^4.0.2"
   checksum: 10c0/2785fe4647690e5a0225a79509ba5e21fdf4a71f9de3eabdba1192483fe006fc79961198e0b99f82751557309f17fc5a07d4d83c251aa5b2f85ba71e674cbee9
+  languageName: node
+  linkType: hard
+
+"wheel@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "wheel@npm:1.0.0"
+  checksum: 10c0/3c9241fd9d99a9d77d6fc6fef2d8002bdf328594cfa63956d5e7688e61a9cb4252e4f86dec96c8a6c07c031509889b8100cbc1d6de1fa7f9863fa195569d3244
   languageName: node
   linkType: hard
 

@@ -6,4 +6,26 @@
 	--argdown-button-bg-hover-color: #387e9c;
 	--argdown-button-border-bottom-color: #38809d;
 	--argdown-button-font-color: #fff;
+	--argdown-notification-font-color: #3e8eaf;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family:
+		-apple-system,
+		BlinkMacSystemFont,
+		Segoe UI,
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		Fira Sans,
+		Droid Sans,
+		Helvetica Neue,
+		sans-serif;
 }
