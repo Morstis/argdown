@@ -1,74 +1,21 @@
 {
-  "name": "@argdown/web-components",
-  "version": "1.7.12",
-  "description": "Components that help to embed Argdown in the browser",
+  "name": "argdown-web-components",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
-  "main": "./dist/argdown-map.js",
-  "types": "./dist/argdown-map.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/argdown-map.js",
-      "require": "./dist/argdown-map.js",
-      "types": "./dist/argdown-map.d.ts"
-    }
-  },
-  "browser": "./dist/argdown-map.js",
-  "targets": {
-    "browser": false,
-    "dist": {
-      "source": "src/argdown-map.ts",
-      "context": "browser",
-      "outputFormat": "global",
-      "isLibrary": false,
-      "includeNodeModules": true,
-      "engines": {
-        "browsers": "Chrome 50"
-      }
-    }
-  },
-  "files": [
-    "dist/"
-  ],
   "scripts": {
-    "example": "esbuild --serve=8000 --servedir=.",
-    "example-dist": "parcel test/index.html --open",
-    "build": "yarn run clean && parcel build",
-    "clean": "rimraf \"dist/\" --glob",
-    "prepublishOnly": "yarn run build",
-    "test": "echo \"No tests to run here\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-web-components"
-  },
-  "author": {
-    "name": "Christian Voigt",
-    "email": "1pxsolidblack@gmail.com"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@swc/helpers": "^0.5.15",
-    "d3-selection": "3.0.0",
-    "d3-zoom": "3.0.0",
-    "haunted": "^6.1.0",
-    "lit-html": "^3.2.1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "devDependencies": {
-    "@parcel/core": "^2.16.0",
-    "@parcel/transformer-css": "^2.16.0",
-    "@parcel/transformer-html": "^2.16.0",
-    "@parcel/transformer-js": "^2.16.0",
-    "@parcel/transformer-typescript-tsc": "^2.16.0",
-    "@types/d3": "7.4.3",
-    "@webcomponents/webcomponentsjs": "^2.8.0",
-    "esbuild": "^0.25.12",
-    "parcel": "^2.16.0",
-    "parcel-plugin-static-files-copy": "^2.5.1",
-    "rimraf": "^6.0.1",
-    "typescript": "5.9.3"
-  },
-  "engines": {
-    "node": ">= 22.11.0"
-  },
-  "packageManager": "yarn@4.9.4"
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tsconfig/svelte": "^5.0.6",
+    "@types/node": "^24.10.1",
+    "svelte": "^5.43.8",
+    "svelte-check": "^4.3.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  }
 }
