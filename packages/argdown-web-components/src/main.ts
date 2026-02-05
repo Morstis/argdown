@@ -1,2 +1,2 @@
-import "./lib/Counter.svelte";
-import "./lib/Counter2.svelte";
+import './style.css';
+import './lib/ArgdownMap.svelte';
