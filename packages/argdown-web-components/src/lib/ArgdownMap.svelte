@@ -28,7 +28,7 @@
 	let svgMap: SVGElement | undefined = $derived.by(() => {
 		const mapSlot = mapview?.firstChild;
 		if (!(mapSlot instanceof HTMLSlotElement)) return;
-		return mapSlot.assignedElements()?.[0].firstChild as SVGElement;
+		return [...mapSlot.assignedElements()?.[0].children].find((el) => el instanceof SVGElement);
 	});
 
 	// Don't initiate panzoom if zoom is disabled.

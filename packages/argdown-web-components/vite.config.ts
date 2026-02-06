@@ -1,13 +1,14 @@
-import { defineConfig } from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { defineConfig } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
-  build: {
-    lib: {
-      entry: "src/main.ts",
-      name: "ArgdownWebComponents"
-    }
-  }
+	plugins: [svelte()],
+	build: {
+		lib: {
+			entry: 'src/main.ts',
+			name: 'ArgdownWebComponents',
+			formats: ['es', 'iife', 'umd']
+		}
+	}
 });
