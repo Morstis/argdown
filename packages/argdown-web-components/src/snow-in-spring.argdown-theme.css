@@ -13,7 +13,7 @@ argdown-map code.language-argdown {
 	padding: 1.25rem 1.5rem;
 	box-sizing: border-box;
 }
-.argvu code.language-argdown {
+argdown-map .argvu code.language-argdown {
 	font-family:
 		'ArgVu Sans Mono Regular',
 		Consolas,
@@ -25,57 +25,57 @@ argdown-map code.language-argdown {
 	font-feature-settings: 'liga', 'dlig';
 	font-size: 0.8rem;
 }
-code.language-argdown .hljs-section {
+argdown-map code.language-argdown .hljs-section {
 	color: #6d6d5d;
 	font-weight: bold;
 }
-code.language-argdown .hljs-meta {
+argdown-map code.language-argdown .hljs-meta {
 	color: #9b9b85;
 	font-weight: normal;
 }
-code.language-argdown .hljs-comment,
+argdown-map code.language-argdown .hljs-comment,
 code.language-argdown .hljs-quote {
 	color: #998;
 	font-style: italic;
 }
-code.language-argdown .hljs-string,
+argdown-map code.language-argdown .hljs-string,
 code.language-argdown .hljs-tag {
 	color: #3b95bc;
 	font-weight: normal;
 }
-code.language-argdown .hljs-link {
+argdown-map code.language-argdown .hljs-link {
 	color: #134c66;
 	font-weight: normal;
 }
-code.language-argdown .hljs-support {
+argdown-map code.language-argdown .hljs-support {
 	color: #4ea429;
 	font-weight: bold;
 }
-code.language-argdown .hljs-attack {
+argdown-map code.language-argdown .hljs-attack {
 	color: #c24545;
 	font-weight: bold;
 }
-code.language-argdown .hljs-undercut {
+argdown-map code.language-argdown .hljs-undercut {
 	color: #c227a7;
 	font-weight: bold;
 }
-code.language-argdown .hljs-contradiction {
+argdown-map code.language-argdown .hljs-contradiction {
 	color: #c24545;
 	font-weight: bold;
 }
-code.language-argdown .hljs-statement-title {
+argdown-map code.language-argdown .hljs-statement-title {
 	font-weight: bold;
 	color: #3b95bc;
 }
-code.language-argdown .hljs-argument-title {
+argdown-map code.language-argdown .hljs-argument-title {
 	font-weight: bold;
 	color: #134c66;
 }
-code.language-argdown .hljs-inference {
+argdown-map code.language-argdown .hljs-inference {
 	font-weight: bold;
 	color: #134c66;
 }
-code.language-argdown .hljs-argument-statement-nr {
+argdown-map code.language-argdown .hljs-argument-statement-nr {
 	color: #134c66;
 	font-weight: bold;
 }

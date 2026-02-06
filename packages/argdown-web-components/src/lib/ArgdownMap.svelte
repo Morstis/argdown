@@ -4,6 +4,7 @@
 	import ArgdownHeader from './ArgdownHeader.svelte';
 
 	import panzoom, { type PanZoom } from 'panzoom';
+	import { Notification } from './notifications';
 	let {
 		initialView = 'map',
 		withoutZoom = false,
@@ -21,6 +22,7 @@
 	let activeView: 'map' | 'source' = $state(initialView);
 	let isExpand = $state(false);
 
+	// Bind to map-view slot and access the svg element
 	let mapview: HTMLDivElement | undefined = $state();
 
 	let svgMap: SVGElement | undefined = $derived.by(() => {
@@ -29,30 +31,42 @@
 		return mapSlot.assignedElements()?.[0].firstChild as SVGElement;
 	});
 
-	let panzoomInstance: PanZoom | undefined = $derived.by(() => {
-		if (!svgMap || withoutZoom) return;
-		const instance = panzoom(svgMap);
-		instance.pause();
+	// Don't initiate panzoom if zoom is disabled.
+	let panzoomInstance: PanZoom | undefined = $state();
 
-		return instance;
-	});
-
-	// If the view is switched from expanded to normal, reset the pan and zoom level of the map. setTimeout, because this effect does only depend on isExpand and not panzoomInstance. panzoomInstance gets recreated every time the map is switched. See: https://svelte.dev/docs/svelte/$effect#Understanding-dependencies
+	// Init panzoom once on the svg. It will be reflected in the host reference div, even if the views are switched, and svgMap becomes undefined.
 	$effect(() => {
-		if (!isExpand)
-			setTimeout(() => {
-				panzoomInstance?.moveTo(0, 0);
-				panzoomInstance?.zoomAbs(0, 0, 1);
-			}, 0);
+		if (panzoomInstance || !svgMap || withoutZoom) return;
+		panzoomInstance = panzoom(svgMap);
+		panzoomInstance.pause();
 	});
 
-	let notifications = $derived(withoutZoom ? [] : ['Click to enable zoooom!']);
-
-	function activePanZoom() {
-		if (panzoomInstance) {
-			panzoomInstance.resume();
-			notifications = [];
+	// If the view is switched from expanded back to minimized, reset panzoom to default position and zoom level.
+	$effect(() => {
+		if (!isExpand) {
+			panzoomInstance?.moveTo(0, 0);
+			panzoomInstance?.zoomAbs(0, 0, 1);
 		}
+	});
+
+	// Needed to retrigger the notifiations, because panzoomInstance.isPaused() is not tracked by svelte 5. Probably try to fix this by writing a wrapper for panzoom that makes it reactive.
+	let manuelTrigger = $state(0);
+	let notifications: Notification[] = $derived.by(() => {
+		manuelTrigger;
+		if (withoutZoom) return [];
+		if (panzoomInstance?.isPaused() && activeView === 'map') return [Notification.Zoom];
+		return [];
+	});
+
+	function activatePanZoom() {
+		if (!panzoomInstance) return;
+		panzoomInstance.resume();
+		manuelTrigger++;
+	}
+	function deactivatePanZoom() {
+		if (!panzoomInstance) return;
+		panzoomInstance.pause();
+		manuelTrigger++;
 	}
 </script>
 
@@ -64,10 +78,11 @@
 		{withoutLogo}
 		{withoutHeader}
 		{notifications}
+		{deactivatePanZoom}
 	></ArgdownHeader>
 
 	{#if activeView === 'map'}
-		<div class="map-view" bind:this={mapview} onclick={activePanZoom}>
+		<div class="map-view" bind:this={mapview} onclick={activatePanZoom}>
 			<slot name="map"></slot>
 		</div>
 	{:else}

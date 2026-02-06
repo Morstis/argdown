@@ -2,6 +2,7 @@
 	import ArgdownExpandIcon from './ArgdownExpandIcon.svelte';
 	import ArgdownMark from './ArgdownMark.svelte';
 	import ArgdownMinimizeIcon from './ArgdownMinimizeIcon.svelte';
+	import { Notification } from './notifications';
 
 	let {
 		initialView = 'map',
@@ -10,27 +11,38 @@
 		withoutHeader = false,
 		activeView = $bindable(initialView),
 		isExpand = $bindable(false),
-		notifications = ['Click to enable zoooom!']
+		notifications = [Notification.Zoom],
+		deactivatePanZoom = () => {}
 	} = $props();
 </script>
 
 {#if !withoutHeader}
 	<header>
-		{#if activeView === 'map'}
-			<div class="notificationContainer">
-				{#each notifications as notification}
-					<div class="notification">{notification}</div>
-				{/each}
-			</div>
-		{/if}
+		<div class="notificationContainer">
+			{#each notifications as notification}
+				<div class="notification">{notification}</div>
+			{/each}
+		</div>
 
 		<nav>
 			{#if !withoutLogo}
 				<ArgdownMark></ArgdownMark>
 			{/if}
 			<ul>
+				{#if activeView === 'map' && !notifications.includes(Notification.Zoom)}
+					<li>
+						<button
+							onclick={() => {
+								deactivatePanZoom();
+							}}
+						>
+							Deactivate Zoom
+						</button>
+					</li>
+				{/if}
 				<li>
 					<button
+						class="view-toggle"
 						onclick={() => {
 							activeView = activeView === 'map' ? 'source' : 'map';
 						}}
@@ -60,6 +72,20 @@
 {/if}
 
 <style>
+	* {
+		font-family:
+			-apple-system,
+			BlinkMacSystemFont,
+			Segoe UI,
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			Fira Sans,
+			Droid Sans,
+			Helvetica Neue,
+			sans-serif;
+	}
 	header {
 		position: relative;
 		height: 2rem;
@@ -90,18 +116,6 @@
 		z-index: 1;
 	}
 	button {
-		font-family:
-			-apple-system,
-			BlinkMacSystemFont,
-			Segoe UI,
-			Roboto,
-			Oxygen,
-			Ubuntu,
-			Cantarell,
-			Fira Sans,
-			Droid Sans,
-			Helvetica Neue,
-			sans-serif;
 		font-size: 0.8rem;
 		font-weight: bold;
 		color: var(--argdown-button-font-color, #fff);
@@ -115,6 +129,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	button.view-toggle {
+		min-width: 5rem;
 	}
 	button:hover {
 		background-color: var(--argdown-button-bg-hover-color, #387e9c);
@@ -133,19 +150,5 @@
 	.notification {
 		font-weight: bold;
 		color: var(--argdown-notification-font-color, black);
-	}
-	* {
-		font-family:
-			-apple-system,
-			BlinkMacSystemFont,
-			Segoe UI,
-			Roboto,
-			Oxygen,
-			Ubuntu,
-			Cantarell,
-			Fira Sans,
-			Droid Sans,
-			Helvetica Neue,
-			sans-serif;
 	}
 </style>
