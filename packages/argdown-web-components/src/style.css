@@ -2,9 +2,47 @@
 	--argdown-bg-color: #fff;
 	--argdown-border-color: #eee;
 	--argdown-logo-color: #ccc;
+	--argdown-logo-bg-color: rgba(256, 256, 256, 0.8);
 	--argdown-button-bg-color: #3e8eaf;
 	--argdown-button-bg-hover-color: #387e9c;
 	--argdown-button-border-bottom-color: #38809d;
 	--argdown-button-font-color: #fff;
 	--argdown-notification-font-color: #3e8eaf;
+
+	--argdown-source-color: #000;
+
+	--argdown-section-color: #6d6d5d;
+	--argdown-meta-color: #9b9b85;
+	--argdown-comment-color: #998;
+	--argdown-string-color: #3b95bc;
+	--argdown-link-color: #134c66;
+	--argdown-support-color: #4ea429;
+	--argdown-attack-color: #c24545;
+	--argdown-undercut-color: #c227a7;
+}
+
+[data-theme='dark'] {
+	--argdown-bg-color: #121417;
+	--argdown-border-color: #1e2227;
+	--argdown-logo-color: #6b7280;
+	--argdown-logo-bg-color: rgba(18, 20, 23, 0.85);
+
+	--argdown-button-bg-color: #4aa3c7;
+	--argdown-button-bg-hover-color: #3f92b3;
+	--argdown-button-border-bottom-color: #3b8aa8;
+	--argdown-button-font-color: #ffffff;
+
+	--argdown-notification-font-color: #6bbad8;
+
+	--argdown-source-color: #e5e7eb;
+
+	--argdown-section-color: #b1b1a3;
+	--argdown-meta-color: #c6c6b0;
+	--argdown-comment-color: #a8a89a;
+	--argdown-string-color: #6bbad8;
+	--argdown-link-color: #4fb3d8;
+
+	--argdown-support-color: #7bd957;
+	--argdown-attack-color: #f07171;
+	--argdown-undercut-color: #e879d6;
 }

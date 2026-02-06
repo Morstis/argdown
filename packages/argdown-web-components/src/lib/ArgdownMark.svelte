@@ -28,11 +28,12 @@
 		align-content: center;
 		align-items: center;
 		z-index: 10;
-		background-color: rgba(256, 256, 256, 0.8);
+		background-color: var(--argdown-logo-bg-color);
 		border-radius: 3px;
 		color: var(--argdown-logo-color);
 		fill: var(--argdown-logo-color);
 		text-decoration: none;
+		padding: 1rem 1rem 1rem 0;
 	}
 	.argdown-mark .icon {
 		width: 2rem;

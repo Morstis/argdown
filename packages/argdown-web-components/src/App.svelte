@@ -2,7 +2,7 @@
 	let name = 'world';
 </script>
 
-<main>
+<main data-theme="dark">
 	<argdown-map initialView="source" withoutHeader="true">
 		<div slot="source">
 			<pre class="language-argdown"><code class="language-argdown"
