@@ -1,29 +1,48 @@
 {
-  "name": "argdown-web-components",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.1",
-    "@tsconfig/svelte": "^5.0.6",
-    "@types/node": "^24.10.1",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.8.1",
-    "prettier-plugin-svelte": "^3.4.1",
-    "svelte": "^5.43.8",
-    "svelte-check": "^4.3.4",
-    "typescript": "~5.9.3",
-    "vite": "^7.2.4"
-  },
-  "dependencies": {
-    "panzoom": "^9.4.3"
-  }
+	"name": "@argdown/web-components",
+	"version": "1.8.0",
+	"description": "Components that help to embed Argdown in the browser",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/argdown/argdown/tree/master/packages/argdown-web-components"
+	},
+	"author": {
+		"name": "Christian Voigt",
+		"email": "1pxsolidblack@gmail.com"
+	},
+	"license": "MIT",
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"main": "./dist/argdown-map.umd.cjs",
+	"module": "./dist/argdown-map.js",
+	"exports": {
+		".": {
+			"import": "./dist/argdown-map.js",
+			"require": "./dist/argdown-map.umd.cjs"
+		},
+		"./style.css": "./dist/argdown-map.css"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+		"lint": "prettier --check .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@tsconfig/svelte": "^5.0.6",
+		"@types/node": "^24.10.1",
+		"eslint-config-prettier": "^10.1.8",
+		"panzoom": "^9.4.3",
+		"prettier": "^3.8.1",
+		"prettier-plugin-svelte": "^3.4.1",
+		"svelte": "^5.43.8",
+		"svelte-check": "^4.3.4",
+		"typescript": "~5.9.3",
+		"vite": "^7.2.4"
+	}
 }

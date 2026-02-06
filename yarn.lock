@@ -455,9 +455,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/web-components@workspace:^, @argdown/web-components@workspace:packages/argdown-web-components.b":
+"@argdown/web-components.b@workspace:packages/argdown-web-components.b":
   version: 0.0.0-use.local
-  resolution: "@argdown/web-components@workspace:packages/argdown-web-components.b"
+  resolution: "@argdown/web-components.b@workspace:packages/argdown-web-components.b"
   dependencies:
     "@parcel/core": "npm:^2.16.0"
     "@parcel/transformer-css": "npm:^2.16.0"
@@ -475,6 +475,24 @@ __metadata:
     parcel-plugin-static-files-copy: "npm:^2.5.1"
     rimraf: "npm:^6.0.1"
     typescript: "npm:5.9.3"
+  languageName: unknown
+  linkType: soft
+
+"@argdown/web-components@workspace:^, @argdown/web-components@workspace:packages/argdown-web-components":
+  version: 0.0.0-use.local
+  resolution: "@argdown/web-components@workspace:packages/argdown-web-components"
+  dependencies:
+    "@sveltejs/vite-plugin-svelte": "npm:^6.2.1"
+    "@tsconfig/svelte": "npm:^5.0.6"
+    "@types/node": "npm:^24.10.1"
+    eslint-config-prettier: "npm:^10.1.8"
+    panzoom: "npm:^9.4.3"
+    prettier: "npm:^3.8.1"
+    prettier-plugin-svelte: "npm:^3.4.1"
+    svelte: "npm:^5.43.8"
+    svelte-check: "npm:^4.3.4"
+    typescript: "npm:~5.9.3"
+    vite: "npm:^7.2.4"
   languageName: unknown
   linkType: soft
 
@@ -11031,24 +11049,6 @@ __metadata:
     vscode-uri: "npm:^3.0.7"
     webpack: "npm:5.99.9"
     webpack-cli: "npm:^6.0.1"
-  languageName: unknown
-  linkType: soft
-
-"argdown-web-components@workspace:packages/argdown-web-components":
-  version: 0.0.0-use.local
-  resolution: "argdown-web-components@workspace:packages/argdown-web-components"
-  dependencies:
-    "@sveltejs/vite-plugin-svelte": "npm:^6.2.1"
-    "@tsconfig/svelte": "npm:^5.0.6"
-    "@types/node": "npm:^24.10.1"
-    eslint-config-prettier: "npm:^10.1.8"
-    panzoom: "npm:^9.4.3"
-    prettier: "npm:^3.8.1"
-    prettier-plugin-svelte: "npm:^3.4.1"
-    svelte: "npm:^5.43.8"
-    svelte-check: "npm:^4.3.4"
-    typescript: "npm:~5.9.3"
-    vite: "npm:^7.2.4"
   languageName: unknown
   linkType: soft
 

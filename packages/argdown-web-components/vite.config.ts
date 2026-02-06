@@ -7,8 +7,9 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: 'src/main.ts',
-			name: 'ArgdownWebComponents',
-			formats: ['es', 'iife', 'umd']
+			name: 'ArgdownMap',
+			fileName: 'argdown-map',
+			formats: ['es', 'umd']
 		}
 	}
 });
