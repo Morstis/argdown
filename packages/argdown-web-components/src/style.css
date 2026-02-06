@@ -9,23 +9,6 @@
 	--argdown-notification-font-color: #3e8eaf;
 }
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
-
-html {
-	font-family:
-		-apple-system,
-		BlinkMacSystemFont,
-		Segoe UI,
-		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
-		Fira Sans,
-		Droid Sans,
-		Helvetica Neue,
-		sans-serif;
-}
+/*argdown-map::part(source code.language-argdown) {*/
+/*background-color: orange !important;*/
+/*}*/

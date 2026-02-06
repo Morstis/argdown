@@ -4,23 +4,29 @@
 	import ArgdownHeader from './ArgdownHeader.svelte';
 
 	import panzoom, { type PanZoom } from 'panzoom';
-
-	let activeView: 'map' | 'source' = $state('map');
-	let isExpand = $state(false);
-
 	let {
 		initialView = 'map',
 		withoutZoom = false,
 		withoutMaximize = false,
 		withoutLogo = false,
 		withoutHeader = false
-	} = $props();
+	} = $props<{
+		initialView?: 'map' | 'source';
+		withoutZoom?: boolean;
+		withoutMaximize?: boolean;
+		withoutLogo?: boolean;
+		withoutHeader?: boolean;
+	}>();
+
+	let activeView: 'map' | 'source' = $state(initialView);
+	let isExpand = $state(false);
 
 	let mapview: HTMLDivElement | undefined = $state();
 
 	let svgMap: SVGElement | undefined = $derived.by(() => {
-		const mapSlot = mapview?.firstChild as HTMLSlotElement;
-		return mapSlot?.assignedElements()[0].firstChild as SVGElement;
+		const mapSlot = mapview?.firstChild;
+		if (!(mapSlot instanceof HTMLSlotElement)) return;
+		return mapSlot.assignedElements()?.[0].firstChild as SVGElement;
 	});
 
 	let panzoomInstance: PanZoom | undefined = $derived.by(() => {
@@ -51,7 +57,14 @@
 </script>
 
 <div class="element" class:isExpand>
-	<ArgdownHeader bind:activeView bind:isExpand {notifications}></ArgdownHeader>
+	<ArgdownHeader
+		bind:activeView
+		bind:isExpand
+		{withoutMaximize}
+		{withoutLogo}
+		{withoutHeader}
+		{notifications}
+	></ArgdownHeader>
 
 	{#if activeView === 'map'}
 		<div class="map-view" bind:this={mapview} onclick={activePanZoom}>
@@ -72,6 +85,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	.source-view {
+		overflow: auto;
+		height: 100%;
+		width: 100%;
 	}
 	.element {
 		display: block;

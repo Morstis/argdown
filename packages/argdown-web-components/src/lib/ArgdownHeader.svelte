@@ -16,15 +16,18 @@
 
 {#if !withoutHeader}
 	<header>
-		{#if !withoutLogo}
-			<ArgdownMark></ArgdownMark>
+		{#if activeView === 'map'}
+			<div class="notificationContainer">
+				{#each notifications as notification}
+					<div class="notification">{notification}</div>
+				{/each}
+			</div>
 		{/if}
-		<div class="notificationContainer">
-			{#each notifications as notification}
-				<div class="notification">{notification}</div>
-			{/each}
-		</div>
+
 		<nav>
+			{#if !withoutLogo}
+				<ArgdownMark></ArgdownMark>
+			{/if}
 			<ul>
 				<li>
 					<button
@@ -67,7 +70,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-content: center;
 	}
 	ul {
@@ -100,6 +103,7 @@
 			Helvetica Neue,
 			sans-serif;
 		font-size: 0.8rem;
+		font-weight: bold;
 		color: var(--argdown-button-font-color, #fff);
 		background-color: var(--argdown-button-bg-color, #3e8eaf);
 		padding: 0.4rem 0.8rem;
@@ -108,7 +112,6 @@
 		transition: background-color 0.1s ease;
 		box-sizing: border-box;
 		border-bottom: 1px solid var(--argdown-button-border-bottom-color, #38809d);
-		font-weight: 500;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -130,5 +133,19 @@
 	.notification {
 		font-weight: bold;
 		color: var(--argdown-notification-font-color, black);
+	}
+	* {
+		font-family:
+			-apple-system,
+			BlinkMacSystemFont,
+			Segoe UI,
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			Fira Sans,
+			Droid Sans,
+			Helvetica Neue,
+			sans-serif;
 	}
 </style>

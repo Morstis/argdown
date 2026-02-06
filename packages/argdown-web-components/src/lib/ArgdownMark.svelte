@@ -27,12 +27,8 @@
 		justify-content: flex-start;
 		align-content: center;
 		align-items: center;
-		position: absolute;
-		top: 3px;
-		left: 3px;
 		z-index: 10;
 		background-color: rgba(256, 256, 256, 0.8);
-		padding-right: 0.8rem;
 		border-radius: 3px;
 		color: var(--argdown-logo-color);
 		fill: var(--argdown-logo-color);
