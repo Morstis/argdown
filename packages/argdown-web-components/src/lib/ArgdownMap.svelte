@@ -112,7 +112,6 @@
 		border: 1px solid var(--argdown-border-color, #eee);
 		border-radius: 6px;
 		padding: 10px;
-		margin: 2rem 0;
 	}
 
 	div.isExpand {

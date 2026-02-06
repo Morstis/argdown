@@ -24,7 +24,7 @@
 			{/each}
 		</div>
 
-		<nav>
+		<nav class:withoutLogo>
 			{#if !withoutLogo}
 				<ArgdownMark></ArgdownMark>
 			{/if}
@@ -47,7 +47,7 @@
 							activeView = activeView === 'map' ? 'source' : 'map';
 						}}
 					>
-						{activeView === 'map' ? 'Map' : 'Source'}
+						{activeView === 'map' ? 'Source' : 'Map'}
 					</button>
 				</li>
 
@@ -98,6 +98,9 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: center;
+	}
+	nav.withoutLogo {
+		justify-content: flex-end;
 	}
 	ul {
 		margin: 0;

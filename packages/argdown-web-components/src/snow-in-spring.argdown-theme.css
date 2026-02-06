@@ -70,3 +70,18 @@ argdown-map code.language-argdown .hljs-argument-statement-nr {
 	color: var(--argdown-link-color, #134c66);
 	font-weight: bold;
 }
+
+/* Override map-view */
+argdown-map .node text {
+	fill: var(--argdown-source-color, #000);
+}
+argdown-map .node path {
+	fill: var(--argdown-bg-color, #fff);
+}
+
+argdown-map .cluster polygon {
+	fill: var(--argdown-bg-color, #000);
+}
+argdown-map .cluster text {
+	fill: var(--argdown-source-color, #000);
+}
