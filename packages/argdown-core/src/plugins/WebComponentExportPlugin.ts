@@ -114,34 +114,27 @@ export class WebComponentExportPlugin implements IArgdownPlugin {
         }</div>`
       : "";
     let style = "";
-    if (settings.width !== undefined) {
+    if (settings.width) {
       style += `width: ${escapeCSSWidthOrHeight(settings.width)};`;
     }
-    if (settings.height !== undefined) {
+    if (settings.height) {
       style += `height: ${escapeCSSWidthOrHeight(settings.height)};`;
     }
     if (style !== "") {
       style = `style="${style}"`;
     }
-    let withoutZoom = "";
-    if (settings.withoutZoom) {
-      withoutZoom = `without-zoom="true"`;
-    }
-    let withoutMaximize = "";
-    if (settings.withoutMaximize) {
-      withoutMaximize = `without-maximize="true"`;
-    }
-    let withoutLogo = "";
-    if (settings.withoutLogo) {
-      withoutLogo = `without-logo="true"`;
-    }
-    let withoutHeader = "";
-    if (settings.withoutHeader) {
-      withoutHeader = `without-header="true"`;
-    }
+    const flags = [
+      "withoutZoom",
+      "withoutMaximize",
+      "withoutLogo",
+      "withoutHeader"
+    ] as const;
+
+    const flagAttrs = flags.filter((flag) => settings[flag]).join(" ");
+
     response.webComponent = `<argdown-map ${
       settings.withoutFigure ? style : ""
-    } ${withoutZoom} ${withoutMaximize} ${withoutLogo} ${withoutHeader} initial-view="${
+    } ${flagAttrs} initialView="${
       settings.initialView
     }">${source}${map}</argdown-map>`;
     if (!settings?.withoutFigure) {
