@@ -1,11 +1,7 @@
 import { select } from "d3-selection";
 import "d3-transition";
-import {
-  CanSelectNode,
-  OnSelectionChangedHandler,
-  OnZoomChangedHandler,
-  ZoomManager
-} from ".";
+import { OnZoomChangedHandler, ZoomManager } from "./ZoomManager";
+import { CanSelectNode, OnSelectionChangedHandler } from "./CanSelectNode";
 
 /**
  * Provide an SVG container and optional onZoomChanged and onSelectionChanged handlers to create an SvgMapView.
