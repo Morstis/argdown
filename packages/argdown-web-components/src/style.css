@@ -21,7 +21,8 @@
 	--argdown-undercut-color: #c227a7;
 }
 
-[data-theme='dark'] {
+[data-theme='dark'],
+.dark {
 	--argdown-bg-color: #121417;
 	--argdown-border-color: #1e2227;
 	--argdown-logo-color: #6b7280;

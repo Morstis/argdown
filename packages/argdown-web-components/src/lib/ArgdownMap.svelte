@@ -37,6 +37,7 @@
 	// Init panzoom once on the svg. It will be reflected in the host reference div, even if the views are switched, and svgMap becomes undefined.
 	$effect(() => {
 		if (panzoomInstance || !svgMap || withoutZoom) return;
+		svgMap.style.width = '100%';
 		panzoomInstance = panzoom(svgMap);
 		panzoomInstance.pause();
 	});
