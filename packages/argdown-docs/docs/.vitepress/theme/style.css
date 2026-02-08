@@ -35,21 +35,6 @@
   /*--vp-c-danger-soft: #ffebee;*/
 }
 
-<<<<<<< HEAD
-/* Override argdown code blocks to enable dark mode */
-
-.argdown-figure {
-  border-color: var(--vp-code-block-divider-color) !important;
-  background-color: var(--vp-code-block-bg) !important;
-}
-.language-argdown {
-  background-color: var(--vp-code-block-bg) !important;
-}
-:root {
-  --argdown-bg-color: var(--vp-code-block-bg);
-  --argdown-logo-color: #3e8eaf;
-}
-=======
 argdown-map a {
   text-decoration: none !important;
   font: initial;
@@ -64,8 +49,8 @@ argdown-map a {
 :root {
   --argdown-bg-color: var(--vp-c-bg);
   --argdown-border-color: var(--vp-c-border);
-  --argdown-logo-color: var(--vp-c-logo);
-  --argdown-logo-bg-color: rgba(var(--vp-c-bg-rgb), 0.8);
+  --argdown-logo-color: var(--vp-c-accent-color);
+  --argdown-logo-bg-color: rgba(var(--vp-c-accent-color), 0.8);
   --argdown-button-bg-color: var(--vp-c-btn-bg);
   --argdown-button-bg-hover-color: var(--vp-c-btn-bg-hover);
   --argdown-button-border-bottom-color: var(--vp-c-btn-border);
@@ -83,7 +68,6 @@ argdown-map a {
   --argdown-undercut-color: var(--vp-c-purple, #c227a7);
 }
 
->>>>>>> migrate/webcomponent2svelte
 /*End argdown code block override*/
 
 .latest-news {
