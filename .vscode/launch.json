@@ -7,7 +7,10 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${cwd}/packages/argdown-vscode"],
+      "args": [
+        "--extensionDevelopmentPath=${cwd}/packages/argdown-vscode",
+        "--disable-extensions"
+      ],
       "stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${cwd}/packages/argdown-vscode/dist/node/**/*.js"]

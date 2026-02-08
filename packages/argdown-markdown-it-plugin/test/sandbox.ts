@@ -12,7 +12,7 @@ const mdi = new MarkdownIt();
 const defaultSettings: IArgdownRequest = {
   webComponent: { withoutHeader: true }
 };
-mdi.use(createArgdownPlugin(defaultSettings));
+mdi.use(await createArgdownPlugin(defaultSettings));
 const initialInput = `
 # Try out the new Markdown-Argdown Workflow!
 

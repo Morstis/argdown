@@ -20,7 +20,7 @@ import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
 let client: LanguageClient;
 
 // this method is called when vs code is activated
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext) {
   const logger = new Logger();
   logger.log("Activating Argdown extension!");
   const argdownEngine = new ArgdownEngine(logger, browserConfigLoader);
@@ -102,40 +102,37 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(client);
   void client.start();
 
+  const markdownItPlugin = await createArgdownMarkdownItPlugin(() => {
+    const webComponentConfig = vscode.workspace.getConfiguration(
+      "argdown.markdownWebComponent",
+      null
+    );
+    const withoutHeader = webComponentConfig.get<boolean>("withoutHeader");
+    const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
+    const withoutMaximize = webComponentConfig.get<boolean>("withoutMaximize");
+    // const withoutHeader = false;
+    // const withoutLogo = false;
+    // const withoutMaximize = false;
+    return {
+      webComponent: {
+        addWebComponentScript: false,
+        addWebComponentPolyfill: false,
+        addGlobalStyles: false,
+        withoutHeader,
+        withoutLogo,
+        withoutMaximize
+      }
+    };
+  });
   return {
-    async extendMarkdownIt(md: any) {
+    extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
         "argdown.markdownWebComponent",
         null
       );
       const enabled = webComponentConfig.get<boolean>("enabled");
       if (enabled) {
-        return md.use(
-          await createArgdownMarkdownItPlugin(() => {
-            const webComponentConfig = vscode.workspace.getConfiguration(
-              "argdown.markdownWebComponent",
-              null
-            );
-            const withoutHeader =
-              webComponentConfig.get<boolean>("withoutHeader");
-            const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
-            const withoutMaximize =
-              webComponentConfig.get<boolean>("withoutMaximize");
-            // const withoutHeader = false;
-            // const withoutLogo = false;
-            // const withoutMaximize = false;
-            return {
-              webComponent: {
-                addWebComponentScript: false,
-                addWebComponentPolyfill: false,
-                addGlobalStyles: false,
-                withoutHeader,
-                withoutLogo,
-                withoutMaximize
-              }
-            };
-          })
-        );
+        return md.use(markdownItPlugin);
       }
       return md;
     }
