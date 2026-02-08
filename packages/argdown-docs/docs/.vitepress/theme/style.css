@@ -1,3 +1,4 @@
+@import "@argdown/web-components/style.css";
 /* Define CSS variables in :root */
 :root {
   /*--vp-layout-max-width: 100%;*/
@@ -34,6 +35,7 @@
   /*--vp-c-danger-soft: #ffebee;*/
 }
 
+<<<<<<< HEAD
 /* Override argdown code blocks to enable dark mode */
 
 .argdown-figure {
@@ -47,6 +49,41 @@
   --argdown-bg-color: var(--vp-code-block-bg);
   --argdown-logo-color: #3e8eaf;
 }
+=======
+argdown-map a {
+  text-decoration: none !important;
+  font: initial;
+}
+
+/* Override argdown code blocks to enable dark mode */
+
+.argdown-figure {
+  border-color: var(--vp-c-border) !important;
+  background-color: var(--vp-c-bg) !important;
+}
+:root {
+  --argdown-bg-color: var(--vp-c-bg);
+  --argdown-border-color: var(--vp-c-border);
+  --argdown-logo-color: var(--vp-c-logo);
+  --argdown-logo-bg-color: rgba(var(--vp-c-bg-rgb), 0.8);
+  --argdown-button-bg-color: var(--vp-c-btn-bg);
+  --argdown-button-bg-hover-color: var(--vp-c-btn-bg-hover);
+  --argdown-button-border-bottom-color: var(--vp-c-btn-border);
+  --argdown-button-font-color: var(--vp-c-btn-color);
+  --argdown-notification-font-color: var(--vp-c-brand);
+
+  --argdown-source-color: var(--vp-c-text-1);
+  --argdown-section-color: var(--vp-c-code-section, #6d6d5d);
+  --argdown-meta-color: var(--vp-c-code-meta, #9b9b85);
+  --argdown-comment-color: var(--vp-c-code-comment, #998);
+  --argdown-string-color: var(--vp-c-code-string, #3b95bc);
+  --argdown-link-color: var(--vp-c-link, #134c66);
+  --argdown-support-color: var(--vp-c-success, #4ea429);
+  --argdown-attack-color: var(--vp-c-danger, #c24545);
+  --argdown-undercut-color: var(--vp-c-purple, #c227a7);
+}
+
+>>>>>>> migrate/webcomponent2svelte
 /*End argdown code block override*/
 
 .latest-news {

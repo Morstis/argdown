@@ -11,7 +11,7 @@ const discord = "https://discord.gg/rFe7nuDbzs";
 const MarkdownItPlugin = createArgdownPlugin({
   webComponent: {
     addWebComponentScript: false,
-    addGlobalStyles: true,
+    addGlobalStyles: false,
     addWebComponentPolyfill: false
   }
 });

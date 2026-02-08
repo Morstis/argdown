@@ -8,6 +8,7 @@ import DefaultTheme from "vitepress/theme";
 if (inBrowser) {
   // @ts-ignore: TODO: Refactor web-components to module
   import("@argdown/web-components");
+  // import("@argdown/web-components/style.css");
 }
 
 // Vue Components
