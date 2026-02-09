@@ -3,9 +3,11 @@ import { describe, it } from "mocha";
 import MarkdownIt from "markdown-it";
 import createArgdownPlugin from "../src/argdown-markdown-it-plugin";
 
-describe("Markdown It! Argdown Plugin", async function () {
+describe("Markdown It! Argdown Plugin", function () {
   const mdi = new MarkdownIt();
-  mdi.use(await createArgdownPlugin());
+  before(async function () {
+    mdi.use(await createArgdownPlugin());
+  });
   this.timeout(5000);
   it("can replace code fences with argument maps", function () {
     const result = mdi.render(`
