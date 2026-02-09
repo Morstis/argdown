@@ -12,14 +12,20 @@
   </div>
 </template>
 <style lang="css">
+/* Style the argdown-webcomponent */
+.cheat-sheet-item .source-view ::part(argdown-webcomponent) {
+  border: 0 !important;
+  padding: 0;
+  /*background: var(--vp-code-block-bg);*/
+}
 .cheat-sheet-item {
   box-sizing: border-box;
   color: var(--vp-code-block-color);
   display: flex;
   flex-direction: row;
-  border: 1px solid var(--vp-code-block-divider-color);
+  border: 1px solid var(--vp-code-lang-color);
   margin-top: -1px;
-  background: var(--vp-code-block-bg);
+  /*background: var(--vp-code-block-bg);*/
 }
 @media (max-width: 419px) {
   .cheat-sheet-item .language-argdown.extra-class {
@@ -34,7 +40,7 @@
 .cheat-sheet-item pre {
   margin: 0;
   padding: 0;
-  background-color: var(--vp-code-block-bg);
+  /*background-color: var(--vp-code-block-bg);*/
 }
 .cheat-sheet-item .source-view {
   box-sizing: border-box;
@@ -55,9 +61,6 @@
 .cheat-sheet-item .source-view pre.language-argdown {
   overflow: inherit;
 }
-.cheat-sheet-item .source-view argdown-map {
-  border: 0;
-}
 .cheat-sheet-item .explanation .title {
   display: none;
   font-size: 0.8rem;
@@ -68,7 +71,7 @@
   flex-grow: 1;
   flex-basis: 0;
   width: 50%;
-  border-left: 1px solid var(--vp-code-block-divider-color);
+  border-left: 1px solid var(--vp-code-lang-color);
   padding: 1rem;
   line-height: 1.5rem;
 }
