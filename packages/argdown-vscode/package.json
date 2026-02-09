@@ -100,10 +100,11 @@
     ],
     "markdown.markdownItPlugins": true,
     "markdown.previewStyles": [
-      "./dist/assets/argdown-map.css"
+      "./dist/assets/argdown-map.css",
+      "./media/argdown-map.vscode.css"
     ],
     "markdown.previewScripts": [
-      "./dist/assets/argdown-map.js"
+      "./dist/assets/argdown-map.umd.cjs"
     ],
     "jsonValidation": [
       {
