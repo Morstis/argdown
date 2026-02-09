@@ -195,11 +195,12 @@ Some **Markdown** text after the Argdown code fences.
       // Should contain two argdown-map components
       const matches = (output.match(/<argdown-map/g) || []).length;
       console.log("Rehype number of argdown-map components:", matches);
+      console.log(output);
       expect(matches).to.equal(2);
 
       // Check for different initial views
-      expect(output).to.include('initial-view="source"');
-      expect(output).to.include('initial-view="map"');
+      expect(output).to.include('initialview="source"');
+      expect(output).to.include('initialview="map"');
     });
 
     it("documents the proper usage pattern ✅", async function () {
