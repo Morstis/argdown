@@ -29,8 +29,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"prettier:check": "prettier . --check",
+		"prettier": "prettier --write ."
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
