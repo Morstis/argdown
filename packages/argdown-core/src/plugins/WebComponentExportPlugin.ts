@@ -130,7 +130,10 @@ export class WebComponentExportPlugin implements IArgdownPlugin {
       "withoutHeader"
     ] as const;
 
-    const flagAttrs = flags.filter((flag) => settings[flag]).join(" ");
+    const flagAttrs = flags
+      .filter((flag) => settings[flag])
+      .map((x) => x + "='true'")
+      .join(" ");
 
     response.webComponent = `<argdown-map ${
       settings.withoutFigure ? style : ""
