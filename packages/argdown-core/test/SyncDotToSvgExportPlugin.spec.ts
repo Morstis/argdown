@@ -17,7 +17,7 @@ import {
 } from "../src";
 import { Graphviz } from "@hpcc-js/wasm-graphviz";
 
-describe("SyncDotToSvgExportPlugin", async function () {
+describe("SyncDotToSvgExportPlugin", function () {
   const app = new ArgdownApplication();
   app.addPlugin(new ParserPlugin(), "parse-input");
   app.addPlugin(new ModelPlugin(), "build-model");
@@ -29,8 +29,10 @@ describe("SyncDotToSvgExportPlugin", async function () {
   app.addPlugin(new ColorPlugin(), "add-colors");
   app.addPlugin(new DotExportPlugin(), "export-dot");
 
-  const graphviz = await Graphviz.load();
-  app.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-dot-as-svg");
+  before(async () => {
+    const graphviz = await Graphviz.load();
+    app.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-dot-as-svg");
+  });
 
   it("can generate svg (sanity test)", async () => {
     const input = `
