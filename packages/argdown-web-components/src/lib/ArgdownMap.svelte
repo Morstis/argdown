@@ -50,10 +50,10 @@
 		}
 	});
 
-	// Needed to retrigger the notifiations, because panzoomInstance.isPaused() is not tracked by svelte 5. Probably try to fix this by writing a wrapper for panzoom that makes it reactive.
-	let manuelTrigger = $state(0);
+	// Needed to retrigger the notifications, because panzoomInstance.isPaused() is not tracked by svelte 5. Probably try to fix this by writing a wrapper for panzoom that makes it reactive.
+	let manualTrigger = $state(0);
 	let notifications: Notification[] = $derived.by(() => {
-		manuelTrigger;
+		manualTrigger;
 		if (withoutZoom) return [];
 		if (panzoomInstance?.isPaused() && activeView === 'map') return [Notification.Zoom];
 		return [];
@@ -62,12 +62,12 @@
 	function activatePanZoom() {
 		if (!panzoomInstance) return;
 		panzoomInstance.resume();
-		manuelTrigger++;
+		manualTrigger++;
 	}
 	function deactivatePanZoom() {
 		if (!panzoomInstance) return;
 		panzoomInstance.pause();
-		manuelTrigger++;
+		manualTrigger++;
 	}
 </script>
 
