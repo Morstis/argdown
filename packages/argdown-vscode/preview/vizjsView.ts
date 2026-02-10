@@ -1,13 +1,16 @@
 import { select } from "d3-selection";
-import vizRenderStringSync from "@aduh95/viz.js/sync";
 import { onceDocumentLoaded } from "./events";
 import { createPosterForVsCode } from "./messaging";
 import { getSettings } from "./settings";
-import throttle = require("lodash.throttle");
+import throttle from "lodash.throttle";
 import { initMenu } from "./menu";
 import { getPngAsString } from "./export";
 import { openScaleDialog } from "./scaleDialog";
-import { VizJsMap, OnZoomChangedHandler, OnSelectionChangedHandler } from "@argdown/map-views";
+import {
+  SvgMapView,
+  OnZoomChangedHandler,
+  OnSelectionChangedHandler
+} from "@argdown/map-views";
 import { ArgdownPreviewStore } from "./state";
 
 declare var acquireVsCodeApi: any;
@@ -24,32 +27,30 @@ window.styleLoadingMonitor.setPoster(messagePoster);
 
 const previewSettings = getSettings();
 
-const onZoomChanged: OnZoomChangedHandler = throttle(data => {
-  store.transformState(s => {
+const onZoomChanged: OnZoomChangedHandler = throttle((data) => {
+  store.transformState((s) => {
     s.vizJs.scale = data.scale;
     s.vizJs.position = data.position;
     return s;
   });
 }, 50);
-const onSelectionChanged: OnSelectionChangedHandler = id => {
-  store.transformState(s => {
+const onSelectionChanged: OnSelectionChangedHandler = (id) => {
+  store.transformState((s) => {
     s.selectedNode = id;
     return s;
   });
 };
 
 const svgContainer = document.getElementById("svg-container")!;
-let vizJsMap: VizJsMap | null = null;
+let svgMap: SvgMapView | null = null;
 
 const updateMap = () => {
   const {
     selectedNode,
-    vizJs: { dot, settings, position, scale }
+    vizJs: { svg, position, scale }
   } = store.getState();
-  if (dot) {
-    vizJsMap!.render({
-      dot,
-      settings,
+  if (svg && svgMap) {
+    svgMap.render(svg, {
       selectedNode,
       position,
       scale
@@ -57,30 +58,22 @@ const updateMap = () => {
   }
 };
 onceDocumentLoaded(() => {
-  vizJsMap = new VizJsMap(
-    svgContainer,
-    vizRenderStringSync,
-    null,
-    onZoomChanged,
-    onSelectionChanged
-  );
+  svgMap = new SvgMapView(svgContainer, onZoomChanged, onSelectionChanged);
   updateMap();
 });
 
 window.addEventListener(
   "message",
-  event => {
+  (event) => {
     if (event.data.source !== previewSettings.source) {
       return;
     }
 
     switch (event.data.type) {
       case "didChangeTextDocument":
-        const dot = event.data.dot;
-        const settings = JSON.parse(event.data.settings);
-        store.transformState(s => {
-          s.vizJs.dot = dot;
-          s.vizJs.settings = settings;
+        const svg = event.data.svg;
+        store.transformState((s) => {
+          s.vizJs.svg = svg;
           return s;
         });
         updateMap();
@@ -88,7 +81,7 @@ window.addEventListener(
       case "didSelectMapNode":
         if (previewSettings.syncPreviewSelectionWithEditor) {
           const id = event.data.id;
-          vizJsMap!.selectNode(id);
+          svgMap?.selectNode(id);
         }
         break;
     }
@@ -96,7 +89,7 @@ window.addEventListener(
   false
 );
 
-document.addEventListener("dblclick", event => {
+document.addEventListener("dblclick", (event) => {
   if (!previewSettings.doubleClickToSwitchToEditor) {
     return;
   }
@@ -109,8 +102,11 @@ document.addEventListener("dblclick", event => {
     if (node.tagName && node.tagName === "g" && node.classList) {
       if (node.classList.contains("node")) {
         const g = <SVGGraphicsElement>node;
-        const id = vizJsMap!.getArgdownId(g);
-        vizJsMap!.selectNode(id);
+        const id = svgMap?.getArgdownId(g);
+        if (!id) {
+          return;
+        }
+        svgMap?.selectNode(id);
         messagePoster.postMessage("didSelectMapNode", { id });
         return;
       } else if (node.classList.contains("cluster")) {
@@ -132,7 +128,7 @@ document.addEventListener("dblclick", event => {
 
 document.addEventListener(
   "click",
-  event => {
+  (event) => {
     if (!event) {
       return;
     }
@@ -149,12 +145,11 @@ document.addEventListener(
           } else if (command === "argdown.exportDocumentToVizjsPdf") {
             messagePoster.postCommand(command, [previewSettings.source]);
           } else if (command === "argdown.exportContentToVizjsPng") {
-            openScaleDialog(scale => {
+            openScaleDialog((scale) => {
               var svgContainer = document.getElementById("svg-container")!;
-              var svgEl: SVGSVGElement = svgContainer.getElementsByTagName(
-                "svg"
-              )[0];
-              getPngAsString(svgEl, scale, "", pngString => {
+              const svgEl: SVGSVGElement =
+                svgContainer.getElementsByTagName("svg")[0];
+              getPngAsString(svgEl, scale, "", (pngString) => {
                 messagePoster.postCommand(command, [
                   previewSettings.source,
                   pngString
@@ -187,7 +182,7 @@ document.addEventListener(
         }
         break;
       } else if (node.tagName && node.tagName.toLowerCase() === "svg") {
-        vizJsMap!.deselectNode();
+        svgMap?.deselectNode();
         break;
       }
       node = node.parentNode;

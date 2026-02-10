@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { argdown } from "@argdown/core";
+import { argdown, init } from "@argdown/core";
 import { findElementAtPositionPlugin } from "./FindElementAtPositionPlugin";
 import {
   IArgdownRequest,
@@ -98,7 +98,7 @@ export class ArgdownEngine {
       }
       const node = this.findNodeInMapNodeTree(
         response.map!.nodes,
-        n => n.title === title && n.type === nodeType
+        (n) => n.title === title && n.type === nodeType
       );
       if (!node) {
         return "";
@@ -290,6 +290,38 @@ export class ArgdownEngine {
     };
     const response = argdown.run(request);
     return { dot: response.dot!, request };
+  }
+
+  public async exportSvg(
+    doc: vscode.TextDocument,
+    config: ArgdownPreviewConfiguration
+  ): Promise<{ svg: string; dot: string; request: IArgdownRequest }> {
+    const argdownConfig = config.argdownConfig || {};
+    const input = doc.getText();
+    const request = {
+      ...argdownConfig,
+      input: input,
+      inputPath: doc.uri.fsPath,
+      process: [
+        "parse-input",
+        "build-model",
+        "build-map",
+        "transform-closed-groups",
+        "colorize",
+        "add-images",
+        "export-dot",
+        "export-svg"
+      ],
+      throwExceptions: false
+    };
+    await init();
+    const response = argdown.run(request);
+
+    return {
+      svg: response.svg as string,
+      dot: response.dot as string,
+      request
+    };
   }
   // eslint-disable-next-line @typescript-eslint/require-await
   public async exportGraphML(

@@ -45,9 +45,10 @@ const getCodeLineElements = (() => {
  * If an exact match, returns a single element. If the line is between elements,
  * returns the element prior to and the element after the given line.
  */
-export function getElementsForSourceLine(
-  targetLine: number
-): { previous: CodeLineElement; next?: CodeLineElement } {
+export function getElementsForSourceLine(targetLine: number): {
+  previous: CodeLineElement;
+  next?: CodeLineElement;
+} {
   const lineNumber = Math.floor(targetLine);
   const lines = getCodeLineElements();
   let previous = lines[0] || null;
@@ -65,9 +66,10 @@ export function getElementsForSourceLine(
 /**
  * Find the html elements that are at a specific pixel offset on the page.
  */
-export function getLineElementsAtPageOffset(
-  offset: number
-): { previous: CodeLineElement; next?: CodeLineElement } {
+export function getLineElementsAtPageOffset(offset: number): {
+  previous: CodeLineElement;
+  next?: CodeLineElement;
+} {
   const lines = getCodeLineElements();
   const position = offset - window.scrollY;
   let lo = -1;

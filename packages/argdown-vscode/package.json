@@ -543,7 +543,6 @@
     "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.cjs dist/server/server-node.cjs"
   },
   "dependencies": {
-    "@aduh95/viz.js": "3.4.0",
     "@argdown/core": "workspace:^",
     "@argdown/language-server": "workspace:^",
     "@argdown/map-views": "workspace:^",

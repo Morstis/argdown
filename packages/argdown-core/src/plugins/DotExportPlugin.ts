@@ -448,7 +448,7 @@ const getLabel = (
   imageSettings: IImagesSettings
 ): string => {
   const isArgumentNode = node.type === ArgdownTypes.ARGUMENT_MAP_NODE;
-  const title = node.labelTitle ?? "untitled";
+  const title = node.labelTitle ?? "";
   const text = node.labelText ?? "";
   const color = node.fontColor;
   let label = "";

@@ -11,9 +11,11 @@ import {
   MapPlugin,
   GroupPlugin,
   ColorPlugin,
-  DotExportPlugin
+  DotExportPlugin,
+  init,
+  SyncDotToSvgExportPlugin
 } from "../src";
-import { SyncDotToSvgExportPlugin } from "../src/plugins/SyncDotToSvgExportPlugin";
+import { Graphviz } from "@hpcc-js/wasm-graphviz";
 
 describe("SyncDotToSvgExportPlugin", function () {
   const app = new ArgdownApplication();
@@ -26,7 +28,12 @@ describe("SyncDotToSvgExportPlugin", function () {
   app.addPlugin(new GroupPlugin(), "create-map");
   app.addPlugin(new ColorPlugin(), "add-colors");
   app.addPlugin(new DotExportPlugin(), "export-dot");
-  app.addPlugin(new SyncDotToSvgExportPlugin(), "export-dot-as-svg");
+
+  before(async () => {
+    const graphviz = await Graphviz.load();
+    app.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-dot-as-svg");
+  });
+
   it("can generate svg (sanity test)", async () => {
     const input = `
         [B]: test

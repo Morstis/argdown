@@ -39,7 +39,7 @@ onceDocumentLoaded(() => {
 });
 
 const updateLine = (line: number) => {
-  store.transformState(s => {
+  store.transformState((s) => {
     s.html.line = line;
     return s;
   });
@@ -68,7 +68,7 @@ window.addEventListener(
 
 window.addEventListener(
   "message",
-  event => {
+  (event) => {
     if (event.data.source !== settings.source) {
       return;
     }
@@ -86,7 +86,7 @@ window.addEventListener(
   false
 );
 
-document.addEventListener("dblclick", event => {
+document.addEventListener("dblclick", (event) => {
   if (!settings.doubleClickToSwitchToEditor) {
     return;
   }
@@ -114,7 +114,7 @@ document.addEventListener("dblclick", event => {
 
 document.addEventListener(
   "click",
-  event => {
+  (event) => {
     if (!event) {
       return;
     }

@@ -635,3 +635,9 @@ export const ensure = {
 export const other = (r: IRelation, e: RelationMember): RelationMember => {
   return r.from === e ? r.to! : r.from!;
 };
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;

@@ -1,5 +1,5 @@
 import { IDagreSettings } from "@argdown/map-views";
-import { IMap, IVizJsSettings } from "@argdown/core";
+import { IMap, IVizSettings } from "@argdown/core";
 export interface IArgdownPreviewState {
   resource?: string;
   currentView?: string;
@@ -20,8 +20,9 @@ export interface IArgdownPreviewState {
       y?: number;
     };
     scale?: number;
+    svg?: string;
     dot?: string;
-    settings?: IVizJsSettings;
+    settings?: IVizSettings;
     images?: [
       { path: string; width: number; height: number; dataUrl?: string }
     ];

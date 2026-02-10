@@ -1,4 +1,6 @@
-export * from "./DagreMap.js";
-export * from "./VizJsMap.js";
-export * from "./ZoomManager.js";
-export * from "./CanSelectNode.js";
+import "./argdown-dagre.css";
+export * from "./DagreMap";
+export * from "./VizJsMap";
+export * from "./ZoomManager";
+export * from "./CanSelectNode";
+export * from "./SvgMapView";

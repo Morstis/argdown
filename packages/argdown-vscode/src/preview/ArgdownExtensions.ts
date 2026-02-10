@@ -157,8 +157,10 @@ export interface ArgdownContributionProvider {
   dispose(): void;
 }
 
-class VSCodeExtensionArgdownContributionProvider extends Disposable
-  implements ArgdownContributionProvider {
+class VSCodeExtensionArgdownContributionProvider
+  extends Disposable
+  implements ArgdownContributionProvider
+{
   private _contributions?: ArgdownContributions;
 
   public constructor(

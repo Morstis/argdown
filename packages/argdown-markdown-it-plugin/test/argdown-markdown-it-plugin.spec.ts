@@ -5,7 +5,9 @@ import createArgdownPlugin from "../src/argdown-markdown-it-plugin";
 
 describe("Markdown It! Argdown Plugin", function () {
   const mdi = new MarkdownIt();
-  mdi.use(createArgdownPlugin());
+  before(async function () {
+    mdi.use(await createArgdownPlugin());
+  });
   this.timeout(5000);
   it("can replace code fences with argument maps", function () {
     const result = mdi.render(`

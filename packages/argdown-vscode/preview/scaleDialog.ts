@@ -9,14 +9,14 @@ export const openScaleDialog = (callback: (scale: number) => void) => {
   <div class="dialog-footer"><button id="scale-submit" type="button" value="Submit">Submit</button>
   <button id="scale-cancel" type="button" value="Cancel">Cancel</button></div>`;
   document.body.appendChild(dialog);
-  var input: HTMLInputElement = <HTMLInputElement>document.getElementById(
-    "scale-input"
+  var input: HTMLInputElement = <HTMLInputElement>(
+    document.getElementById("scale-input")
   );
-  var cancel: HTMLElement = <HTMLElement>document.getElementById(
-    "scale-cancel"
+  var cancel: HTMLElement = <HTMLElement>(
+    document.getElementById("scale-cancel")
   );
-  var submit: HTMLElement = <HTMLElement>document.getElementById(
-    "scale-submit"
+  var submit: HTMLElement = <HTMLElement>(
+    document.getElementById("scale-submit")
   );
   cancel.addEventListener("click", () => {
     dialog.remove();

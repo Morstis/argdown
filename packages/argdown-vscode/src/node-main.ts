@@ -27,7 +27,7 @@ import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
 
 let client: LanguageClient | undefined;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // ========================================
   // CORE FUNCTIONALITY
   // ========================================
@@ -173,6 +173,28 @@ export function activate(context: vscode.ExtensionContext) {
   // ========================================
   // RETURN EXTENSION API
   // ========================================
+  const markdownItPlugin = await createArgdownMarkdownItPlugin(() => {
+    const webComponentConfig = vscode.workspace.getConfiguration(
+      "argdown.markdownWebComponent",
+      null
+    );
+    const withoutHeader = webComponentConfig.get<boolean>("withoutHeader");
+    const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
+    const withoutMaximize = webComponentConfig.get<boolean>("withoutMaximize");
+    // const withoutHeader = false;
+    // const withoutLogo = false;
+    // const withoutMaximize = false;
+    return {
+      webComponent: {
+        addWebComponentScript: false,
+        addWebComponentPolyfill: false,
+        addGlobalStyles: false,
+        withoutHeader,
+        withoutLogo,
+        withoutMaximize
+      }
+    };
+  });
 
   return {
     extendMarkdownIt(md: any) {
@@ -182,32 +204,7 @@ export function activate(context: vscode.ExtensionContext) {
       );
       const enabled = webComponentConfig.get<boolean>("enabled");
       if (enabled) {
-        return md.use(
-          createArgdownMarkdownItPlugin(() => {
-            const webComponentConfig = vscode.workspace.getConfiguration(
-              "argdown.markdownWebComponent",
-              null
-            );
-            const withoutHeader =
-              webComponentConfig.get<boolean>("withoutHeader");
-            const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
-            const withoutMaximize =
-              webComponentConfig.get<boolean>("withoutMaximize");
-            // const withoutHeader = false;
-            // const withoutLogo = false;
-            // const withoutMaximize = false;
-            return {
-              webComponent: {
-                addWebComponentScript: false,
-                addWebComponentPolyfill: false,
-                addGlobalStyles: false,
-                withoutHeader,
-                withoutLogo,
-                withoutMaximize
-              }
-            };
-          })
-        );
+        return md.use(markdownItPlugin);
       }
       return md;
     }

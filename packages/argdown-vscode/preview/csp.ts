@@ -21,7 +21,7 @@ export class CspAlerter {
       this.onCspWarning();
     });
 
-    window.addEventListener("message", event => {
+    window.addEventListener("message", (event) => {
       if (event && event.data && event.data.name === "vscode-did-block-svg") {
         this.onCspWarning();
       }

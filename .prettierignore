@@ -2,6 +2,6 @@
 build
 coverage
 dist
-preview
 *.md
 public
+__snapshots__

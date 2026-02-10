@@ -26,8 +26,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@aduh95/viz.js": "3.4.0",
     "@argdown/highlightjs": "workspace:^",
+    "@hpcc-js/wasm-graphviz": "^1.16.0",
     "chevrotain": "^11.0.3",
     "eventemitter3": "^5.0.1",
     "highlight.js": "11.11.1",
