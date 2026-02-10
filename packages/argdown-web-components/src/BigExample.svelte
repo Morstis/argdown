@@ -1,4 +1,4 @@
-<argdown-map initial-view="map"
+<argdown-map initialView="map"
 	><div slot="source" class="">
 		<pre class="language-argdown"><code class="language-argdown"
 				><span class="hljs-meta"

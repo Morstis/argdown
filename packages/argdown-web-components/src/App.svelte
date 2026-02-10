@@ -50,6 +50,18 @@
 			</div>
 		</argdown-map>
 	</div>
+
+	<div>
+		<h1>Backwards compatibility for props</h1>
+		<argdown-map without-maximize without-logo initial-view="source">
+			<div slot="map">
+				<GraphExample></GraphExample>
+			</div>
+			<div slot="source">
+				<SourceExample></SourceExample>
+			</div>
+		</argdown-map>
+	</div>
 	<div>
 		<h1>Full Big Example</h1>
 		<BigExample></BigExample>

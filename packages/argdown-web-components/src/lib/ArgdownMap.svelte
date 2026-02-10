@@ -1,127 +1,85 @@
-<svelte:options customElement="argdown-map" />
+<svelte:options
+	customElement={{
+		tag: 'argdown-map',
+		props: {
+			kebab_initialView: { attribute: 'initial-view', type: 'String' },
+			kebab_withoutZoom: { attribute: 'without-zoom', type: 'String' },
+			kebab_withoutMaximize: { attribute: 'without-maximize', type: 'String' },
+			kebab_withoutLogo: { attribute: 'without-logo', type: 'String' },
+			kebab_withoutHeader: { attribute: 'without-header', type: 'String' }
+		}
+	}}
+/>
+
+<!--
+This is only a wrapper for ArgdownMapComponent to allow backwards compability. The old properties were all kebab-case strings, which is not ideal. The new properties are camelCase and can be of the correct type (boolean for the without* props). TODO: In future versions, remove the kebab-case properties and the handleProp function.
+-->
 
 <script lang="ts">
-	import ArgdownHeader from './ArgdownHeader.svelte';
+	import ArgdownMapComponent from './ArgdownMapComponent.svelte';
 
-	import panzoom, { type PanZoom } from 'panzoom';
-	import { Notification } from './notifications';
+	// Handle both camelCase and kebab-case props for backwards compatibility. If both are provided, camelCase takes precedence. Also parse boolean strings for both cases.
+	function handleProp<T>(
+		camelCaseValue: T | undefined,
+		kebabCaseValue: string | undefined,
+		defaultValue: T
+	): T {
+		if (camelCaseValue) {
+			// Also parse boolean strings for camelsCase
+			if (typeof camelCaseValue === 'string')
+				return ['true', 'false'].includes(camelCaseValue)
+					? JSON.parse(camelCaseValue)
+					: camelCaseValue;
+			return camelCaseValue;
+		}
+		if (!kebabCaseValue) return defaultValue;
+
+		console.warn(
+			'kebab-case for attributes is deprecated and will be removed in future versions. Consider using camelCase.'
+		);
+		if (['true', 'false'].includes(kebabCaseValue)) {
+			return JSON.parse(kebabCaseValue) as T;
+		}
+		return kebabCaseValue as T;
+	}
+
+	// Props with type annotations
 	let {
-		initialView = 'map',
-		withoutZoom = false,
-		withoutMaximize = false,
-		withoutLogo = false,
-		withoutHeader = false
-	} = $props<{
-		initialView?: 'map' | 'source';
+		initialView: camel_initialView,
+		withoutZoom: camel_withoutZoom,
+		withoutMaximize: camel_withoutMaximize,
+		withoutLogo: camel_withoutLogo,
+		withoutHeader: camel_withoutHeader,
+
+		// Backwards compatible
+		kebab_initialView,
+		kebab_withoutZoom,
+		kebab_withoutMaximize,
+		kebab_withoutLogo,
+		kebab_withoutHeader
+	}: {
+		initialView?: string;
 		withoutZoom?: boolean;
 		withoutMaximize?: boolean;
 		withoutLogo?: boolean;
 		withoutHeader?: boolean;
-	}>();
 
-	let activeView: 'map' | 'source' = $state(initialView);
-	let isExpand = $state(false);
+		// Backwards compatible
+		kebab_initialView?: string;
+		kebab_withoutZoom?: string;
+		kebab_withoutMaximize?: string;
+		kebab_withoutLogo?: string;
+		kebab_withoutHeader?: string;
+	} = $props();
 
-	// Bind to map-view slot and access the svg element
-	let mapview: HTMLDivElement | undefined = $state();
-
-	let svgMap: SVGElement | undefined = $derived.by(() => {
-		const mapSlot = mapview?.firstChild;
-		if (!(mapSlot instanceof HTMLSlotElement)) return;
-		return [...mapSlot.assignedElements()?.[0].children].find((el) => el instanceof SVGElement);
-	});
-
-	// Don't initiate panzoom if zoom is disabled.
-	let panzoomInstance: PanZoom | undefined = $state();
-
-	// Init panzoom once on the svg. It will be reflected in the host reference div, even if the views are switched, and svgMap becomes undefined.
-	$effect(() => {
-		if (panzoomInstance || !svgMap || withoutZoom) return;
-		svgMap.style.width = '100%';
-		panzoomInstance = panzoom(svgMap);
-		panzoomInstance.pause();
-	});
-
-	// If the view is switched from expanded back to minimized, reset panzoom to default position and zoom level.
-	$effect(() => {
-		if (!isExpand) {
-			panzoomInstance?.moveTo(0, 0);
-			panzoomInstance?.zoomAbs(0, 0, 1);
-		}
-	});
-
-	// Needed to retrigger the notifications, because panzoomInstance.isPaused() is not tracked by svelte 5. Probably try to fix this by writing a wrapper for panzoom that makes it reactive.
-	let manualTrigger = $state(0);
-	let notifications: Notification[] = $derived.by(() => {
-		manualTrigger;
-		if (withoutZoom) return [];
-		if (panzoomInstance?.isPaused() && activeView === 'map') return [Notification.Zoom];
-		return [];
-	});
-
-	function activatePanZoom() {
-		if (!panzoomInstance) return;
-		panzoomInstance.resume();
-		manualTrigger++;
-	}
-	function deactivatePanZoom() {
-		if (!panzoomInstance) return;
-		panzoomInstance.pause();
-		manualTrigger++;
-	}
+	let initialView = $derived(handleProp(camel_initialView, kebab_initialView, 'map'));
+	let withoutZoom = $derived(handleProp(camel_withoutZoom, kebab_withoutZoom, false));
+	let withoutMaximize = $derived(handleProp(camel_withoutMaximize, kebab_withoutMaximize, false));
+	let withoutLogo = $derived(handleProp(camel_withoutLogo, kebab_withoutLogo, false));
+	let withoutHeader = $derived(handleProp(camel_withoutHeader, kebab_withoutHeader, false));
 </script>
 
-<div class="element" class:isExpand>
-	<ArgdownHeader
-		bind:activeView
-		bind:isExpand
-		{withoutMaximize}
-		{withoutLogo}
-		{withoutHeader}
-		{notifications}
-		{deactivatePanZoom}
-	></ArgdownHeader>
-
-	{#if activeView === 'map'}
-		<div class="map-view" bind:this={mapview} onclick={activatePanZoom}>
-			<slot name="map"></slot>
-		</div>
-	{:else}
-		<div class="source-view">
-			<slot name="source"></slot>
-		</div>
-	{/if}
-</div>
-
-<style>
-	.map-view {
-		overflow: hidden;
-		height: 100%;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.source-view {
-		overflow: auto;
-		height: 100%;
-		width: 100%;
-	}
-	.element {
-		display: block;
-		background-color: var(--argdown-bg-color, #fff);
-		border: 1px solid var(--argdown-border-color, #eee);
-		border-radius: 6px;
-		padding: 10px;
-	}
-
-	div.isExpand {
-		position: fixed;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 1000000;
-		margin: 0;
-	}
-</style>
+<ArgdownMapComponent {initialView} {withoutZoom} {withoutHeader} {withoutLogo} {withoutMaximize}>
+	<slot name="map" slot="map"></slot>
+	<slot name="source" slot="source"></slot>
+</ArgdownMapComponent>
