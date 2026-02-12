@@ -50,7 +50,7 @@ argdown-map a {
   --argdown-bg-color: var(--vp-c-bg);
   --argdown-border-color: var(--vp-c-border);
   --argdown-logo-color: var(--vp-c-accent-color);
-  --argdown-logo-bg-color: rgba(var(--vp-c-accent-color), 0.8);
+  --argdown-logo-bg-color: initial;
   --argdown-button-bg-color: var(--vp-c-btn-bg);
   --argdown-button-bg-hover-color: var(--vp-c-btn-bg-hover);
   --argdown-button-border-bottom-color: var(--vp-c-btn-border);
@@ -81,28 +81,12 @@ body.noscroll {
   overflow: hidden;
 }
 
-/* General styles */
-.content:not(.custom) > h2,
-.content:not(.custom) > h3,
-.content:not(.custom) > h4,
-.content:not(.custom) > h5,
-.content:not(.custom) > h6 {
-  margin-bottom: 1.2rem;
-}
-
 p + h2 {
   margin-top: 3rem;
 }
 
 h3 {
   margin-top: 3rem;
-}
-
-.navbar .site-name {
-  padding-left: 65px;
-  background: url("/argdown-mark.svg");
-  background-size: 55px;
-  background-repeat: no-repeat;
 }
 
 h3 em {
@@ -128,32 +112,4 @@ table {
 table td {
   width: 2%;
   line-height: 1.7;
-}
-
-/* Code block styles */
-.theme-default-content pre code.language-argdown {
-  color: var(--vp-c-code-color);
-}
-
-.theme-default-content pre.language-argdown {
-  color: var(--vp-c-code-color);
-  background-color: var(--vp-c-code-bg-color);
-  margin: 0;
-}
-
-/* Header styles */
-.theme-default-content:not(.custom) > h1,
-.theme-default-content:not(.custom) > h2,
-.theme-default-content:not(.custom) > h3,
-.theme-default-content:not(.custom) > h4,
-.theme-default-content:not(.custom) > h5,
-.theme-default-content:not(.custom) > h6 {
-  margin-top: -3.1rem;
-  padding-top: 4.6rem;
-  margin-bottom: 1rem;
-}
-
-/* Page styles */
-main.page {
-  margin-top: 3.6rem;
 }

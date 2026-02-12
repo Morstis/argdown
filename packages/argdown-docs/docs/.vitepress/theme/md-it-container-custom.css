@@ -27,8 +27,6 @@
 }
 
 .buttonlist ul li a {
-  display: inline-block;
-  font-size: 0.8rem;
   color: #fff;
   background-color: var(--vp-c-brand-3);
   padding: 0.4rem 0.8rem;

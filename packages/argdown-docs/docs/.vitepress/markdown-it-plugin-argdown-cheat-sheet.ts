@@ -1,20 +1,21 @@
 import { argdown, IArgdownRequest, SaysWhoPlugin } from "@argdown/core";
 import type { PluginSimple } from "markdown-it";
 
-argdown.addPlugin(new SaysWhoPlugin(), "add-proponents");
-argdown.defaultProcesses["says-who-map"] = [
-  "parse-input",
-  "build-model",
-  "build-map",
-  "transform-closed-groups",
-  "colorize",
-  "add-proponents",
-  "export-dot",
-  "export-svg",
-  "highlight-source",
-  "export-web-component"
-];
-
+if (!argdown.getPlugin("SaysWhoPlugin", "add-proponents")) {
+  argdown.addPlugin(new SaysWhoPlugin(), "add-proponents");
+  argdown.defaultProcesses["says-who-map"] = [
+    "parse-input",
+    "build-model",
+    "build-map",
+    "transform-closed-groups",
+    "colorize",
+    "add-proponents",
+    "export-dot",
+    "export-svg",
+    "highlight-source",
+    "export-web-component"
+  ];
+}
 export const ArgdownCheatSheetPlugin: PluginSimple = (md) => {
   function removeFrontMatter(str: string) {
     return str.replace(/[\s]*===+[\s\S]*===+[\s]*/, "");
