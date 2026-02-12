@@ -35,6 +35,7 @@
 		text-decoration: none;
 		overflow: hidden;
 		direction: ltr;
+		padding-right: 10px;
 	}
 	.argdown-mark .icon {
 		width: 2rem;
