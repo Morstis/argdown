@@ -18,7 +18,7 @@
     "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --topological-dev --exclude . run test",
     "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
     "docs:dev": "yarn workspace @argdown/docs run docs:dev",
-    "prettier:check": "prettier . --check",
+    "prettier:check": "lerna run prettier:check && prettier . --check",
     "prettier:fix": "prettier . --write",
     "prettier": "yarn run prettier:fix",
     "lint": "eslint",

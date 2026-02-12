@@ -5,3 +5,6 @@ dist
 *.md
 public
 __snapshots__
+
+# Has own prettier config
+packages/argdown-web-components
