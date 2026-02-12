@@ -33,16 +33,20 @@
 		color: var(--argdown-logo-color);
 		fill: var(--argdown-logo-color);
 		text-decoration: none;
-		padding: 1rem 1rem 1rem 0;
+		overflow: hidden;
+		direction: ltr;
 	}
 	.argdown-mark .icon {
 		width: 2rem;
 		height: 2rem;
+		flex-shrink: 0;
 	}
 	.argdown-mark .name {
 		display: inline-block;
 		font-weight: bold;
 		font-family: Arial, Helvetica, sans-serif;
 		text-decoration: none;
+		min-width: 0;
+		flex: 1 1 auto;
 	}
 </style>

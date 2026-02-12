@@ -111,6 +111,9 @@
 </div>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
 	.map-view {
 		overflow: hidden;
 		height: 100%;
@@ -125,11 +128,14 @@
 		width: 100%;
 	}
 	.element {
-		display: block;
+		display: flex;
+		flex-direction: column;
 		background-color: var(--argdown-bg-color, #fff);
 		border: 1px solid var(--argdown-border-color, #eee);
 		border-radius: 6px;
-		padding: 10px;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
 	}
 
 	div.isExpand {

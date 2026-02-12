@@ -8,7 +8,7 @@
 
 <main data-theme={dark ? 'dark' : 'light'}>
 	<button onclick={() => (dark = !dark)}>{dark ? 'Light' : 'Dark'} Mode</button>
-	<div>
+	<div style="resize: both; overflow: hidden">
 		<h1>Default</h1>
 		<argdown-map>
 			<div slot="map">

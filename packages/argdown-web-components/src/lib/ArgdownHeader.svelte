@@ -24,10 +24,7 @@
 			{/each}
 		</div>
 
-		<nav class:withoutLogo>
-			{#if !withoutLogo}
-				<ArgdownMark></ArgdownMark>
-			{/if}
+		<nav>
 			<ul>
 				{#if activeView === 'map' && !notifications.includes(Notification.Zoom)}
 					<li>
@@ -67,6 +64,10 @@
 					</li>
 				{/if}
 			</ul>
+
+			{#if !withoutLogo}
+				<ArgdownMark></ArgdownMark>
+			{/if}
 		</nav>
 	</header>
 {/if}
@@ -85,22 +86,25 @@
 			Droid Sans,
 			Helvetica Neue,
 			sans-serif;
+
+		box-sizing: border-box;
 	}
 	header {
 		position: relative;
-		height: 2rem;
+		height: 3rem;
 		width: 100%;
+		display: flex;
 	}
 	nav {
 		height: 100%;
 		width: 100%;
 		display: flex;
+		padding: 8px;
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: center;
-	}
-	nav.withoutLogo {
-		justify-content: flex-end;
+		gap: 10px;
+		direction: rtl;
 	}
 	ul {
 		margin: 0;
@@ -108,6 +112,7 @@
 		list-style-type: none;
 		display: flex;
 		gap: 3px;
+		direction: ltr;
 	}
 	ul li {
 		margin: 0;
@@ -123,7 +128,8 @@
 		font-weight: bold;
 		color: var(--argdown-button-font-color, #fff);
 		background-color: var(--argdown-button-bg-color, #3e8eaf);
-		padding: 0.4rem 0.8rem;
+		height: 100%;
+		padding: 0px 10px;
 		border-radius: 4px;
 		border: 0;
 		transition: background-color 0.1s ease;
@@ -134,7 +140,7 @@
 		justify-content: center;
 	}
 	button.view-toggle {
-		min-width: 5rem;
+		min-width: 4rem;
 	}
 	button:hover {
 		background-color: var(--argdown-button-bg-hover-color, #387e9c);
