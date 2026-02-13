@@ -70,3 +70,30 @@ argdown-map code.language-argdown .hljs-argument-statement-nr {
 	color: var(--argdown-link-color, #134c66);
 	font-weight: bold;
 }
+
+.argdown-figure {
+	border: 1px solid var(--argdown-border-color, #eee);
+	border-radius: 6px;
+	margin: 2rem 0;
+	overflow: hidden;
+}
+.argdown-figure figcaption {
+	border-top: 1px solid var(--argdown-border-color, #eee);
+	font-family:
+		-apple-system,
+		BlinkMacSystemFont,
+		Segoe UI,
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		Fira Sans,
+		Droid Sans,
+		Helvetica Neue,
+		sans-serif;
+	padding: 1rem;
+}
+.argdown-figure ::part(argdown-webcomponent) {
+	border: 0;
+	height: 100%;
+}

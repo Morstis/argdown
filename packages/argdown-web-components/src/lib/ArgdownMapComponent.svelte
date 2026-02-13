@@ -76,7 +76,7 @@
 	}
 </script>
 
-<div class="element" class:isExpand>
+<div class="element" part="argdown-webcomponent" class:isExpand>
 	<ArgdownHeader
 		bind:activeView
 		bind:isExpand

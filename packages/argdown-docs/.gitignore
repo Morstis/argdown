@@ -32,3 +32,6 @@ lerna-debug.log*
 
 # Build folders
 docs/.vuepress/dist/
+
+docs/.vitepress/cache
+docs/.vitepress/dist
