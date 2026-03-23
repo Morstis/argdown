@@ -541,7 +541,7 @@
     "dev-build-preview": "webpack --config preview.webpack.config.cjs --mode development",
     "copy-changelog": "node ./copy-changelog.js",
     "copy-web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
-    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.cjs dist/server/server-node.cjs"
+    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/server.*.cjs dist/server/"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
@@ -573,6 +573,7 @@
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/test-web": "^0.0.78",
+    "@vscode/vsce": "^3.7.1",
     "babel-loader": "10.0.0",
     "brfs": "^2.0.2",
     "crypto-browserify": "^3.12.1",
