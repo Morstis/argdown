@@ -1,35 +1,36 @@
-import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import { context } from "esbuild";
 import {
   buildOptions,
   esbuildProblemMatcherPlugin,
   watch
 } from "./esbuild.common";
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import { raw } from "esbuild-raw-plugin";
 
 async function main() {
   const ctx = await context({
     ...buildOptions,
-    entryPoints: ["src/server.browser.ts"],
-    platform: "browser",
-    define: {
-      global: "globalThis"
+    entryPoints: {
+      htmlView: "preview/htmlView.ts",
+      dagreView: "preview/dagreView.ts",
+      vizjsView: "preview/vizjsView.ts",
+      pre: "preview/pre.ts"
     },
+    platform: "browser",
+    outdir: "dist/preview",
     plugins: [
+      raw(),
       NodeGlobalsPolyfillPlugin({
         process: true,
         buffer: true
       }),
-      {
-        name: "path-alias",
-        setup(build) {
-          build.onResolve({ filter: /^path$/ }, () => {
-            return { path: require.resolve("path-browserify") };
-          });
-        }
-      },
       esbuildProblemMatcherPlugin
-    ]
+    ],
+    define: {
+      global: "globalThis"
+    }
   });
+
   if (watch) {
     await ctx.watch();
   } else {

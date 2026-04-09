@@ -9,9 +9,13 @@ import {
 async function main() {
   const ctx = await context({
     ...buildOptions,
-    entryPoints: ["src/server.browser.ts"],
+    entryPoints: ["src/main.browser.ts"],
     platform: "browser",
     define: {
+      "process.env.NODE_DEBUG": "false",
+      "process.env.NODE_ENV": JSON.stringify(
+        process.env.NODE_ENV || "development"
+      ),
       global: "globalThis"
     },
     plugins: [
@@ -27,9 +31,25 @@ async function main() {
           });
         }
       },
+      {
+        name: "stream-alias",
+        setup(build) {
+          build.onResolve({ filter: /^stream/ }, () => {
+            return { path: require.resolve("stream-browserify") };
+          });
+        }
+      },
       esbuildProblemMatcherPlugin
     ]
+    // inject: ["process/browser"]
+    // fallback: {
+    //   assert: require.resolve("assert"),
+    //   fs: false,
+    //   stream: false,
+    //   path: require.resolve("path-browserify"),
+    // }
   });
+
   if (watch) {
     await ctx.watch();
   } else {

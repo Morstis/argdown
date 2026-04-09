@@ -1,50 +1,17 @@
 import * as vscode from "vscode";
+import { TextDocument, workspace } from "vscode";
+import { ArgdownEngine } from "../ArgdownEngine";
+import { ArgdownConfiguration } from "../config/ArgdownConfiguration";
 import { Command } from "./Command";
-import { isArgdownFile } from "../preview/util/file";
+import { getUri } from "./export/util";
 
-export interface IReturnDocumentArgs {
-  source: string;
-  process: string;
-}
-
-const execute = async (
-  resource: vscode.Uri,
-  process: string,
-  successMessage: string
-) => {
-  let uri = resource;
-  if (!uri && vscode.window.activeTextEditor) {
-    // If the command is not invoked with a resource argument (e.g. in the command palette), we try to use the uri of the active document
-    if (!vscode.window.activeTextEditor) {
-      return;
-    }
-    const doc = vscode.window.activeTextEditor.document;
-    if (doc.uri.scheme !== "file" || !isArgdownFile(doc)) {
-      return;
-    }
-    uri = doc.uri;
-  }
-  if (!uri) {
-    return;
-  }
-  const args: IReturnDocumentArgs = {
-    source: uri.toString(),
-    process: process
-  };
-  const returnValue = await vscode.commands.executeCommand<string>(
-    "argdown.server.returnDocument",
-    args
-  );
-
-  if (returnValue) {
-    await vscode.env.clipboard.writeText(returnValue);
-    vscode.window.showInformationMessage(successMessage);
-  }
-};
+const successMessage = `Web component html copied to the clipboard. Paste your component into any html file. For more information on how to use the web component visit the [component's documentation](https://argdown.org/guide/embed-your-map-in-html.html).`;
 
 export class CopyWebComponentToClipboardCommand implements Command {
   private static readonly id = "argdown.copyWebComponentToClipboard";
   public readonly id = CopyWebComponentToClipboardCommand.id;
+
+  constructor(private readonly engine: ArgdownEngine) {}
 
   public static createCommandUri(path: string, fragment: string): vscode.Uri {
     return vscode.Uri.parse(
@@ -53,11 +20,13 @@ export class CopyWebComponentToClipboardCommand implements Command {
       )}`
     );
   }
-  public execute(resource: vscode.Uri) {
-    void execute(
-      resource,
-      "web-component-to-html",
-      `Web component html copied to the clipbard. Paste your component into any html file. For more information on how to use the web component visit the [component's documentation](https://argdown.org/guide/embed-your-map-in-html.html).`
-    );
+  public async execute(resource: vscode.Uri) {
+    const uri = getUri(resource);
+    if (!uri) throw new Error("No file provided!");
+    const config = new ArgdownConfiguration(uri, this.engine);
+    const doc: TextDocument = await workspace.openTextDocument(uri);
+    const result = await this.engine.exportWebComponent(doc, config);
+    await vscode.env.clipboard.writeText(result);
+    vscode.window.showInformationMessage(successMessage);
   }
 }

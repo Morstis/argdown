@@ -1,32 +1,28 @@
-import * as vscode from "vscode";
-import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { argdown, init } from "@argdown/core";
-import { findElementAtPositionPlugin } from "./FindElementAtPositionPlugin";
 import {
-  IArgdownRequest,
-  ISection,
-  IEquivalenceClass,
-  IArgument,
-  IMapNode,
-  isGroupMapNode,
+  argdown,
   ArgdownTypes,
-  IMap,
-  stringifyArgdownData
+  IArgument,
+  IEquivalenceClass,
+  init,
+  isGroupMapNode,
+  stringifyArgdownData,
+  type IArgdownRequest,
+  type IMap,
+  type IMapNode,
+  type ISection
 } from "@argdown/core";
-import { Logger } from "./Logger";
+import { Range, type TextDocument, type Uri } from "vscode";
+import type { Logger } from "./Logger";
+import type { ArgdownConfiguration } from "./config/ArgdownConfiguration";
+import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
+import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
+
 argdown.addPlugin(findElementAtPositionPlugin, "find-element-at-position");
 
-export interface ArgdownConfigLoader {
-  (
-    configFile: string | undefined,
-    resource: vscode.Uri,
-    logger: Logger
-  ): Promise<IArgdownRequest>;
-}
 export class ArgdownEngine {
   public constructor(
     private logger: Logger,
-    private configLoader: ArgdownConfigLoader
+    private configLoader: IArgdownConfigLoader
   ) {
     let logLevel = "verbose";
     argdown.logger = {
@@ -40,11 +36,7 @@ export class ArgdownEngine {
       }
     };
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async exportHtml(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
-  ): Promise<string> {
+  public exportHtml(doc: TextDocument, config: ArgdownConfiguration): string {
     const argdownConfig = config.argdownConfig || {};
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -57,16 +49,16 @@ export class ArgdownEngine {
       },
       throwExceptions: false
     };
-    const response = argdown.run(request);
-    return response.html!;
+    const { html } = argdown.run(request);
+    if (!html) throw new Error("No HTML response");
+    return html;
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async getMapNodeId(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration,
+  public getMapNodeId(
+    doc: TextDocument,
+    config: ArgdownConfiguration,
     line: number,
     character: number
-  ): Promise<string> {
+  ): string {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -86,32 +78,29 @@ export class ArgdownEngine {
       throwExceptions: false
     };
     const response = argdown.run(request);
-    if ((response as any).elementAtPosition) {
-      // TODO: fix extension of IArgdownResponse in FindElementAtPositionPlugin (probably caused by importing from @argdown/core/dist-esm/argdown)
-      const title = (response as any).elementAtPosition.title;
-      let nodeType = ArgdownTypes.ARGUMENT_MAP_NODE;
-      if (
-        (response as any).elementAtPosition.type ===
-        ArgdownTypes.EQUIVALENCE_CLASS
-      ) {
-        nodeType = ArgdownTypes.STATEMENT_MAP_NODE;
-      }
-      const node = this.findNodeInMapNodeTree(
-        response.map!.nodes,
-        (n) => n.title === title && n.type === nodeType
-      );
-      if (!node) {
-        return "";
-      }
-      return node.id || "";
+    if (!response.elementAtPosition) {
+      return "";
     }
-    return "";
+    const title = response.elementAtPosition.title;
+    let nodeType = ArgdownTypes.ARGUMENT_MAP_NODE;
+    if (response.elementAtPosition.type === ArgdownTypes.EQUIVALENCE_CLASS) {
+      nodeType = ArgdownTypes.STATEMENT_MAP_NODE;
+    }
+    if (!response.map) throw new Error("No map response");
+    const node = this.findNodeInMapNodeTree(
+      response.map.nodes,
+      (n) => n.title === title && n.type === nodeType
+    );
+    if (!node) {
+      return "";
+    }
+    return node.id || "";
   }
   public getRangeOfHeading(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration,
+    doc: TextDocument,
+    config: ArgdownConfiguration,
     headingText: string
-  ): vscode.Range {
+  ): Range {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -122,18 +111,18 @@ export class ArgdownEngine {
     };
     const response = argdown.run(request);
     if (!response.sections || response.sections.length == 0) {
-      return new vscode.Range(0, 0, 0, 0);
+      return new Range(0, 0, 0, 0);
     }
     const section = this.findSection(response.sections, headingText);
     if (section) {
-      return new vscode.Range(
+      return new Range(
         (section.startLine || 1) - 1,
         (section.startColumn || 1) - 1,
         (section.startLine || 1) - 1,
         (section.startColumn || 1) - 1
       );
     }
-    return new vscode.Range(0, 0, 0, 0);
+    return new Range(0, 0, 0, 0);
   }
   private findSection(
     sections: ISection[],
@@ -153,10 +142,10 @@ export class ArgdownEngine {
     return null;
   }
   public getRangeOfMapNode(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration,
+    doc: TextDocument,
+    config: ArgdownConfiguration,
     id: string
-  ): vscode.Range {
+  ): Range {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -166,35 +155,46 @@ export class ArgdownEngine {
       throwExceptions: false
     };
     const response = argdown.run(request);
+    if (!response.map) throw new Error("No map response");
+
     const node = this.findNodeInMapNodeTree(
-      response.map!.nodes,
-      (n: any) => n.id === id
+      response.map.nodes,
+      (n) => n.id === id
     );
-    if (node && node.type === ArgdownTypes.ARGUMENT_MAP_NODE) {
-      const argument = response.arguments![node.title!];
-      const desc = IArgument.getCanonicalMember(argument);
-      if (desc) {
-        return new vscode.Range(
+    if (!node || !node.title) return new Range(0, 0, 0, 0);
+
+    switch (node.type) {
+      case ArgdownTypes.ARGUMENT_MAP_NODE: {
+        if (!response.arguments) break;
+        const argument = response.arguments[node.title];
+        const desc = IArgument.getCanonicalMember(argument);
+        if (!desc) break;
+        return new Range(
           (desc.startLine || 1) - 1,
           (desc.startColumn || 1) - 1,
           (desc.endLine || 1) - 1,
           desc.endColumn || 1
         );
       }
-    } else if (node && node.type === ArgdownTypes.STATEMENT_MAP_NODE) {
-      const eqClass = response.statements![node.title!];
-      const statement = IEquivalenceClass.getCanonicalMember(eqClass);
-      if (statement) {
-        return new vscode.Range(
+      case ArgdownTypes.STATEMENT_MAP_NODE: {
+        if (!response.statements) break;
+        const eqClass = response.statements[node.title];
+        const statement = IEquivalenceClass.getCanonicalMember(eqClass);
+        if (!statement) break;
+
+        return new Range(
           (statement.startLine || 1) - 1,
           (statement.startColumn || 1) - 1,
           (statement.endLine || 1) - 1,
           statement.endColumn || 1
         );
       }
+      default:
+        return new Range(0, 0, 0, 0);
     }
-    return new vscode.Range(0, 0, 0, 0);
+    return new Range(0, 0, 0, 0);
   }
+
   private findNodeInMapNodeTree(
     nodes: IMapNode[],
     handler: (n: IMapNode) => boolean
@@ -212,11 +212,7 @@ export class ArgdownEngine {
     }
     return null;
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async getMap(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
-  ): Promise<IMap> {
+  public getMap(doc: TextDocument, config: ArgdownConfiguration): IMap {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request = {
@@ -233,21 +229,18 @@ export class ArgdownEngine {
       ],
       throwExceptions: false
     };
-    const response = argdown.run(request);
-    return response.map!;
+    const { map } = argdown.run(request);
+    if (!map) throw new Error("No map in response");
+    return map;
   }
   public exportMapJson(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
+    doc: TextDocument,
+    config: ArgdownConfiguration
   ): string {
     const map = this.getMap(doc, config);
     return stringifyArgdownData(map);
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async exportJson(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
-  ): Promise<string> {
+  public exportJson(doc: TextDocument, config: ArgdownConfiguration): string {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request = {
@@ -264,12 +257,13 @@ export class ArgdownEngine {
       ],
       throwExceptions: false
     };
-    const response = argdown.run(request);
-    return response.json!;
+    const { json } = argdown.run(request);
+    if (!json) throw new Error("No JSON response");
+    return json;
   }
   public exportDot(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
+    doc: TextDocument,
+    config: ArgdownConfiguration
   ): { dot: string; request: IArgdownRequest } {
     const argdownConfig = config.argdownConfig || {};
     const input = doc.getText();
@@ -288,13 +282,14 @@ export class ArgdownEngine {
       ],
       throwExceptions: false
     };
-    const response = argdown.run(request);
-    return { dot: response.dot!, request };
+    const { dot } = argdown.run(request);
+    if (!dot) throw new Error("No DOT response");
+    return { dot, request };
   }
 
   public async exportSvg(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
+    doc: TextDocument,
+    config: ArgdownConfiguration
   ): Promise<{ svg: string; dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
     const input = doc.getText();
@@ -315,19 +310,50 @@ export class ArgdownEngine {
       throwExceptions: false
     };
     await init();
-    const response = argdown.run(request);
+    const { svg, dot } = argdown.run(request);
+    if (!svg) throw new Error("No SVG response");
+    if (!dot) throw new Error("No DOT response");
 
     return {
-      svg: response.svg as string,
-      dot: response.dot as string,
+      svg,
+      dot,
       request
     };
   }
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async exportGraphML(
-    doc: vscode.TextDocument,
-    config: ArgdownPreviewConfiguration
+
+  public async exportWebComponent(
+    doc: TextDocument,
+    config: ArgdownConfiguration
   ): Promise<string> {
+    const argdownConfig = config.argdownConfig || {};
+    const input = doc.getText();
+    const request = {
+      ...argdownConfig,
+      input: input,
+      inputPath: doc.uri.fsPath,
+      process: [
+        "parse-input",
+        "build-model",
+        "build-map",
+        "transform-closed-groups",
+        "colorize",
+        "add-images",
+        "export-dot",
+        "export-svg",
+        "highlight-source",
+        "export-web-component"
+      ],
+      throwExceptions: false
+    };
+    await init();
+    const { webComponent } = argdown.run(request);
+    if (!webComponent) throw new Error("No web component response");
+    return webComponent;
+  }
+  public exportGraphML(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): string {
     const argdownConfig = config.argdownConfig || {};
     const input = doc.getText();
     const request = {
@@ -344,12 +370,13 @@ export class ArgdownEngine {
       ],
       throwExceptions: false
     };
-    const response = argdown.run(request);
-    return response.graphml!;
+    const { graphml } = argdown.run(request);
+    if (!graphml) throw new Error("No GraphML response");
+    return graphml;
   }
   public async loadConfig(
     configFile: string | undefined,
-    resource: vscode.Uri
+    resource: Uri
   ): Promise<IArgdownRequest> {
     return await this.configLoader(configFile, resource, this.logger);
   }

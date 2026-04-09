@@ -12,8 +12,7 @@ import {
   OnSelectionChangedHandler
 } from "@argdown/map-views";
 import { ArgdownPreviewStore } from "./state";
-declare function require(path: string): string;
-const dagreCss = require("!raw-loader!./dagre.css");
+import dagreCss from "./dagre.css?raw";
 
 declare var acquireVsCodeApi: any;
 const vscode = acquireVsCodeApi();
