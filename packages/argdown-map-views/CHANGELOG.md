@@ -1,9 +1,12 @@
+# @argdown/map-views
+
 ## 2.0.0
 
 ### Major Changes
 
 - update so version 2.0
-- dependency updates
+- now provides an svgMap view, that enables view capabilities on svgs
+- bundles with vite now
 
 ### Patch Changes
 
