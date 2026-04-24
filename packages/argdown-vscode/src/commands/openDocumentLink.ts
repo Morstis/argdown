@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { Command } from "./Command";
 //import { ArgdownEngine } from '../preview/ArgdownEngine';
 // import { TableOfContentsProvider } from '../tableOfContentsProvider';
-import { isArgdownFile } from "../preview/util/file";
+import { isArgdownFile } from "../util/file";
 import { Utils } from "vscode-uri";
 
 export interface OpenDocumentLinkArgs {
@@ -23,12 +23,11 @@ export class OpenDocumentLinkCommand implements Command {
     );
   }
 
-  public constructor() //private readonly engine: ArgdownEngine
-  {}
+  public constructor() {} //private readonly engine: ArgdownEngine
 
   public execute(args: OpenDocumentLinkArgs) {
     const p = decodeURIComponent(args.path);
-    return this.tryOpen(p).catch(() => {
+    void this.tryOpen(p).catch(() => {
       if (Utils.extname(vscode.Uri.parse(p)) === "") {
         return this.tryOpen(p + ".ad");
       }

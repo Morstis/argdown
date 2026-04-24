@@ -18,8 +18,8 @@ const modelPlugin = new ModelPlugin();
 app.addPlugin(dataPlugin, "build-model");
 app.addPlugin(modelPlugin, "build-model");
 
-describe("deriveImplicitRelations", function() {
-  it("does not derive implicit argument relation to pcs member", function() {
+describe("deriveImplicitRelations", function () {
+  it("does not derive implicit argument relation to pcs member", function () {
     let source = `
         [s1]: s1
 
@@ -40,7 +40,7 @@ describe("deriveImplicitRelations", function() {
     );
     expect(implicitRelations.length).to.be.equal(0);
   });
-  it("can derive implicit relation of undercutting argument", function() {
+  it("can derive implicit relation of undercutting argument", function () {
     let source = `
         <a1>
 
@@ -69,7 +69,7 @@ describe("deriveImplicitRelations", function() {
     expect(implicitRelations[0].from!.title).to.equal("a2");
     expect((<IInference>implicitRelations[0].to!).argumentTitle).to.equal("a1");
   });
-  it("can derive implicit undercut relation of argument", function() {
+  it("can derive implicit undercut relation of argument", function () {
     let source = `
         <a1>
 
@@ -97,7 +97,7 @@ describe("deriveImplicitRelations", function() {
     expect(implicitRelationsA1.length).to.be.equal(3);
     expect(
       implicitRelationsA1.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.UNDERCUT
@@ -105,7 +105,7 @@ describe("deriveImplicitRelations", function() {
     ).to.exist;
     expect(
       implicitRelationsA1.find(
-        r =>
+        (r) =>
           r.from!.title === "s1" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.UNDERCUT
@@ -113,7 +113,7 @@ describe("deriveImplicitRelations", function() {
     ).to.exist;
     expect(
       implicitRelationsA1.find(
-        r =>
+        (r) =>
           r.from!.title === "a3" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.UNDERCUT
@@ -128,7 +128,7 @@ describe("deriveImplicitRelations", function() {
     expect(implicitRelationsA2.length).to.be.equal(2);
     expect(
       implicitRelationsA2.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.UNDERCUT
@@ -136,7 +136,7 @@ describe("deriveImplicitRelations", function() {
     ).to.exist;
     expect(
       implicitRelationsA2.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           (<IInference>r.to!).argumentTitle === "a1" &&
           (<IInference>r.to!).conclusionIndex === 1 &&
@@ -151,14 +151,14 @@ describe("deriveImplicitRelations", function() {
     expect(implicitRelationsA3.length).to.be.equal(1);
     expect(
       implicitRelationsA3.find(
-        r =>
+        (r) =>
           r.from!.title === "a3" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.UNDERCUT
       )
     ).to.exist;
   });
-  it("can derive implicit relations of statement", function() {
+  it("can derive implicit relations of statement", function () {
     let source = `
 ===
 model:
@@ -213,7 +213,7 @@ model:
     expect(implicitRelations.length).to.equal(5);
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "s1" &&
           r.relationType === RelationType.ATTACK
@@ -221,7 +221,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "s1" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.SUPPORT
@@ -229,7 +229,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a3" &&
           r.to!.title === "s1" &&
           r.relationType === RelationType.SUPPORT
@@ -237,7 +237,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "s1" &&
           r.to!.title === "a4" &&
           r.relationType === RelationType.ATTACK
@@ -245,14 +245,14 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "s1" &&
           r.to!.title === "a5" &&
           r.relationType === RelationType.ATTACK
       )
     ).to.exist;
   });
-  it("can derive implicit relations of argument", function() {
+  it("can derive implicit relations of argument", function () {
     let source = `
 ===
 model:
@@ -298,7 +298,7 @@ model:
     expect(implicitRelations.length).to.equal(7);
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "s1" &&
           r.relationType === RelationType.ATTACK
@@ -306,7 +306,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "a1" &&
           r.relationType === RelationType.ATTACK
@@ -314,7 +314,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "s4" &&
           r.to!.title === "a2" &&
           r.relationType === RelationType.ATTACK
@@ -322,7 +322,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "s5" &&
           r.to!.title === "a2" &&
           r.relationType === RelationType.ATTACK
@@ -330,7 +330,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a4" &&
           r.to!.title === "a2" &&
           r.relationType === RelationType.ATTACK
@@ -338,7 +338,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "s7" &&
           r.relationType === RelationType.ATTACK
@@ -346,7 +346,7 @@ model:
     ).to.exist;
     expect(
       implicitRelations.find(
-        r =>
+        (r) =>
           r.from!.title === "a2" &&
           r.to!.title === "a6" &&
           r.relationType === RelationType.ATTACK

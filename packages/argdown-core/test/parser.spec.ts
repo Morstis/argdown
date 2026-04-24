@@ -18,8 +18,8 @@ import {
 
 const walker = new ArgdownTreeWalker();
 
-describe("Parser", function() {
-  it("can parse argdown with leading and trailing emptylines", function() {
+describe("Parser", function () {
+  it("can parse argdown with leading and trailing emptylines", function () {
     let source = "\n\n\n\n\nHallo World!\n\n\n<!-- Comment -->\n\n";
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -27,7 +27,7 @@ describe("Parser", function() {
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("sanity check 1: can parse veggie debate", function() {
+  it("sanity check 1: can parse veggie debate", function () {
     let source = fs.readFileSync("./test/veggie_debate.argdown", "utf8");
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -39,7 +39,7 @@ describe("Parser", function() {
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("sanity check 2: can parse semmelweis debate", function() {
+  it("sanity check 2: can parse semmelweis debate", function () {
     let source = fs.readFileSync("./test/semmelweis_betz.argdown", "utf8");
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -52,7 +52,7 @@ describe("Parser", function() {
     // console.log(parser.errors);
     expect(parser.errors).to.be.empty;
   });
-  it("sanity check 3: can parse the Argdown intro", function() {
+  it("sanity check 3: can parse the Argdown intro", function () {
     let source = fs.readFileSync("./test/intro.argdown", "utf8");
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -65,7 +65,7 @@ describe("Parser", function() {
     console.log(parser.errors);
     expect(parser.errors).to.be.empty;
   });
-  it("can parse relation with subsequent comment", function() {
+  it("can parse relation with subsequent comment", function () {
     let source = `
 <A>
     +> [B]
@@ -82,7 +82,7 @@ THE END
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse argument with premise relations", function() {
+  it("can parse argument with premise relations", function () {
     let source = `A
       + B`;
     let lexResult = tokenize(source);
@@ -91,7 +91,7 @@ THE END
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse argument definitions and references", function() {
+  it("can parse argument definitions and references", function () {
     let source = fs.readFileSync("./test/parser-arguments.argdown", "utf8");
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -99,7 +99,7 @@ THE END
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can return Argdown error on title preceded by text", function() {
+  it("can return Argdown error on title preceded by text", function () {
     let source = `Text <Title>:`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -114,7 +114,7 @@ THE END
     expect(error.token.startLine).to.equal(1);
     expect(error.token.startColumn).to.equal(6);
   });
-  it("can return Argdown error on pcs without preceding emptyline", function() {
+  it("can return Argdown error on pcs without preceding emptyline", function () {
     let source = `A
     (1)`;
     let lexResult = tokenize(source);
@@ -129,7 +129,7 @@ THE END
     expect(error.token.startLine).to.equal(2);
     expect(error.token.startColumn).to.equal(1);
   });
-  it("can return Argdown error on incomplete inference", function() {
+  it("can return Argdown error on incomplete inference", function () {
     let source = `(1) a
     (2) b
     --
@@ -150,7 +150,7 @@ THE END
     // expect((<any>error).previousToken!.startLine).to.equal(4);
     // expect((<any>error).previousToken!.startColumn).to.equal(5);
   });
-  it("accepts two asterisks surrounded by whitespace", function() {
+  it("accepts two asterisks surrounded by whitespace", function () {
     let source = `Test ** Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -158,7 +158,7 @@ THE END
     expect(parser.errors).to.be.exist;
     expect(parser.errors.length).to.equal(0);
   });
-  it("accepts two underscores surrounded by whitespace", function() {
+  it("accepts two underscores surrounded by whitespace", function () {
     let source = `Test __ Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -166,7 +166,7 @@ THE END
     expect(parser.errors).to.be.exist;
     expect(parser.errors.length).to.equal(0);
   });
-  it("returns correct error for three asterisks surrounded by whitespace", function() {
+  it("returns correct error for three asterisks surrounded by whitespace", function () {
     let source = `Test *** Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -179,7 +179,7 @@ THE END
       "Incomplete bold text range. Append two asterisks"
     );
   });
-  it("returns correct error for three asterisks surrounded by whitespace", function() {
+  it("returns correct error for three asterisks surrounded by whitespace", function () {
     let source = `Test ___ Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -192,7 +192,7 @@ THE END
       "Incomplete bold text range. Append two underscores"
     );
   });
-  it("accepts four asterisks surrounded by whitespace", function() {
+  it("accepts four asterisks surrounded by whitespace", function () {
     let source = `Test **** Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -200,7 +200,7 @@ THE END
     expect(parser.errors).to.be.exist;
     expect(parser.errors.length).to.equal(0);
   });
-  it("accepts four underscores surrounded by whitespace", function() {
+  it("accepts four underscores surrounded by whitespace", function () {
     let source = `Test ____ Test`;
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -208,7 +208,7 @@ THE END
     expect(parser.errors).to.be.exist;
     expect(parser.errors.length).to.equal(0);
   });
-  it("can escape characters", function() {
+  it("can escape characters", function () {
     let source = "<Title>: text \\[text\\]";
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -216,7 +216,7 @@ THE END
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can add line numbers", function() {
+  it("can add line numbers", function () {
     let source = `# Heading
 
 Statement
@@ -283,7 +283,7 @@ Statement
   //   let parseResult = parser.argdown();
   //   console.log(parser.errors[0]);
   // });
-  it("can escape characters", function() {
+  it("can escape characters", function () {
     let source = "<Title>: text \\[text\\]";
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
@@ -291,7 +291,7 @@ Statement
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse inference with rules", function() {
+  it("can parse inference with rules", function () {
     let source = `
     (1) A
     --
@@ -307,7 +307,7 @@ Statement
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse inference relations", function() {
+  it("can parse inference relations", function () {
     let source = `
     (1) A
     (2) B
@@ -331,15 +331,19 @@ Statement
       ((pcsTail.children![1] as IRuleNode).children![3] as IRuleNode).name
     ).to.equal("relations"); // relations
     expect(
-      (((pcsTail.children![1] as IRuleNode).children![3] as IRuleNode)
-        .children![0] as ITokenNode).tokenType.name
+      (
+        ((pcsTail.children![1] as IRuleNode).children![3] as IRuleNode)
+          .children![0] as ITokenNode
+      ).tokenType.name
     ).to.equal("Indent");
     expect(
-      (((pcsTail.children![1] as IRuleNode).children![3] as IRuleNode)
-        .children![1] as IRuleNode).name
+      (
+        ((pcsTail.children![1] as IRuleNode).children![3] as IRuleNode)
+          .children![1] as IRuleNode
+      ).name
     ).to.equal("outgoingUndercut");
   });
-  it("can parse bof newline comment emptyline", function() {
+  it("can parse bof newline comment emptyline", function () {
     let source = `
 /* Comment */
 
@@ -354,7 +358,7 @@ A
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse frontmatter comment emptyline", function() {
+  it("can parse frontmatter comment emptyline", function () {
     let source = `
 ===
 title: Test
@@ -372,7 +376,7 @@ A
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
-  it("can parse Argdown with metadata", function() {
+  it("can parse Argdown with metadata", function () {
     let source = `
 # Heading 1 {test:1}
 
@@ -424,8 +428,8 @@ B: asdasdds
   //   });
 });
 
-describe("ArgdownTreeWalker", function() {
-  it("can walk", function() {
+describe("ArgdownTreeWalker", function () {
+  it("can walk", function () {
     let source = "Hallo Welt!";
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;

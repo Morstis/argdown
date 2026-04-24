@@ -28,13 +28,13 @@ export class LogParserErrorsPlugin implements IArgdownPlugin {
             `\u001b[31m\u001b[1mArgdown syntax errors in input: ${nrOfErrors}\u001b[0m\n`
           );
         }
-        for (let error of response.parserErrors) {
+        for (const error of response.parserErrors) {
           const message = error.message;
-          var startLine, startColumn;
+          let startLine, startColumn;
           if (
             error.token &&
             error.token.tokenType &&
-            error.token.tokenType.name === TokenNames.EOF
+            error.token.tokenType.name === "EOF"
           ) {
             // EOF does not have a token location, but the error saves the previousToken parsed
             if ((<any>error).previousToken) {

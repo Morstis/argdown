@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
+import type { ArgdownEngine } from "../ArgdownEngine";
 
 import {
   ContentSecurityPolicyArbiter,
@@ -10,15 +10,15 @@ import {
   ArgdownPreviewConfiguration
 } from "./ArgdownPreviewConfiguration";
 import { PreviewViews } from "./ArgdownPreview";
-import { IDictionary } from "./util/IDictionary";
+import { IDictionary } from "../util/IDictionary";
 import { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { jsonReplacer } from "@argdown/core";
-import { vizjsViewProvider } from "./vizjsViewProvider";
-import { dagreViewProvider } from "./dagreViewProvider";
-import { htmlViewProvider } from "./htmlViewProvider";
-import { IViewProvider } from "./IViewProvider";
-import { WebviewResourceProvider } from "./util/resources";
-import { basename, dirname, isAbsolute, join } from "./util/path";
+import { vizjsViewProvider } from "./viewProvider/vizjsViewProvider";
+import { dagreViewProvider } from "./viewProvider/dagreViewProvider";
+import { htmlViewProvider } from "./viewProvider/htmlViewProvider";
+import { IViewProvider } from "./viewProvider/IViewProvider";
+import { WebviewResourceProvider } from "../util/resources";
+import { basename, dirname, isAbsolute, join } from "../util/path";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
 /**
  * Strings used inside the argdown preview.
@@ -54,7 +54,7 @@ export class ArgdownContentProvider {
     argdownDocument: vscode.TextDocument,
     previewConfigurations: ArgdownPreviewConfigurationManager
     // , initialLine: number | undefined = undefined
-  ): Promise<any> {
+  ): Promise<unknown> {
     const sourceUri = argdownDocument.uri;
     const config = previewConfigurations.getConfiguration(sourceUri);
     const viewProvider = this.viewProviders[currentView];
@@ -102,7 +102,7 @@ export class ArgdownContentProvider {
     const nonce = getNonce();
     const csp = this.getCsp(resourceProvider, sourceUri, nonce);
     let viewHtml = "";
-    viewHtml = await viewProvider.generateView(
+    viewHtml = viewProvider.generateView(
       this.engine,
       argdownDocument,
       config,
@@ -133,17 +133,17 @@ export class ArgdownContentProvider {
           "pre.js"
         ).toString()}" nonce="${nonce}"></script>
 				<script nonce="${nonce}">window.initialState = ${JSON.stringify(
-      initialState,
-      jsonReplacer
-    )};</script>
+          initialState,
+          jsonReplacer
+        )};</script>
 				${this.getStyles(resourceProvider, sourceUri, config)}
-				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri)}">
+				<base href="${resourceProvider.asWebviewUri(argdownDocument.uri).toString()}">
 			</head>
 			<body class="vscode-body argdown ${view}-active ${
-      menuLocked ? "locked" : "unlocked"
-    }-menu ${config.scrollBeyondLastLine ? "scrollBeyondLastLine" : ""} ${
-      config.wordWrap ? "wordWrap" : ""
-    } ${config.markEditorSelection ? "showEditorSelection" : ""}">
+        menuLocked ? "locked" : "unlocked"
+      }-menu ${config.scrollBeyondLastLine ? "scrollBeyondLastLine" : ""} ${
+        config.wordWrap ? "wordWrap" : ""
+      } ${config.markEditorSelection ? "showEditorSelection" : ""}">
 				${body}
 				${this.getScriptsForView(resourceProvider, viewProvider.scripts, nonce)}
 				${this.getScripts(resourceProvider, nonce)}
@@ -157,12 +157,12 @@ export class ArgdownContentProvider {
       PreviewViews.VIZJS
     }" class="${
       activeView == PreviewViews.VIZJS ? "active" : "inactive"
-    }" href="#">Viz.Js Map</a></li>	
+    }" href="#">Viz.Js Map</a></li>
 	<li><a title="Show Dagre Map" data-message="didChangeView" data-view="${
     PreviewViews.DAGRE
   }" class="${
-      activeView == PreviewViews.DAGRE ? "active" : "inactive"
-    }" href="#">Dagre Map</a></li>
+    activeView == PreviewViews.DAGRE ? "active" : "inactive"
+  }" href="#">Dagre Map</a></li>
     <li><a title="Show HTML" data-message="didChangeView" data-view="${
       PreviewViews.HTML
     }" class="${
@@ -188,8 +188,21 @@ export class ArgdownContentProvider {
     resourceProvider: WebviewResourceProvider,
     mediaFile: string
   ): vscode.Uri {
+    // Determine the correct subdirectory based on file type
+    let subdirectory: string;
+    if (mediaFile === "pre.js") {
+      subdirectory = "dist/preview";
+    } else if (
+      ["htmlView.js", "dagreView.js", "vizjsView.js"].includes(mediaFile)
+    ) {
+      subdirectory = "dist/preview";
+    } else {
+      // Default to media for other files (CSS, images, etc.)
+      subdirectory = "media";
+    }
+
     return resourceProvider.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", mediaFile)
+      vscode.Uri.joinPath(this.context.extensionUri, subdirectory, mediaFile)
     );
   }
   private fixHref(
@@ -285,7 +298,7 @@ export class ArgdownContentProvider {
   ): string {
     return scripts
       .map(
-        script =>
+        (script) =>
           `<script src="${escapeAttribute(
             resourceProvider.asWebviewUri(
               this.extensionResourcePath(resourceProvider, script)

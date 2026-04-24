@@ -1,10 +1,10 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { stringifyArgdownData } from "../model/toJSON";
-import { ArgdownTypes } from "../model/model";
-import { IArgdownRequest } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { stringifyArgdownData } from "../model/toJSON.js";
+import { ArgdownTypes } from "../model/model.js";
+import { IArgdownRequest } from "../index.js";
 import defaultsDeep from "lodash.defaultsdeep";
-import { mergeDefaults, isObject } from "../utils";
+import { mergeDefaults, isObject } from "../utils.js";
 
 /**
  * Settings used by the JSONExportPlugin
@@ -33,7 +33,7 @@ export interface IJSONSettings {
   exportData?: boolean;
   outputDir?: string; // default is "./json"
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[JSONExportPlugin]]
@@ -80,7 +80,7 @@ export class JSONExportPlugin implements IArgdownPlugin {
       return request.json;
     }
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     mergeDefaults(this.getSettings(request), this.defaults);
   };
   run: IRequestHandler = (request, response) => {
@@ -116,7 +116,7 @@ export class JSONExportPlugin implements IArgdownPlugin {
     }
     response.json = stringifyArgdownData(
       argdown,
-      function(this: any, key, value) {
+      function (this: any, key, value) {
         if (!settings.exportData && key === "data") {
           return undefined;
         }

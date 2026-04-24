@@ -33,8 +33,8 @@ app.addPlugin(new ColorPlugin(), "colorize");
 const dotExport = new DotExportPlugin();
 app.addPlugin(dotExport, "export-dot");
 
-describe("DotExport", function() {
-  it("sanity test", function() {
+describe("DotExport", function () {
+  it("sanity test", function () {
     let source = `
     # Section 1
     
@@ -72,7 +72,7 @@ describe("DotExport", function() {
     // console.log(result.dot);
     expect(result.dot).to.exist;
   });
-  it("can create samerank sections", function() {
+  it("can create samerank sections", function () {
     let source = `===
     dot:
       sameRank:
@@ -116,7 +116,7 @@ n3;
 };`;
     expect(result.dot!.includes(rankSections)).to.be.true;
   });
-  it("can create ranges in labels", function() {
+  it("can create ranges in labels", function () {
     let source = `
 
       [s1]: test *test* **test**
@@ -135,5 +135,59 @@ n3;
     });
     const s1Text = "test&#x20;<i>test</i> &#x20;<b>test</b> ";
     expect(result.dot!.includes(s1Text)).to.be.true;
+  });
+  it("can generate tooltips for statements and arguments", function () {
+    let source = `
+      [Statement Title]: Statement text content
+       - <Argument Title>: Argument text content
+       + [Another Statement]: More text
+       + <Argument with "quotes">: Text with "embedded quotes"
+    `;
+
+    let result = app.run({
+      process: [
+        "parse-input",
+        "build-model",
+        "create-map",
+        "colorize",
+        "export-dot"
+      ],
+      input: source,
+      logLevel: "error"
+    });
+
+    // Check that tooltips are generated for statements (should use labelText if available, otherwise labelTitle)
+    expect(result.dot!.includes('tooltip="Statement text content"')).to.be.true;
+    expect(result.dot!.includes('tooltip="More text"')).to.be.true;
+
+    // Check that tooltips are generated for arguments
+    expect(result.dot!.includes('tooltip="Argument text content"')).to.be.true;
+
+    // Check that quotes in tooltips are properly escaped (DOT format uses \" for escaping)
+    // The tooltip should use labelText if available, which is "Text with \"embedded quotes\""
+    expect(result.dot!.includes('tooltip="Text with \\"embedded quotes\\""')).to
+      .be.true;
+  });
+  it("can handle tooltips for nodes without text content", function () {
+    let source = `
+      [Statement Only Title]
+       - <Argument Only Title>
+    `;
+
+    let result = app.run({
+      process: [
+        "parse-input",
+        "build-model",
+        "create-map",
+        "colorize",
+        "export-dot"
+      ],
+      input: source,
+      logLevel: "error"
+    });
+
+    // When there's no labelText, should fall back to labelTitle for tooltip
+    expect(result.dot!.includes('tooltip="Statement Only Title"')).to.be.true;
+    expect(result.dot!.includes('tooltip="Argument Only Title"')).to.be.true;
   });
 });

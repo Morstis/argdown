@@ -1,7 +1,7 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IMapNode, ArgdownTypes, isGroupMapNode } from "../model/model";
-import { IArgdownResponse } from "..";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IMapNode, ArgdownTypes, isGroupMapNode } from "../model/model.js";
+import { IArgdownResponse } from "../index.js";
 
 /**
  * Adds proponents to argument node label text.
@@ -17,7 +17,7 @@ export class SaysWhoPlugin implements IArgdownPlugin {
     checkResponseFields(this, response, ["map", "arguments"]);
 
     // now let's search for all argument nodes and change their label
-    for (let node of response.map!.nodes) {
+    for (const node of response.map!.nodes) {
       processNodesRecursively(node, response);
     }
   };
@@ -38,7 +38,7 @@ const processNodesRecursively = (
       node.labelText = `${proponent}: ${node.labelText}`;
     }
   } else if (isGroupMapNode(node)) {
-    for (let child of node.children!) {
+    for (const child of node.children!) {
       processNodesRecursively(child, response);
     }
   }

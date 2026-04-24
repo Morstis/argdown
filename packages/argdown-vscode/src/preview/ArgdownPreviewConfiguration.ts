@@ -1,15 +1,14 @@
-import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
-import { IArgdownRequest } from "@argdown/core";
+import { workspace, type Uri } from "vscode";
+import type { ArgdownEngine } from "../ArgdownEngine";
+import { ArgdownConfiguration } from "../config/ArgdownConfiguration";
 
-export class ArgdownPreviewConfiguration {
-  public static getForResource(
-    resource: vscode.Uri,
-    argdownEngine: ArgdownEngine
-  ) {
+export class ArgdownPreviewConfiguration
+  extends ArgdownConfiguration
+  implements Record<string, unknown>
+{
+  public static getForResource(resource: Uri, argdownEngine: ArgdownEngine) {
     return new ArgdownPreviewConfiguration(resource, argdownEngine);
   }
-
   public readonly scrollBeyondLastLine: boolean;
   public readonly doubleClickToSwitchToEditor: boolean;
   public readonly scrollEditorWithPreview: boolean;
@@ -23,16 +22,15 @@ export class ArgdownPreviewConfiguration {
   public readonly fontFamily: string | undefined;
   public readonly lockMenu: boolean;
   public readonly styles: string[];
-  public readonly argdownConfigFile?: string;
   public readonly defaultView?: string;
-  public argdownConfig?: IArgdownRequest;
+  [key: string]: unknown;
 
-  private constructor(resource: vscode.Uri, argdownEngine: ArgdownEngine) {
-    const editorConfig = vscode.workspace.getConfiguration("editor", resource);
-    const argdownConfig = vscode.workspace.getConfiguration(
-      "argdown",
-      resource
-    );
+  private constructor(resource: Uri, argdownEngine: ArgdownEngine) {
+    super(resource, argdownEngine);
+
+    const editorConfig = workspace.getConfiguration("editor", resource);
+    const argdownConfig = workspace.getConfiguration("argdown", resource);
+
     this.minDelayBetweenUpdates = argdownConfig.get<number>(
       "preview.minDelayBetweenUpdates",
       300
@@ -66,11 +64,6 @@ export class ArgdownPreviewConfiguration {
       "vizjs"
     );
     this.lockMenu = !!argdownConfig.get<boolean>("preview.lockMenu", true);
-    this.argdownConfigFile = argdownConfig.get<string | undefined>(
-      "configFile",
-      undefined
-    );
-    this.refreshArgdownConfig(resource, argdownEngine);
 
     this.fontFamily = argdownConfig.get<string | undefined>(
       "preview.fontFamily",
@@ -89,7 +82,7 @@ export class ArgdownPreviewConfiguration {
   }
 
   public isEqualTo(otherConfig: ArgdownPreviewConfiguration) {
-    for (let key in this) {
+    for (const key in this) {
       if (
         this.hasOwnProperty(key) &&
         key !== "styles" &&
@@ -113,15 +106,6 @@ export class ArgdownPreviewConfiguration {
 
     return true;
   }
-  async refreshArgdownConfig(
-    resource: vscode.Uri,
-    argdownEngine: ArgdownEngine
-  ) {
-    this.argdownConfig =
-      (await argdownEngine.loadConfig(this.argdownConfigFile, resource)) || {};
-  }
-
-  [key: string]: any;
 }
 
 export class ArgdownPreviewConfigurationManager {
@@ -131,7 +115,7 @@ export class ArgdownPreviewConfigurationManager {
   >();
 
   public constructor(private _argdownEngine: ArgdownEngine) {}
-  public getConfiguration(resource: vscode.Uri): ArgdownPreviewConfiguration {
+  public getConfiguration(resource: Uri): ArgdownPreviewConfiguration {
     const config = this.previewConfigurationsForWorkspaces.get(
       this.getKey(resource)
     );
@@ -140,9 +124,7 @@ export class ArgdownPreviewConfigurationManager {
     }
     return config;
   }
-  public loadAndCacheConfiguration(
-    resource: vscode.Uri
-  ): ArgdownPreviewConfiguration {
+  public loadAndCacheConfiguration(resource: Uri): ArgdownPreviewConfiguration {
     const config = ArgdownPreviewConfiguration.getForResource(
       resource,
       this._argdownEngine
@@ -150,14 +132,14 @@ export class ArgdownPreviewConfigurationManager {
     this.previewConfigurationsForWorkspaces.set(this.getKey(resource), config);
     return config;
   }
-  public async refreshArgdownConfig(resource: vscode.Uri) {
+  public async refreshArgdownConfig(resource: Uri) {
     const config = this.getConfiguration(resource);
     if (config) {
       await config.refreshArgdownConfig(resource, this._argdownEngine);
     }
   }
 
-  public hasConfigurationChanged(resource: vscode.Uri): boolean {
+  public hasConfigurationChanged(resource: Uri): boolean {
     const key = this.getKey(resource);
     const currentConfig = this.previewConfigurationsForWorkspaces.get(key);
     const newConfig = ArgdownPreviewConfiguration.getForResource(
@@ -167,8 +149,8 @@ export class ArgdownPreviewConfigurationManager {
     return !currentConfig || !currentConfig.isEqualTo(newConfig);
   }
 
-  private getKey(resource: vscode.Uri): string {
-    const folder = vscode.workspace.getWorkspaceFolder(resource);
+  private getKey(resource: Uri): string {
+    const folder = workspace.getWorkspaceFolder(resource);
     return folder ? folder.uri.toString() : "";
   }
 }

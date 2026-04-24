@@ -1,0 +1,62 @@
+{
+  "name": "@argdown/markdown-it-plugin",
+  "version": "2.0.0",
+  "description": "Turns Argdown code fences into svg argument maps",
+  "type": "module",
+  "main": "./dist/argdown-markdown-it-plugin.js",
+  "types": "./dist/argdown-markdown-it-plugin.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/argdown-markdown-it-plugin.js",
+      "require": "./dist/argdown-markdown-it-plugin.js",
+      "types": "./dist/argdown-markdown-it-plugin.d.ts"
+    }
+  },
+  "scripts": {
+    "deploy": "npm run test && npm run build && npm version patch && npm run push",
+    "dev": "vite serve test",
+    "type-check": "tsc --noEmit",
+    "build": "tsc",
+    "test": "tsc --noEmit && mocha",
+    "prepublishOnly": "npm run-script build",
+    "push": "git push --tags origin HEAD:master"
+  },
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "argdown",
+    "argument maps",
+    "argumentation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-markdown-it-plugin"
+  },
+  "author": {
+    "name": "Christian Voigt",
+    "email": "1pxsolidblack@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@argdown/web-components": "workspace:^",
+    "@types/chai": "^5.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.9",
+    "@types/markdown-it": "^14.1.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
+    "chai": "^4.3.10",
+    "mocha": "^11.5.0",
+    "typescript": "5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@argdown/core": "workspace:^",
+    "lodash.defaultsdeep": "^4.6.1",
+    "markdown-it": "^14.1.0"
+  },
+  "browserslist": "> 0.2%",
+  "engines": {
+    "node": ">= 20.0.0"
+  },
+  "packageManager": "yarn@4.9.4"
+}

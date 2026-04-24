@@ -1,0 +1,23 @@
+{
+  "name": "@argdown/prism",
+  "version": "2.0.0",
+  "description": "Prism language highlighting and theme for Argdown",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-prism"
+  },
+  "keywords": [
+    "Argdown"
+  ],
+  "author": "Christian Voigt",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 22.11.0"
+  },
+  "packageManager": "yarn@4.9.4"
+}

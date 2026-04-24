@@ -7,8 +7,8 @@ const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
 app.addPlugin(parserPlugin, "parse-input");
 
-describe("Application", function() {
-  it("can add, get, call and remove plugins", function() {
+describe("Application", function () {
+  it("can add, get, call and remove plugins", function () {
     let source = "Hello World!";
     let statements = 0;
     let plugin = {

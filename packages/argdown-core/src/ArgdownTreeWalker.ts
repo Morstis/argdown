@@ -5,9 +5,9 @@ import {
   ITokenNode,
   isRuleNode,
   isTokenNode
-} from "./model/model";
-import { IArgdownLogger } from "./IArgdownLogger";
-import { IArgdownRequest, IArgdownResponse } from "./index";
+} from "./model/model.js";
+import { IArgdownLogger } from "./IArgdownLogger.js";
+import { IArgdownRequest, IArgdownResponse } from "./index.js";
 export interface IAstNodeHandler {
   (
     request: IArgdownRequest,
@@ -85,8 +85,8 @@ export class ArgdownTreeWalker extends EventEmitter {
           logger
         );
         if (node.children && node.children.length > 0) {
-          for (var i = 0; i < node.children.length; i++) {
-            let child = node.children[i];
+          for (let i = 0; i < node.children.length; i++) {
+            const child = node.children[i];
             this.visitNode(request, response, child, node, i, logger);
           }
         }
@@ -101,7 +101,7 @@ export class ArgdownTreeWalker extends EventEmitter {
         );
       } else if (isTokenNode(node)) {
         this.emit(
-          node.tokenType!.name!,
+          node.tokenType.name,
           request,
           response,
           node,

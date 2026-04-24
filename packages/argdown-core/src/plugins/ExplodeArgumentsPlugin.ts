@@ -1,13 +1,17 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { ArgdownPluginError, IArgdownRequest, IArgdownResponse } from "..";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { isObject } from "../utils";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import {
+  ArgdownPluginError,
+  IArgdownRequest,
+  IArgdownResponse
+} from "../index.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { isObject } from "../utils.js";
 import {
   IArgument,
   IConclusion,
   IPCSStatement,
   StatementRole
-} from "../model/model";
+} from "../model/model.js";
 
 export class ExplodeArgumentsPlugin implements IArgdownPlugin {
   name = "ExplodeArgumentsPlugin";
@@ -22,9 +26,9 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
   run: IRequestHandler = (request, response) => {
     const requiredResponseFields: string[] = ["arguments", "statements"];
     checkResponseFields(this, response, requiredResponseFields);
-    let { explodeArguments } = this.getSettings(request);
+    const { explodeArguments } = this.getSettings(request);
     if (explodeArguments) {
-      for (let title of Object.keys(response.arguments!)) {
+      for (const title of Object.keys(response.arguments ?? {})) {
         this.explodeArgument(response, response.arguments![title]);
       }
     }
@@ -56,7 +60,7 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
       const title = `${argument.title} - ${stepIndex + 1}`;
       return {
         ...argument,
-        pcs: step.map(s => {
+        pcs: step.map((s) => {
           s.argumentTitle = title;
           return s;
         }),
@@ -66,7 +70,7 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
     });
     const last = newArguments[newArguments.length - 1];
     last.relations = [
-      ...argument.relations!.map(r => {
+      ...argument.relations!.map((r) => {
         if (r.from == argument) {
           r.from = last;
         } else {
@@ -76,7 +80,7 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
       })
     ];
     delete response.arguments![argument.title!];
-    for (let newArgument of newArguments) {
+    for (const newArgument of newArguments) {
       if (response.arguments![newArgument.title!]) {
         throw new ArgdownPluginError(
           this.name,
@@ -123,7 +127,7 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
     }
     let step: IPCSStatement[];
     if (uses != null) {
-      step = uses.map(i => {
+      step = uses.map((i) => {
         const zeroI = i - 1;
         if (
           !Number.isInteger(zeroI) ||
@@ -186,7 +190,7 @@ export class ExplodeArgumentsPlugin implements IArgdownPlugin {
     newStatement: IPCSStatement
   ) {
     const ec = response.statements![newStatement.title!];
-    const index = ec.members.findIndex(m => m == oldStatement);
+    const index = ec.members.findIndex((m) => m == oldStatement);
     if (index != -1) {
       ec.members.splice(index, 1);
     }

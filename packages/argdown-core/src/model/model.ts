@@ -1,4 +1,4 @@
-import { RuleNames } from "../RuleNames";
+import { RuleNames } from "../RuleNames.js";
 import { IToken } from "chevrotain";
 
 /**
@@ -126,11 +126,7 @@ export interface HasFontColor {
  * Has either other [[IRuleNode]]s or [[ITokenNode]]s as children.
  */
 export interface IRuleNode
-  extends HasLocation,
-    HasData,
-    HasText,
-    HasTags,
-    HasTitle {
+  extends HasLocation, HasData, HasText, HasTags, HasTitle {
   type: ArgdownTypes.RULE_NODE;
   name: RuleNames;
   children?: IAstNode[];
@@ -187,7 +183,8 @@ export type IAstNode = IRuleNode | ITokenNode;
  * (the last statement in the argument's pcs).
  */
 export interface IArgument
-  extends HasTitle,
+  extends
+    HasTitle,
     HasRelations,
     HasTags,
     HasData,
@@ -266,12 +263,7 @@ export namespace IArgument {
  * For further details on the relationship between equivalence classes and statements, see [[IEquivalenceClass]].
  */
 export interface IStatement
-  extends HasTitle,
-    HasTags,
-    HasData,
-    HasLocation,
-    HasSection,
-    HasText {
+  extends HasTitle, HasTags, HasData, HasLocation, HasSection, HasText {
   type: ArgdownTypes.STATEMENT;
   role?: StatementRole;
   isReference?: boolean;
@@ -337,7 +329,8 @@ export interface IArgumentDescription extends IStatement {
  *
  */
 export interface IEquivalenceClass
-  extends HasTitle,
+  extends
+    HasTitle,
     HasRelations,
     HasTags,
     HasData,
@@ -411,7 +404,7 @@ export namespace IEquivalenceClass {
   export const getCanonicalMemberText = (
     ec: IEquivalenceClass
   ): string | undefined => {
-    let statement = getCanonicalMember(ec);
+    const statement = getCanonicalMember(ec);
     if (statement) {
       return statement.text;
     }
@@ -426,11 +419,7 @@ export namespace IEquivalenceClass {
  * Inferences can be identified by their argument's title and their conclusion's index in the argument's pcs.
  */
 export interface IInference
-  extends HasTitle,
-    HasRelations,
-    HasData,
-    HasLocation,
-    HasSection {
+  extends HasTitle, HasRelations, HasData, HasLocation, HasSection {
   type: ArgdownTypes.INFERENCE;
   inferenceRules?: string[];
   /**
@@ -493,7 +482,8 @@ export namespace IRelation {
  * and used to derive groups (clusters) in argument maps.
  */
 export interface ISection
-  extends HasTitle,
+  extends
+    HasTitle,
     HasTags,
     HasText,
     HasLocation,
@@ -553,7 +543,7 @@ export interface IGroupMapNode extends IMapNode {
   isClosed?: boolean;
 }
 /**
- * An edge in an argument map derived from an [[IRelation]] or an [[IEquivalenceClass]].
+ * An edge in an argument map derived from an [[IRelation]] or an [[IEquivalenceClass]].
  *
  */
 export interface IMapEdge extends HasColor {

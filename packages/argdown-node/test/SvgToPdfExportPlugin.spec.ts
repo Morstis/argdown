@@ -1,21 +1,16 @@
-import { expect } from "chai";
-const chai = require("chai");
-chai.use(require("chai-fs"));
+import { expect, use } from "chai";
+import chaiFs from "chai-fs";
+use(chaiFs);
 import { describe, it } from "mocha";
-import { argdown } from "../src/index";
+import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
 import path from "path";
-import rimraf from "rimraf";
-const rimrafPromise = function(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    rimraf(path, {}, function(err: Error | null | undefined) {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
+import { rimraf } from "rimraf";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe("SvgToPdfExportPlugin", () => {
   it("can generate pdf from svg (sanity test)", async () => {
@@ -46,7 +41,7 @@ describe("SvgToPdfExportPlugin", () => {
     await argdown.runAsync(request);
     const filePathToPdf = path.resolve(__dirname, "pdf/test.pdf");
     (<any>expect(filePathToPdf).to.be.a).file();
-    await rimrafPromise(path.resolve(__dirname, "pdf/"));
+    await rimraf(path.resolve(__dirname, "pdf/"));
   });
   it("can load custom font (sanity test)", async () => {
     const input = `
@@ -85,6 +80,6 @@ describe("SvgToPdfExportPlugin", () => {
     await argdown.runAsync(request);
     const filePathToPdf = path.resolve(__dirname, "pdf/test-font.pdf");
     (<any>expect(filePathToPdf).to.be.a).file();
-    await rimrafPromise(path.resolve(__dirname, "pdf/"));
+    await rimraf(path.resolve(__dirname, "pdf/"));
   });
 });

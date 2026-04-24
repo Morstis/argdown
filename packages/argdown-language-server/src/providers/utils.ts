@@ -51,28 +51,28 @@ const getRelationSymbol = (
   }
   return symbol;
 };
-const generateArgdownRelationString = function(
+const generateArgdownRelationString = function (
   relationType: RelationType,
   isOutgoing: boolean,
   title: string,
   type: ArgdownTypes
 ) {
-  let relationPartnerStr =
+  const relationPartnerStr =
     type === ArgdownTypes.ARGUMENT ? `<${title}>` : `[${title}]`;
   const relationSymbol = getRelationSymbol(relationType, isOutgoing);
   return `
   ${relationSymbol} ${relationPartnerStr}`;
 };
-const generateArgdownRelationStringFromRelation = function(
+const generateArgdownRelationStringFromRelation = function (
   relation: IRelation,
   member: RelationMember
 ) {
   const isOutgoing = relation.to === member;
-  const otherRelationMember = isOutgoing ? relation.from! : relation.to!;
+  const otherRelationMember = isOutgoing ? relation.from : relation.to;
   return generateArgdownRelationString(
     relation.relationType,
     isOutgoing,
-    otherRelationMember.title!,
+    otherRelationMember.title,
     otherRelationMember.type
   );
 };
@@ -86,12 +86,12 @@ export const generateMarkdownForStatement = (
   const explicitRelations = eqClass.relations || [];
   const implicitRelations = deriveImplicitRelations(
     eqClass,
-    response.statements!,
-    response.arguments!
+    response.statements,
+    response.arguments
   );
   let explicitRelationsStr = "";
-  for (let relation of explicitRelations) {
-    if (relation.to!.type === ArgdownTypes.INFERENCE) {
+  for (const relation of explicitRelations) {
+    if (relation.to.type === ArgdownTypes.INFERENCE) {
       //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
       continue;
     }
@@ -103,8 +103,8 @@ export const generateMarkdownForStatement = (
   let implicitRelationsStr = "";
   if (implicitRelations.length > 0) {
     implicitRelationsStr = "\n  // implicit relations derived from pcs";
-    for (let relation of implicitRelations) {
-      if (relation.to!.type === ArgdownTypes.INFERENCE) {
+    for (const relation of implicitRelations) {
+      if (relation.to.type === ArgdownTypes.INFERENCE) {
         //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
         continue;
       }
@@ -135,12 +135,12 @@ export const generateMarkdownForArgument = (
   const explicitRelations = argument.relations || [];
   const implicitRelations = deriveImplicitRelations(
     argument,
-    response.statements!,
-    response.arguments!
+    response.statements,
+    response.arguments
   );
   let explicitRelationsStr = "";
-  for (let relation of explicitRelations) {
-    if (relation.to!.type === ArgdownTypes.INFERENCE) {
+  for (const relation of explicitRelations) {
+    if (relation.to.type === ArgdownTypes.INFERENCE) {
       //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
       continue;
     }
@@ -152,8 +152,8 @@ export const generateMarkdownForArgument = (
   let implicitRelationsStr = "";
   if (implicitRelations.length > 0) {
     implicitRelationsStr = " \n // implicit relations derived from pcs";
-    for (let relation of implicitRelations) {
-      if (relation.to!.type === ArgdownTypes.INFERENCE) {
+    for (const relation of implicitRelations) {
+      if (relation.to.type === ArgdownTypes.INFERENCE) {
         //we can not refer directly to inferences, only to arguments (undercuts will only appear in implicit relations)
         continue;
       }
@@ -187,8 +187,8 @@ export const walkTree = (
   if (node) {
     callback(node, parentNode, childIndex);
     if (isRuleNode(node) && node.children && node.children.length > 0) {
-      for (var i = 0; i < node.children.length; i++) {
-        let child = node.children[i];
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
         walkTree(child, node, i, callback);
       }
     }

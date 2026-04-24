@@ -1,6 +1,6 @@
 # @argdown/pandoc-filter
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 [Argdown](https://argdown.org) is a simple syntax for analyzing complex argumentation, inspired by Markdown.
 
@@ -14,9 +14,9 @@ Please read the [full documentation](<(https://argdown.org/guide/publishing-argd
 
 ## Installation
 
-1. [Install Pandoc](https://pandoc.org/installing.html)
+1. [Install Pandoc](https://pandoc.org/installing.html) (tested with version 3.6.4)
 2. Install latex (see Pandoc installation guide)
-3. Install rsvg-convert (see Pandoc installation guide)
+3. Install rsvg-convert (see Pandoc installation guide) (tested with version 2.61.1)
 4. Run `npm install -g @argdown/pandoc-filter`
 5. Optionally install the `@argdown/image-export` plugin: `npm install -g @argdown/image-export`
 

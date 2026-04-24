@@ -1,37 +1,37 @@
 <script>
 export default {
-  name: "modal",
+  name: "AppModal",
   methods: {
     close() {
       this.$emit("close");
-    },
-  },
+    }
+  }
 };
 </script>
 <template>
   <transition name="modal-fade">
-    <div class="modal-backdrop">
+    <div v-if="true" class="modal-backdrop">
       <div
         class="modal"
         role="dialog"
         aria-labelledby="modalTitle"
         aria-describedby="modalDescription"
       >
-        <header class="modal-header" id="modalTitle">
+        <header id="modalTitle" class="modal-header">
           <slot name="header">
-            This is the default tile!
+            This is the default title!
 
             <button
               type="button"
               class="btn-close"
-              @click="close"
               aria-label="Close modal"
+              @click="close"
             >
               x
             </button>
           </slot>
         </header>
-        <section class="modal-body" id="modalDescription">
+        <section id="modalDescription" class="modal-body">
           <slot name="body"> I'm the default body! </slot>
         </section>
         <footer class="modal-footer">
@@ -39,8 +39,8 @@ export default {
             <button
               type="button"
               class="btn-blue"
-              @click="close"
               aria-label="Close modal"
+              @click="close"
             >
               Close
             </button>

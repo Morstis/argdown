@@ -48,17 +48,17 @@ declare module "@argdown/core" {
     plugins?: { processor: string; plugin: IArgdownPlugin }[];
   }
 }
-export interface IArgdownRequest extends core.IArgdownRequest {}
-export * from "./argdown";
-export * from "./IAsyncArgdownPlugin";
-export * from "./AsyncArgdownApplication";
-export * from "./plugins/CopyDefaultCssPlugin";
-// export * from "./plugins/DotToSvgExportPlugin";
-export * from "./plugins/IncludePlugin";
-export * from "./plugins/LoadFilePlugin";
-export * from "./plugins/LogParserErrorsPlugin";
-export * from "./plugins/SaveAsFilePlugin";
-export * from "./plugins/StdOutPlugin";
-export * from "./plugins/SvgToPdfExportPlugin";
-export * from "./plugins/ImageSizePlugin";
-export * from "./plugins/GenerateDataUrlsPlugin";
+export type IArgdownRequest = core.IArgdownRequest;
+export * from "./argdown.js";
+export * from "./IAsyncArgdownPlugin.js";
+export * from "./AsyncArgdownApplication.js";
+export * from "./plugins/CopyDefaultCssPlugin.js";
+// export * from "./plugins/DotToSvgExportPlugin.js";
+export * from "./plugins/IncludePlugin.js";
+export * from "./plugins/LoadFilePlugin.js";
+export * from "./plugins/LogParserErrorsPlugin.js";
+export * from "./plugins/SaveAsFilePlugin.js";
+export * from "./plugins/StdOutPlugin.js";
+export * from "./plugins/SvgToPdfExportPlugin.js";
+export * from "./plugins/ImageSizePlugin.js";
+export * from "./plugins/GenerateDataUrlsPlugin.js";

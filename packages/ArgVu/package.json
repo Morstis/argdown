@@ -7,17 +7,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christianvoigt/argdown.git"
+    "url": "git+https://github.com/argdown/argdown.git"
   },
   "keywords": [
     "Argdown",
     "font",
     "ligatures"
   ],
+  "scripts": {
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
+  },
   "author": "Peter Stahmer, Christian Voigt",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/christianvoigt/argdown/issues"
+    "url": "https://github.com/argdown/argdown/issues"
   },
-  "homepage": "https://github.com/christianvoigt/argdown#readme"
+  "homepage": "https://github.com/argdown/argdown#readme",
+  "engines": {
+    "node": ">= 22.11.0"
+  },
+  "packageManager": "yarn@4.9.4"
 }

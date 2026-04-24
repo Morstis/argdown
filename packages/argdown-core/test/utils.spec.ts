@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { addLineBreaks, RangeType } from "../src";
 
-describe("Utils", function() {
+describe("Utils", function () {
   it("can add ranges to text", () => {
     const str = "Test test test";
     const options = {

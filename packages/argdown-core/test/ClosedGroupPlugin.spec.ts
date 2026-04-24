@@ -38,8 +38,8 @@ const groupPlugin = new GroupPlugin();
 app.addPlugin(groupPlugin, "build-map");
 app.addPlugin(new ClosedGroupPlugin(), "transform-closed-groups");
 
-describe("ClosedGroupPlugin", function() {
-  it("can transform closed groups", function() {
+describe("ClosedGroupPlugin", function () {
+  it("can transform closed groups", function () {
     let source = `
 # Section 1 {isClosed: true}
   
@@ -78,7 +78,7 @@ describe("ClosedGroupPlugin", function() {
     expect(result.map!.edges[1].to).to.equal(result.map!.nodes[0]);
     expect(result.map!.edges[2].from).to.equal(result.map!.nodes[0]);
   });
-  it("can transform closed groups defined in regroup config option", function() {
+  it("can transform closed groups defined in regroup config option", function () {
     let source = `
 ===
 group:

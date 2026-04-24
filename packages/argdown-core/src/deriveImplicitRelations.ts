@@ -8,8 +8,8 @@ import {
   IArgument,
   IEquivalenceClass,
   isConclusion
-} from "./model/model";
-import { other } from "./utils";
+} from "./model/model.js";
+import { other } from "./utils.js";
 export const transformToArgumentRelationType = (relationType: RelationType) => {
   switch (relationType) {
     case RelationType.ENTAILS:
@@ -171,7 +171,7 @@ export const deriveImplicitRelations = (
             )
           ];
           acc.push(
-            ...inferenceRelations.map(inferenceRelation => ({
+            ...inferenceRelations.map((inferenceRelation) => ({
               ...inferenceRelation,
               to: member
             }))

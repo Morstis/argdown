@@ -1,6 +1,6 @@
 # @argdown/map-views
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 This package is part of the [Argdown project](https://argdown.org). It contains the two Argdown map views used in @argdown/vscode and @argdown/sandbox:
 
@@ -13,6 +13,8 @@ Both map views use d3 to add move & zoom interaction to the graphs. These featur
 
 VizJsMap uses the web worker functionality of viz.js so you have to provide it with a working url to the `full.render.js` script of the viz.js package.
 
-To find out how to use these views, take a look at the example provided with this package. It can be build with `npm run example`. The example uses the parcel bundler to bundle up the different npm packages and compile the typescript files. It also shows how to use the `full.render.js` of viz.js as a web worker.
+To find out how to use these views, take a look at the example provided with this package. It can be build with `yarn example`. The example uses the parcel bundler to bundle up the different npm packages and compile the typescript files. It also shows how to use the `full.render.js` of viz.js as a web worker.
 
-To build this package use `npm run build`.
+To build this package use `yarn build`.
+
+To test this package first build the example using `npm run example-build`, followed by running the example using `npm run example`.

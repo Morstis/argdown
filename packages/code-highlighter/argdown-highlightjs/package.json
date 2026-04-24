@@ -1,0 +1,46 @@
+{
+  "name": "@argdown/highlightjs",
+  "version": "2.0.0",
+  "description": "Argdown language definition for highlightjs",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./snow-in-spring.css": "./dist/snow-in-spring.argdown-theme.css"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "dev": "vite serve sandbox",
+    "build": "tsc && yarn run copy:css",
+    "copy:css": "copyfiles -f ./src/*.css dist",
+    "test": "echo \"No tests to run here\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-highlightjs"
+  },
+  "keywords": [
+    "Argdown",
+    "highlightjs"
+  ],
+  "engines": {
+    "node": ">= 20.0.0"
+  },
+  "author": "Christian Voigt",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/copyfiles": "^2",
+    "@types/node": "^22.15.24",
+    "copyfiles": "^2.4.1",
+    "highlight.js": "11.11.1",
+    "typescript": "5.9.3",
+    "vite": "^7.3.1"
+  },
+  "packageManager": "yarn@4.9.4"
+}

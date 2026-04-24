@@ -1,7 +1,7 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { reduceToMap, mergeDefaults, isObject } from "../utils";
-import { IArgdownRequest, ISelectionSettings } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { reduceToMap, mergeDefaults, isObject } from "../utils.js";
+import { IArgdownRequest, ISelectionSettings } from "../index.js";
 import {
   IEquivalenceClass,
   IArgument,
@@ -12,8 +12,8 @@ import {
   IPCSStatement,
   IStatement,
   isPCSStatement
-} from "../model/model";
-import { otherRelationMemberIsInSelection } from "./selectionUtils";
+} from "../model/model.js";
+import { otherRelationMemberIsInSelection } from "./selectionUtils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 /**
  * The StatementSelectionMode in the [[ISelectionSettings]] determines which statements will be added as nodes to the argument map.
@@ -44,7 +44,7 @@ export enum StatementSelectionMode {
    */
   WITH_MORE_THAN_ONE_RELATION = "with-more-than-one-relation"
 }
-declare module "../index" {
+declare module "../index.js" {
   interface ISelectionSettings {
     /**
      * The StatementSelectionMode determines which statements are added as nodes to the argument map.
@@ -101,11 +101,11 @@ export class StatementSelectionPlugin implements IArgdownPlugin {
     const settings = this.getSettings(request);
     const selectedStatementsMap = reduceToMap(
       response.selection!.statements,
-      curr => curr.title!
+      (curr) => curr.title!
     );
     const selectedArgumentsMap = reduceToMap(
       response.selection!.arguments,
-      curr => curr.title!
+      (curr) => curr.title!
     );
     response.selection!.statements = response.selection!.statements.filter(
       isStatementSelected(settings, selectedStatementsMap, selectedArgumentsMap)
@@ -113,92 +113,94 @@ export class StatementSelectionPlugin implements IArgdownPlugin {
   };
 }
 const untitledPattern = /^Untitled/;
-const isStatementSelected = (
-  settings: ISelectionSettings,
-  selectedStatements: Map<string, IEquivalenceClass>,
-  selectedArguments: Map<string, IArgument>
-) => (equivalenceClass: IEquivalenceClass) => {
-  if (
-    !settings.ignoreIsInMap &&
-    equivalenceClass.data &&
-    equivalenceClass.data.isInMap === true
-  ) {
-    return true;
-  }
-  if (
-    settings.includeStatements &&
-    settings.includeStatements.indexOf(equivalenceClass.title!) !== -1
-  ) {
-    return true;
-  }
-  const withRelations =
-    equivalenceClass.relations!.length > 0 &&
-    undefined !==
-      equivalenceClass.relations!.find(r =>
-        otherRelationMemberIsInSelection(
-          r,
-          equivalenceClass,
-          selectedStatements,
-          selectedArguments
-        )
-      );
-  const usedInArgument = equivalenceClass.members.find(
-    isUsedInSelectedArgument(selectedArguments)
-  );
-  let inSelection = false;
-  switch (settings.statementSelectionMode) {
-    case StatementSelectionMode.ALL:
-      inSelection = true;
-      break;
-    case StatementSelectionMode.WITH_TITLE:
-      inSelection =
-        (!usedInArgument && withRelations) ||
-        !untitledPattern.exec(equivalenceClass.title!);
-      break;
-    case StatementSelectionMode.TOP_LEVEL:
-      inSelection =
-        (!usedInArgument && withRelations) ||
-        !!equivalenceClass.isUsedAsTopLevelStatement;
-      break;
-    case StatementSelectionMode.WITH_RELATIONS:
-      inSelection = withRelations;
-      break;
-    case StatementSelectionMode.NOT_USED_IN_ARGUMENT:
-      inSelection = !usedInArgument;
-      break;
-    case StatementSelectionMode.WITH_MORE_THAN_ONE_RELATION:
-      const nrOfRelationPartners = equivalenceClass.relations!.reduce(
-        (acc, r) => {
-          return countOtherRelationMembersInSelection(
-            acc,
+const isStatementSelected =
+  (
+    settings: ISelectionSettings,
+    selectedStatements: Map<string, IEquivalenceClass>,
+    selectedArguments: Map<string, IArgument>
+  ) =>
+  (equivalenceClass: IEquivalenceClass) => {
+    if (
+      !settings.ignoreIsInMap &&
+      equivalenceClass.data &&
+      equivalenceClass.data.isInMap === true
+    ) {
+      return true;
+    }
+    if (
+      settings.includeStatements &&
+      settings.includeStatements.indexOf(equivalenceClass.title ?? "") !== -1
+    ) {
+      return true;
+    }
+    const withRelations =
+      equivalenceClass.relations!.length > 0 &&
+      undefined !==
+        equivalenceClass.relations!.find((r) =>
+          otherRelationMemberIsInSelection(
             r,
             equivalenceClass,
             selectedStatements,
             selectedArguments
-          );
-        },
-        0
-      );
-      inSelection =
-        withRelations && (!usedInArgument || nrOfRelationPartners > 1);
-      break;
-  }
-  return (
-    (!settings.excludeDisconnected || (usedInArgument || withRelations)) &&
-    inSelection
-  );
-};
-const isUsedInSelectedArgument = (
-  selectedArguments: Map<string, IArgument>
-) => (statement: IStatement) => {
-  if (
-    isPCSStatement(statement) &&
-    statement.role !== StatementRole.INTERMEDIARY_CONCLUSION
-  ) {
-    return selectedArguments.get(statement.argumentTitle!) !== undefined;
-  }
-  return false;
-};
+          )
+        );
+    const usedInArgument = equivalenceClass.members.find(
+      isUsedInSelectedArgument(selectedArguments)
+    );
+    let inSelection = false;
+    switch (settings.statementSelectionMode) {
+      case StatementSelectionMode.ALL:
+        inSelection = true;
+        break;
+      case StatementSelectionMode.WITH_TITLE:
+        inSelection =
+          (!usedInArgument && withRelations) ||
+          !untitledPattern.exec(equivalenceClass.title ?? "");
+        break;
+      case StatementSelectionMode.TOP_LEVEL:
+        inSelection =
+          (!usedInArgument && withRelations) ||
+          !!equivalenceClass.isUsedAsTopLevelStatement;
+        break;
+      case StatementSelectionMode.WITH_RELATIONS:
+        inSelection = withRelations;
+        break;
+      case StatementSelectionMode.NOT_USED_IN_ARGUMENT:
+        inSelection = !usedInArgument;
+        break;
+      case StatementSelectionMode.WITH_MORE_THAN_ONE_RELATION: {
+        const nrOfRelationPartners = equivalenceClass.relations!.reduce(
+          (acc, r) => {
+            return countOtherRelationMembersInSelection(
+              acc,
+              r,
+              equivalenceClass,
+              selectedStatements,
+              selectedArguments
+            );
+          },
+          0
+        );
+        inSelection =
+          withRelations && (!usedInArgument || nrOfRelationPartners > 1);
+        break;
+      }
+    }
+    return (
+      (!settings.excludeDisconnected || usedInArgument || withRelations) &&
+      inSelection
+    );
+  };
+const isUsedInSelectedArgument =
+  (selectedArguments: Map<string, IArgument>) => (statement: IStatement) => {
+    if (
+      isPCSStatement(statement) &&
+      statement.role !== StatementRole.INTERMEDIARY_CONCLUSION
+    ) {
+      return selectedArguments.get(statement.argumentTitle ?? "") !== undefined;
+    }
+    return false;
+  };
 const countOtherRelationMembersInSelection = (
   currentCount: number,
   relation: IRelation,
@@ -209,29 +211,30 @@ const countOtherRelationMembersInSelection = (
   const other =
     relation.from === relationMember ? relation.to! : relation.from!;
   if (other.type === ArgdownTypes.EQUIVALENCE_CLASS) {
-    if (selectedStatements.get(relationMember.title!) === undefined) {
+    if (selectedStatements.get(relationMember.title ?? "") === undefined) {
       return currentCount;
     }
     let role = StatementRole.MAIN_CONCLUSION;
     if (relation.to === other) {
       role = StatementRole.PREMISE;
     }
-    return other.members!.reduce(
+    return other.members.reduce(
       (acc, s) =>
         s.role === role &&
-        selectedArguments.get((<IPCSStatement>s).argumentTitle!) !== undefined
+        selectedArguments.get((<IPCSStatement>s).argumentTitle ?? "") !==
+          undefined
           ? acc + 1
           : acc,
       currentCount
     );
   } else if (
     other.type === ArgdownTypes.ARGUMENT &&
-    selectedArguments.get(other.title!) !== undefined
+    selectedArguments.get(other.title ?? "") !== undefined
   ) {
     return currentCount + 1;
   } else if (
     other.type === ArgdownTypes.INFERENCE &&
-    selectedArguments.get(other.argumentTitle!) !== undefined
+    selectedArguments.get(other.argumentTitle ?? "") !== undefined
   ) {
     return currentCount + 1;
   }

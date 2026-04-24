@@ -17,8 +17,8 @@ app.addPlugin(modelPlugin, "build-model");
 const preselectionPlugin = new PreselectionPlugin();
 app.addPlugin(preselectionPlugin, "build-map");
 
-describe("PreselectionPlugin", function() {
-  it("preselects only statements and arguments with the #core tag.", function() {
+describe("PreselectionPlugin", function () {
+  it("preselects only statements and arguments with the #core tag.", function () {
     let source = `
     ===
     title: Preselecting only statements and arguments with the #core tag.
@@ -50,7 +50,7 @@ describe("PreselectionPlugin", function() {
     expect(result.selection!.statements.length).to.equal(1);
     expect(result.selection!.arguments.length).to.equal(2);
   });
-  it("preselects only statements and arguments without tag or with the #pro tag.", function() {
+  it("preselects only statements and arguments without tag or with the #pro tag.", function () {
     let source = `
     ===
     title: > 
@@ -82,13 +82,13 @@ describe("PreselectionPlugin", function() {
     //console.log(result.arguments);
 
     expect(result.selection!.statements.length).to.equal(1);
-    expect(result.selection!.statements.find(s => s.title === "t1")).to.exist;
+    expect(result.selection!.statements.find((s) => s.title === "t1")).to.exist;
     expect(result.selection!.arguments.length).to.equal(3); // excludeDisconnected will only be applied in the selection round.
-    expect(result.selection!.arguments.find(a => a.title === "a")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "f")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "e")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "a")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "f")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "e")).to.exist;
   });
-  it("preselects only statements and arguments within the section H1", function() {
+  it("preselects only statements and arguments within the section H1", function () {
     let source = `
     ===
     title: >
@@ -126,11 +126,11 @@ describe("PreselectionPlugin", function() {
 
     expect(result.selection!.statements.length).to.equal(0);
     expect(result.selection!.arguments.length).to.equal(3); // excludeDisconnected will only be applied in the selection round.
-    expect(result.selection!.arguments.find(a => a.title === "a")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "d")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "c")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "a")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "d")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "c")).to.exist;
   });
-  it("preselects only statements and arguments within the section H1 or without any section", function() {
+  it("preselects only statements and arguments within the section H1 or without any section", function () {
     let source = `
     ===
     title: >
@@ -168,13 +168,13 @@ describe("PreselectionPlugin", function() {
     //console.log(result.arguments);
 
     expect(result.selection!.statements.length).to.equal(1);
-    expect(result.selection!.statements.find(s => s.title === "t1")).to.exist;
+    expect(result.selection!.statements.find((s) => s.title === "t1")).to.exist;
     expect(result.selection!.arguments.length).to.equal(3); // excludeDisconnected will only be applied in the selection round.
-    expect(result.selection!.arguments.find(a => a.title === "a")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "d")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "c")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "a")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "d")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "c")).to.exist;
   });
-  it("icludes and excludes elements by title", function() {
+  it("icludes and excludes elements by title", function () {
     let source = `
     ===
     title: Including and excluding elements by title
@@ -214,13 +214,13 @@ describe("PreselectionPlugin", function() {
     //console.log(result.arguments);
 
     expect(result.selection!.statements.length).to.equal(2);
-    expect(result.selection!.statements.find(s => s.title === "t1")).to.exist;
-    expect(result.selection!.statements.find(s => s.title === "t2")).to.exist;
+    expect(result.selection!.statements.find((s) => s.title === "t1")).to.exist;
+    expect(result.selection!.statements.find((s) => s.title === "t2")).to.exist;
     expect(result.selection!.arguments.length).to.equal(2); // excludeDisconnected will only be applied in the selection round.
-    expect(result.selection!.arguments.find(a => a.title === "a")).to.exist;
-    expect(result.selection!.arguments.find(a => a.title === "d")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "a")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "d")).to.exist;
   });
-  it("excludes nodes with the isInMap flag false", function() {
+  it("excludes nodes with the isInMap flag false", function () {
     let source = `
     <a>
 
@@ -243,12 +243,12 @@ describe("PreselectionPlugin", function() {
     //console.log(result.arguments);
 
     expect(result.selection!.statements.length).to.equal(1);
-    expect(result.selection!.statements.find(s => s.members[0].text === "s2"))
+    expect(result.selection!.statements.find((s) => s.members[0].text === "s2"))
       .to.exist;
     expect(result.selection!.arguments.length).to.equal(1); // excludeDisconnected will only be applied in the selection round.
-    expect(result.selection!.arguments.find(a => a.title === "a")).to.exist;
+    expect(result.selection!.arguments.find((a) => a.title === "a")).to.exist;
   });
-  it("can ignore isInMap flags", function() {
+  it("can ignore isInMap flags", function () {
     let source = `
     ===
     title: Ignoring isInMap flags

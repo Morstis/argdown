@@ -1,14 +1,12 @@
-import { Command } from './Command';
-import { ArgdownPreviewManager } from '../preview/ArgdownPreviewManager';
+import { Command } from "./Command";
+import { ArgdownPreviewManager } from "../preview/ArgdownPreviewManager";
 
 export class ToggleLockCommand implements Command {
-	public readonly id = 'argdown.preview.toggleLock';
+  public readonly id = "argdown.preview.toggleLock";
 
-	public constructor(
-		private readonly previewManager: ArgdownPreviewManager
-	) { }
+  public constructor(private readonly previewManager: ArgdownPreviewManager) {}
 
-	public execute() {
-		this.previewManager.toggleLock();
-	}
+  public execute() {
+    this.previewManager.toggleLock();
+  }
 }

@@ -1,6 +1,6 @@
-import { IArgdownLogger } from "./IArgdownLogger";
-import { IRuleNodeHandler, ITokenNodeHandler } from "./ArgdownTreeWalker";
-import { IArgdownRequest, IArgdownResponse } from "./index";
+import { IArgdownLogger } from "./IArgdownLogger.js";
+import { IRuleNodeHandler, ITokenNodeHandler } from "./ArgdownTreeWalker.js";
+import { IArgdownRequest, IArgdownResponse } from "./index.js";
 
 /**
  *
@@ -11,7 +11,11 @@ import { IArgdownRequest, IArgdownResponse } from "./index";
  * @param logger an application-wide logger that should be used instead of `console.log()`
  */
 export interface IRequestHandler {
-  (request: IArgdownRequest, response: IArgdownResponse, logger: IArgdownLogger): void;
+  (
+    request: IArgdownRequest,
+    response: IArgdownResponse,
+    logger: IArgdownLogger
+  ): void;
 }
 /**
  * A plugin that can be added to an [[ArgdownApplication]] with `app.AddPlugin(plugin, processorId)`.

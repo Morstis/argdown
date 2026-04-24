@@ -6,12 +6,13 @@ import { initMenu } from "./menu";
 import { select } from "d3-selection";
 import { getSvgForExport, getPngAsString } from "./export";
 import { openScaleDialog } from "./scaleDialog";
-import { OnZoomChangedHandler } from "@argdown/map-views/dist/ZoomManager";
-import { DagreMap } from "@argdown/map-views";
-import { OnSelectionChangedHandler } from "@argdown/map-views/dist/CanSelectNode";
+import {
+  DagreMap,
+  OnZoomChangedHandler,
+  OnSelectionChangedHandler
+} from "@argdown/map-views";
 import { ArgdownPreviewStore } from "./state";
-declare function require(path: string): string;
-const dagreCss = require("!raw-loader!./dagre.css");
+import dagreCss from "./dagre.css?raw";
 
 declare var acquireVsCodeApi: any;
 const vscode = acquireVsCodeApi();
@@ -31,15 +32,15 @@ const dagreCssHtml = '<style type="text/css">' + dagreCss + "</style>";
 const getSvgEl = () => {
   return <SVGSVGElement>(<any>document.getElementById("dagre-svg")!);
 };
-const onZoomChanged: OnZoomChangedHandler = throttle(data => {
-  store.transformState(s => {
+const onZoomChanged: OnZoomChangedHandler = throttle((data) => {
+  store.transformState((s) => {
     s.dagre.position = data.position;
     s.dagre.scale = data.scale;
     return s;
   });
 }, 50);
-const onSelectionChanged: OnSelectionChangedHandler = id => {
-  store.transformState(s => {
+const onSelectionChanged: OnSelectionChangedHandler = (id) => {
+  store.transformState((s) => {
     s.selectedNode = id;
     return s;
   });
@@ -68,7 +69,7 @@ onceDocumentLoaded(() => {
 
 window.addEventListener(
   "message",
-  event => {
+  (event) => {
     if (event.data.source !== previewSettings.source) {
       return;
     }
@@ -77,7 +78,7 @@ window.addEventListener(
       case "didChangeTextDocument":
         const map = JSON.parse(event.data.map);
         const settings = JSON.parse(event.data.settings);
-        store.transformState(s => {
+        store.transformState((s) => {
           s.dagre.map = map;
           s.dagre.settings = settings;
           return s;
@@ -87,7 +88,7 @@ window.addEventListener(
       case "didSelectMapNode":
         if (previewSettings.syncPreviewSelectionWithEditor) {
           const id = event.data.id;
-          store.transformState(s => {
+          store.transformState((s) => {
             s.selectedNode = id;
             return s;
           });
@@ -99,7 +100,7 @@ window.addEventListener(
   false
 );
 
-document.addEventListener("dblclick", event => {
+document.addEventListener("dblclick", (event) => {
   if (!previewSettings.doubleClickToSwitchToEditor) {
     return;
   }
@@ -116,9 +117,8 @@ document.addEventListener("dblclick", event => {
         dagreMap!.selectNode(id);
         messagePoster.postMessage("didSelectMapNode", { id });
       } else if (node.classList.contains("cluster")) {
-        const heading = select(node)
-          .select<HTMLHeadingElement>("h3")
-          .node()!.textContent;
+        const heading = select(node).select<HTMLHeadingElement>("h3").node()!
+          .textContent;
         messagePoster.postMessage("didSelectCluster", { heading });
       }
     } else if (node.tagName === "A") {
@@ -129,7 +129,7 @@ document.addEventListener("dblclick", event => {
 
 document.addEventListener(
   "click",
-  event => {
+  (event) => {
     if (!event) {
       return;
     }
@@ -146,8 +146,8 @@ document.addEventListener(
               svgString
             ]);
           } else if (command === "argdown.exportContentToDagrePng") {
-            openScaleDialog(scale => {
-              getPngAsString(getSvgEl(), scale, dagreCssHtml, pngString => {
+            openScaleDialog((scale) => {
+              getPngAsString(getSvgEl(), scale, dagreCssHtml, (pngString) => {
                 messagePoster.postCommand(command, [
                   previewSettings.source,
                   pngString

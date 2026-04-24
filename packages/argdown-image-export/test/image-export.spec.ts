@@ -1,15 +1,20 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
 import { argdown } from "@argdown/node";
-import { installImageExport } from "../src";
+import { installImageExport } from "../src/index.js";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 // argdown.addPlugin(new ImageExportPlugin({ format: "png" }), "export-png");
 // argdown.addPlugin(new ImageExportPlugin({ format: "jpg" }), "export-jpg");
 // argdown.addPlugin(new ImageExportPlugin({ format: "webp" }), "export-webp");
 installImageExport(argdown);
-describe("ExportImagePlugin", async function() {
+describe("ExportImagePlugin", async function () {
   this.timeout(20000);
-  it("Can export to png", async function() {
+  it("Can export to png", async function () {
     const process = [
       "parse-input",
       "build-model",
@@ -58,7 +63,7 @@ describe("ExportImagePlugin", async function() {
   //     console.log(response.png);
   //     expect(response.png).to.exist;
   //   });
-  it("Can export to jpg", async function() {
+  it("Can export to jpg", async function () {
     const process = [
       "parse-input",
       "build-model",
@@ -78,7 +83,7 @@ describe("ExportImagePlugin", async function() {
     console.log(response.jpg);
     expect(response.jpg).to.exist;
   });
-  it("Can export to jpg with node image", async function() {
+  it("Can export to jpg with node image", async function () {
     const process = [
       "parse-input",
       "build-model",
@@ -89,7 +94,7 @@ describe("ExportImagePlugin", async function() {
       "export-dot",
       "export-svg",
       "export-jpg"
-      //"save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
+      // "save-as-jpg" //uncomment to view image (will be saved in ../images/default.jpg)
     ];
     const input = `
 ===
@@ -113,7 +118,7 @@ images:
     console.log(response.jpg);
     expect(response.jpg).to.exist;
   });
-  it("Can export to webp", async function() {
+  it("Can export to webp", async function () {
     const process = [
       "parse-input",
       "build-model",

@@ -20,7 +20,7 @@ export class StdOutPlugin implements IArgdownPlugin {
   constructor(config?: IStdoutSettings) {
     this.defaults = defaultsDeep({}, config, {});
   }
-  prepare: IRequestHandler = request => {
+  prepare: IRequestHandler = (request) => {
     defaultsDeep(this.getSettings(request), this.defaults);
   };
   // there can be several instances of this plugin in the same ArgdownApplication
@@ -33,7 +33,7 @@ export class StdOutPlugin implements IArgdownPlugin {
   run: IRequestHandler = (request, response) => {
     const settings = this.getSettings(request);
     if (settings.dataKey) {
-      let content = !settings.isRequestData
+      const content = !settings.isRequestData
         ? (<any>response)[settings.dataKey]
         : (<any>request)[settings.dataKey];
       if (content !== undefined) {

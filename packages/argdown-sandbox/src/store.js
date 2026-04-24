@@ -1,8 +1,7 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import _ from "lodash";
-import { dagreDefaultSettings } from "@argdown/map-views";
-import { vizJsDefaultSettings } from "@argdown/map-views";
+import { defineStore } from "pinia";
+import { ref, computed } from "vue";
+import { defaultsDeep } from "lodash";
+import { vizJsDefaultSettings, dagreDefaultSettings } from "@argdown/map-views";
 import {
   ArgdownApplication,
   ParserPlugin,
@@ -24,9 +23,8 @@ import {
   tokensToString,
   astToString,
   GraphMLExportPlugin,
-  ExplodeArgumentsPlugin,
+  ExplodeArgumentsPlugin
 } from "@argdown/core";
-import axios from "axios";
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -37,7 +35,7 @@ const regroupPlugin = new RegroupPlugin();
 const colorPlugin = new ColorPlugin();
 
 const htmlExport = new HtmlExportPlugin({
-  headless: true,
+  headless: true
 });
 const jsonExport = new JSONExportPlugin({ removeEmbeddedRelations: true });
 const preselectionPlugin = new PreselectionPlugin();
@@ -47,7 +45,7 @@ const mapPlugin = new MapPlugin();
 const groupPlugin = new GroupPlugin();
 const dotExport = new DotExportPlugin();
 const graphMLExport = new GraphMLExportPlugin();
-import primer from "!!raw-loader!../public/examples/argdown-primer.argdown";
+import primer from "/examples/argdown-primer.argdown?url&raw";
 
 app.addPlugin(parserPlugin, "parse-input");
 app.addPlugin(dataPlugin, "build-model");
@@ -66,260 +64,345 @@ app.addPlugin(dotExport, "export-dot");
 app.addPlugin(graphMLExport, "export-graphml");
 app.addPlugin(jsonExport, "export-json");
 
-Vue.use(Vuex);
-
-var examples = {
+const examples = {
   "argdown-primer": {
     id: "argdown-primer",
     title: "Argdown Primer",
-    url: "/sandbox/examples/argdown-primer.argdown",
-    cachedContent: primer,
+    url: "/examples/argdown-primer.argdown",
+    cachedContent: primer
   },
   greenspan: {
     id: "greenspan",
     title:
       "Why the Fed didn't Intervene to Prevent the 2008 Financial Crisis -- An Analysis of Alan Greenspan's Arguments",
-    url: "/sandbox/examples/greenspan-schefczyk_hardwrap.argdown",
+    url: "/examples/greenspan-schefczyk_hardwrap.argdown"
   },
   softdrugs: {
     id: "softdrugs",
     title: "Pros and Cons Legalisation of Soft Drugs -- A Simple Analysis",
-    url: "/sandbox/examples/legalisation-softdrugs.argdown",
+    url: "/examples/legalisation-softdrugs.argdown"
   },
   semmelweis: {
     id: "semmelweis",
     title:
       "A Stylized Reconstruction of the Scientific Debate That led Ignaz Semmelweis to Understand Childbed Fever",
-    url: "/sandbox/examples/semmelweis_betz.argdown",
+    url: "/examples/semmelweis_betz.argdown"
   },
   "state-censorship": {
     id: "state-censorship",
     title:
       "Censorship from the State -- Some Pros and Cons Reconstructed in Detail",
-    url: "/sandbox/examples/state-censorship.argdown",
+    url: "/examples/state-censorship.argdown"
   },
   populism: {
     id: "populism",
     title: "The Core Argument of Populism",
-    url: "/sandbox/examples/Populism-Core-Argument-Argdown-Example.argdown",
-  },
+    url: "/examples/Populism-Core-Argument-Argdown-Example.argdown"
+  }
 };
 
-export default new Vuex.Store({
-  state: {
-    argdownInput: primer,
-    examples: examples,
-    useArgVu: false,
-    config: {
-      selection: {
-        excludeDisconnected: true,
-        statementSelectionMode: StatementSelectionMode.WITH_TITLE,
-      },
-      map: {
-        statementLabelMode: LabelMode.HIDE_UNTITLED,
-        argumentLabelMode: LabelMode.HIDE_UNTITLED,
-      },
-      group: {
-        groupDepth: 2,
-      },
-      dot: {
-        graphVizSettings: {
-          rankdir: "BT",
-          concentrate: "false",
-          ratio: "auto",
-          size: "10,10",
-        },
-      },
-      dagre: _.defaultsDeep({}, dagreDefaultSettings),
-      vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
-      model: {
-        removeTagsFromText: false,
-      },
-      logLevel: "error",
+export const useArgdownStore = defineStore("argdown", () => {
+  // State
+  const argdownInput = ref(primer);
+  const examplesData = ref(examples);
+  const useArgVu = ref(false);
+  const config = ref({
+    selection: {
+      excludeDisconnected: true,
+      statementSelectionMode: StatementSelectionMode.WITH_TITLE
     },
-    viewState: "default",
-    showSettings: false,
-    showSaveAsPngDialog: false,
-    pngScale: 1,
-  },
-  mutations: {
-    setUseArgVu(state, value) {
-      state.useArgVu = value;
+    map: {
+      statementLabelMode: LabelMode.HIDE_UNTITLED,
+      argumentLabelMode: LabelMode.HIDE_UNTITLED
     },
-    setArgdownInput(state, value) {
-      state.argdownInput = value;
+    group: {
+      groupDepth: 2
     },
-    setViewState(state, value) {
-      state.viewState = value;
-    },
-    cacheExample(state, { id, content }) {
-      var example = state.examples[id];
-      if (example) {
-        example.cachedContent = content;
+    dot: {
+      graphVizSettings: {
+        rankdir: "BT",
+        concentrate: "false",
+        ratio: "auto",
+        size: "10,10"
       }
     },
-    toggleSettings(state) {
-      state.showSettings = !state.showSettings;
+    vizJs: defaultsDeep({}, vizJsDefaultSettings),
+    dagre: defaultsDeep({}, dagreDefaultSettings),
+    model: {
+      removeTagsFromText: false
     },
-    openSaveAsPngDialog(state) {
-      state.showSaveAsPngDialog = true;
-    },
-    closeSaveAsPngDialog(state) {
-      state.showSaveAsPngDialog = false;
-    },
-  },
-  getters: {
-    argdownData: (state) => {
-      const request = _.defaultsDeep(
-        {
-          input: state.argdownInput,
-          process: ["parse-input", "build-model"],
-        },
-        state.config
-      );
-      try {
-        return app.run(request);
-      } catch (e) {
-        if (request.logLevel === "verbose") {
-          console.log(e);
-        }
-        return {};
+    logLevel: "error"
+  });
+  const viewState = ref("default");
+  const showSettings = ref(false);
+  const showSaveAsPngDialog = ref(false);
+  const pngScale = ref(1);
+
+  // Computed properties (getters)
+  const argdownData = computed(() => {
+    const inputVal =
+      typeof argdownInput.value === "string" ? argdownInput.value : "";
+    if (!inputVal || inputVal.trim().length === 0) {
+      return {};
+    }
+    const request = defaultsDeep(
+      {
+        input: inputVal,
+        process: ["parse-input", "build-model"]
+      },
+      config.value
+    );
+    try {
+      const result = app.run(request);
+      return result;
+    } catch (e) {
+      if (request.logLevel === "verbose") {
+        console.log(e);
       }
-    },
-    config: (state, getters) => {
-      const data = getters.argdownData;
-      return _.defaultsDeep({}, data.frontMatter, state.config);
-    },
-    examples: (state) => {
-      return Object.values(state.examples);
-    },
-    html: (state, getters) => {
-      const data = getters.argdownData;
-      if (!data.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["colorize", "export-html"],
-        },
-        data.frontMatter,
-        state.config
-      );
-      const response = app.run(request, data);
+      return {};
+    }
+  });
+
+  const configData = computed(() => {
+    const data = argdownData.value;
+    return defaultsDeep({}, data.frontMatter, config.value);
+  });
+
+  const examplesList = computed(() => {
+    return examplesData.value ? Object.values(examplesData.value) : [];
+  });
+
+  const html = computed(() => {
+    const input =
+      typeof argdownInput.value === "string" ? argdownInput.value : "";
+    if (!input || input.trim().length === 0) {
+      return null;
+    }
+    const request = defaultsDeep(
+      {
+        input: input,
+        process: ["parse-input", "build-model", "colorize", "export-html"]
+      },
+      config.value
+    );
+    try {
+      const response = app.run(request);
       return response.html;
-    },
-    dot: (state, getters) => {
-      const data = getters.argdownData;
-      if (!data.ast) {
-        return null;
+    } catch (e) {
+      if (request.logLevel === "verbose") {
+        console.log(e);
       }
-      const request = _.defaultsDeep(
-        {
-          process: [
-            "build-map",
-            "transform-closed-groups",
-            "colorize",
-            "export-dot",
-          ],
-        },
-        data.frontMatter,
-        state.config
-      );
-      const response = app.run(request, data);
-      return response.dot;
-    },
-    graphml: (state, getters) => {
-      const data = getters.argdownData;
-      if (!data.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "export-graphml"],
-        },
-        data.frontMatter,
-        state.config
-      );
-      const response = app.run(request, data);
-      return response.graphml;
-    },
-    json: (state, getters) => {
-      const data = getters.argdownData;
-      if (!data.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "export-json"],
-        },
-        data.frontMatter,
-        state.config
-      );
-      const response = app.run(request, data);
-      return response.json;
-    },
-    parserErrors: (state, getters) => {
-      return getters.argdownData.parserErrors;
-    },
-    lexerErrors: (state, getters) => {
-      return getters.argdownData.lexerErrors;
-    },
-    statements: (state, getters) => {
-      return getters.argdownData.statements;
-    },
-    arguments: (state, getters) => {
-      return getters.argdownData.arguments;
-    },
-    relations: (state, getters) => {
-      return getters.argdownData.relations;
-    },
-    ast: (state, getters) => {
-      return astToString(getters.argdownData.ast);
-    },
-    tokens: (state, getters) => {
-      const data = getters.argdownData;
-      // eslint-disable-next-line
-      return data.tokens ? tokensToString(data.tokens) : null;
-    },
-    map: (state, getters) => {
-      const data = getters.argdownData;
-      if (!data.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "transform-closed-groups"],
-        },
-        data.frontMatter,
-        state.config
-      );
-      const response = app.run(request, data);
-      return response.map;
-    },
-    tags: (state, getters) => {
-      return getters.argdownData.tags;
-    },
-    useArgVu: (state) => {
-      return state.useArgVu;
-    },
-  },
-  actions: {
-    loadExample({ commit, state }, payload) {
-      var example = state.examples[payload.id];
-      return new Promise((resolve, reject) => {
-        if (!example) {
-          reject("Could not find example");
-        }
-        if (example.cachedContent) {
-          commit("setArgdownInput", example.cachedContent);
-          resolve();
-        }
-        axios.get(example.url).then((response) => {
-          commit("cacheExample", { id: example.id, content: response.data });
-          commit("setArgdownInput", response.data);
-          resolve();
-        });
-      });
-    },
-  },
+      return null;
+    }
+  });
+
+  const dot = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = defaultsDeep(
+      {
+        process: [
+          "build-map",
+          "transform-closed-groups",
+          "colorize",
+          "export-dot"
+        ]
+      },
+      data.frontMatter,
+      configData.value
+    );
+    const response = app.run(request, data);
+    return response.dot;
+  });
+
+  const graphml = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = defaultsDeep(
+      {
+        process: ["build-map", "colorize", "export-graphml"]
+      },
+      data.frontMatter,
+      configData.value
+    );
+    const response = app.run(request, data);
+    return response.graphml;
+  });
+
+  const json = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = defaultsDeep(
+      {
+        process: ["build-map", "colorize", "export-json"]
+      },
+      data.frontMatter,
+      configData.value
+    );
+    const response = app.run(request, data);
+    return response.json;
+  });
+
+  const parserErrors = computed(() => {
+    return argdownData.value?.parserErrors || [];
+  });
+
+  const lexerErrors = computed(() => {
+    return argdownData.value?.lexerErrors || [];
+  });
+
+  const statements = computed(() => {
+    return argdownData.value?.statements || [];
+  });
+
+  const arguments_ = computed(() => {
+    return argdownData.value?.arguments || [];
+  });
+
+  const relations = computed(() => {
+    return argdownData.value?.relations || [];
+  });
+
+  const ast = computed(() => {
+    return argdownData.value?.ast ? astToString(argdownData.value.ast) : null;
+  });
+
+  const tokens = computed(() => {
+    const data = argdownData.value;
+    return data?.tokens ? tokensToString(data.tokens) : null;
+  });
+
+  const map = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = defaultsDeep(
+      {
+        process: ["build-map", "colorize", "transform-closed-groups"]
+      },
+      data.frontMatter,
+      configData.value
+    );
+    const response = app.run(request, data);
+    return response.map;
+  });
+
+  const tags = computed(() => {
+    return argdownData.value?.tags || [];
+  });
+
+  const useArgVuState = computed(() => {
+    return useArgVu.value;
+  });
+
+  // Actions
+  function setUseArgVu(value) {
+    useArgVu.value = value;
+  }
+
+  function setArgdownInput(value) {
+    if (!value) return;
+
+    if (typeof value == "object") {
+      if (value.content) return setArgdownInput(value.content);
+      if (value.data) return setArgdownInput(value.data);
+      if (value.text) return setArgdownInput(value.text);
+    }
+
+    if (typeof value !== "string") return;
+
+    argdownInput.value = value;
+    return;
+  }
+
+  function setViewState(value) {
+    viewState.value = value;
+  }
+
+  function cacheExample({ id, content }) {
+    const example = examplesData.value[id];
+    if (example) {
+      example.cachedContent = content;
+    }
+  }
+
+  function toggleSettings() {
+    showSettings.value = !showSettings.value;
+  }
+
+  function openSaveAsPngDialog() {
+    showSaveAsPngDialog.value = true;
+  }
+
+  function closeSaveAsPngDialog() {
+    showSaveAsPngDialog.value = false;
+  }
+
+  async function loadExample(payload) {
+    const example = examplesData.value[payload.id];
+    if (!example) throw new Error("Could not find example");
+
+    const content = example.cachedContent
+      ? example.cachedContent
+      : await loadExampleFromPublic(example.url);
+
+    // Ensure we cache the string content
+    cacheExample({ id: example.id, content });
+    setArgdownInput(content);
+  }
+
+  async function loadExampleFromPublic(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Could not load example from " + url);
+
+    return await response.text();
+  }
+
+  return {
+    // State
+    argdownInput,
+    examples: examplesData,
+    useArgVu,
+    config,
+    viewState,
+    showSettings,
+    showSaveAsPngDialog,
+    pngScale,
+
+    // Computed properties
+    argdownData,
+    configData,
+    examplesList,
+    html,
+    dot,
+    graphml,
+    json,
+    parserErrors,
+    lexerErrors,
+    statements,
+    arguments: arguments_,
+    relations,
+    ast,
+    tokens,
+    map,
+    tags,
+    useArgVuState,
+
+    // Actions
+    setUseArgVu,
+    setArgdownInput,
+    setViewState,
+    cacheExample,
+    toggleSettings,
+    openSaveAsPngDialog,
+    closeSaveAsPngDialog,
+    loadExample
+  };
 });

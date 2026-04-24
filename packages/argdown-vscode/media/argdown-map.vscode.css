@@ -1,0 +1,34 @@
+/* This file maps vscode theme colors to argdown webcomponent map colors. It is imported inside of package.json.contributes.markdown.previewStyles */
+
+:root {
+  --argdown-bg-color: var(--vscode-editor-background);
+  --argdown-border-color: var(--vscode-editorWidget-border);
+  --argdown-logo-color: var(--vscode-button-foreground);
+  --argdown-logo-bg-color: var(--vscode-button-background);
+
+  --argdown-button-bg-color: var(--vscode-button-background);
+  --argdown-button-bg-hover-color: var(--vscode-button-hoverBackground);
+  --argdown-button-border-bottom-color: var(--vscode-button-border);
+  --argdown-button-font-color: var(--vscode-button-foreground);
+  --argdown-notification-font-color: var(--vscode-notifications-foreground);
+
+  --argdown-source-color: var(--vscode-editor-foreground);
+  --argdown-section-color: var(
+    --vscode-symbolIcon-namespaceForeground,
+    #6d6d5d
+  );
+  --argdown-meta-color: var(--vscode-symbolIcon-propertyForeground, #9b9b85);
+  --argdown-comment-color: var(--vscode-editorLineNumber-foreground, #998);
+  --argdown-string-color: var(--vscode-editor-stringForeground, #3b95bc);
+  --argdown-link-color: var(--vscode-textLink-foreground, #134c66);
+
+  --argdown-support-color: var(--vscode-testing-iconPassed, #4ea429);
+  --argdown-attack-color: var(--vscode-testing-iconFailed, #c24545);
+  --argdown-undercut-color: var(--vscode-charts-purple, #c227a7);
+}
+
+/* Override markdown codeblocks inside of argdown-map webcomponent */
+argdown-map pre {
+  background-color: initial;
+  border: initial;
+}

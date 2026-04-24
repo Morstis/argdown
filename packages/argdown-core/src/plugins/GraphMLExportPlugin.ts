@@ -1,8 +1,8 @@
 import * as builder from "xmlbuilder";
 import pixelWidth from "string-pixel-width";
 
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
 import {
   RelationType,
   IMapNode,
@@ -10,15 +10,15 @@ import {
   IMapEdge,
   isGroupMapNode,
   ArgdownTypes
-} from "../model/model";
-import { IArgdownRequest } from "../index";
+} from "../model/model.js";
+import { IArgdownRequest } from "../index.js";
 import {
   addLineBreaks,
   mergeDefaults,
   DefaultSettings,
   ensure,
   isObject
-} from "../utils";
+} from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
 export interface IGraphMLSettings {
@@ -72,7 +72,7 @@ export interface IGraphMLSettings {
     verticalPadding?: number;
   };
 }
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[GraphMLExportPlugin]]
@@ -166,7 +166,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       "map",
       "relations"
     ]);
-    let settings = this.getSettings(request);
+    const settings = this.getSettings(request);
     mergeDefaults(settings, this.defaults);
   };
   run: IRequestHandler = (request, response) => {
@@ -176,10 +176,10 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       edgedefault: "directed",
       id: "G"
     });
-    for (let node of response.map!.nodes) {
+    for (const node of response.map!.nodes) {
       this.createNodeElement(graph, node, settings);
     }
-    for (let edge of response.map!.edges) {
+    for (const edge of response.map!.edges) {
       this.createEdgeElement(graph, edge, settings);
     }
     response.graphml = graphml.end({
@@ -220,7 +220,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
     edge: IMapEdge,
     settings: IGraphMLSettings
   ): builder.XMLElement {
-    let edgeColor = edge.color;
+    const edgeColor = edge.color;
     let sourceArrow = "none";
     let targetArrow = "standard";
     switch (edge.relationType) {
@@ -254,8 +254,8 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
     groupMapNode: IGroupMapNode,
     settings: IGraphMLSettings
   ): builder.XMLElement {
-    const labelWidth = pixelWidth(groupMapNode.labelTitle, {
-      font: settings.group!.font,
+    const labelWidth = pixelWidth(groupMapNode.labelTitle ?? "", {
+      font: (settings.group!.font || "arial") as any,
       size: settings.group!.fontSize,
       bold: settings.group!.bold
     });
@@ -422,7 +422,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       id: groupMapNode.id + ":",
       edgedefault: "directed"
     });
-    for (let child of groupMapNode.children!) {
+    for (const child of groupMapNode.children!) {
       this.createNodeElement(groupGraph, child, settings);
     }
     return outerGroupEl;
@@ -450,7 +450,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       nodeSettings!.width! - nodeSettings!.horizontalPadding! * 2;
     const showTitle = mapNode.labelTitle != null;
     const showText = mapNode.labelText != null;
-    const labelTitle = addLineBreaks(mapNode.labelTitle!, true, {
+    const labelTitle = addLineBreaks(mapNode.labelTitle ?? "untitled", true, {
       maxWidth: innerNodeWidth,
       font: nodeSettings!.title!.font,
       fontSize: nodeSettings!.title!.fontSize!,
@@ -458,7 +458,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       applyRanges: mapNode.labelTitleRanges,
       lineBreak: "<br/>"
     });
-    const labelText = addLineBreaks(mapNode.labelText!, true, {
+    const labelText = addLineBreaks(mapNode.labelText ?? "", true, {
       maxWidth: innerNodeWidth,
       font: nodeSettings!.text!.font,
       fontSize: nodeSettings!.text!.fontSize!,
@@ -480,7 +480,7 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       textHeight +
       nodeSettings!.verticalPadding! * nrOfVerticalPaddings;
     const nodeEl = parent.e("node", { id: mapNode.id });
-    let shapeNode = nodeEl.e("data", { key: "d0" }).e("y:ShapeNode");
+    const shapeNode = nodeEl.e("data", { key: "d0" }).e("y:ShapeNode");
     shapeNode.e("y:Geometry", {
       width: nodeSettings!.width!.toString(),
       height: nodeHeight,

@@ -34,8 +34,8 @@ function startTest(tokens: chevrotain.IToken[]) {
   i = 0;
 }
 
-describe("Lexer", function() {
-  it("recognizes incoming and outgoing relations", function() {
+describe("Lexer", function () {
+  it("recognizes incoming and outgoing relations", function () {
     let source = fs.readFileSync("./test/lexer-relations.argdown", "utf8");
     const result = lexer.tokenize(source);
     //console.log(lexer.tokensToString(result.tokens));
@@ -60,7 +60,7 @@ describe("Lexer", function() {
     expectToken(lexer.Newline);
     expectToken(lexer.OutgoingUndercut);
   });
-  it("can distinguish between Emptyline and Newline", function() {
+  it("can distinguish between Emptyline and Newline", function () {
     let source = fs.readFileSync("./test/lexer-emptyline.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -80,7 +80,7 @@ describe("Lexer", function() {
     expectToken(lexer.Freestyle);
     expectToken(lexer.Newline);
   });
-  it("can lex mentions", function() {
+  it("can lex mentions", function () {
     let source = fs.readFileSync("./test/lexer-mentions.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -94,7 +94,7 @@ describe("Lexer", function() {
     expectToken(lexer.ArgumentMention);
     expectToken(lexer.StatementMention);
   });
-  it("can lex headings", function() {
+  it("can lex headings", function () {
     let source = fs.readFileSync("./test/lexer-heading.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -108,7 +108,7 @@ describe("Lexer", function() {
     expectToken(lexer.Emptyline);
     expectToken(lexer.Freestyle);
   });
-  it("can lex ordered and unordered lists", function() {
+  it("can lex ordered and unordered lists", function () {
     let source = fs.readFileSync("./test/lexer-lists.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -152,7 +152,7 @@ describe("Lexer", function() {
     expectToken(lexer.Dedent);
     expectToken(lexer.Dedent);
   });
-  it("can lex an argument reconstruction", function() {
+  it("can lex an argument reconstruction", function () {
     let source = fs.readFileSync("./test/lexer-argument.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -172,7 +172,7 @@ describe("Lexer", function() {
     expectToken(lexer.StatementNumber);
     expectToken(lexer.Freestyle);
   });
-  it("can dedent on Emptyline", function() {
+  it("can dedent on Emptyline", function () {
     let source = fs.readFileSync(
       "./test/lexer-emptyline-dedent.argdown",
       "utf8"
@@ -192,7 +192,7 @@ describe("Lexer", function() {
     expectToken(lexer.OutgoingAttack);
     expectToken(lexer.Freestyle);
   });
-  it("can lex Newlines in relations", function() {
+  it("can lex Newlines in relations", function () {
     let source = fs.readFileSync("./test/lexer-linebreak.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -216,7 +216,7 @@ describe("Lexer", function() {
     expectToken(lexer.Newline);
     expectToken(lexer.Dedent);
   });
-  it("can lex bold and italic text", function() {
+  it("can lex bold and italic text", function () {
     let source = fs.readFileSync("./test/lexer-italic-bold.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -357,7 +357,7 @@ describe("Lexer", function() {
   //     expectToken(lexer.Freestyle);
   //     expect(result.tokens.length).to.equal(5);
   // });
-  it("can lex complex indentation", function() {
+  it("can lex complex indentation", function () {
     let source = fs.readFileSync("./test/lexer-indentation.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -389,7 +389,7 @@ describe("Lexer", function() {
     expectToken(lexer.Freestyle);
     expectToken(lexer.Dedent);
   });
-  it("can recognize argument and statement references and definitions", function() {
+  it("can recognize argument and statement references and definitions", function () {
     let source = fs.readFileSync(
       "./test/lexer-definitions-references.argdown",
       "utf8"
@@ -406,7 +406,7 @@ describe("Lexer", function() {
     expectToken(lexer.Newline);
     expectToken(lexer.Freestyle);
   });
-  it("can ignore comments", function() {
+  it("can ignore comments", function () {
     let source = fs.readFileSync("./test/lexer-comment.argdown", "utf8");
     const result = lexer.tokenize(source);
     console.log(tokensToString(result.tokens));
@@ -426,7 +426,7 @@ describe("Lexer", function() {
     expectToken(lexer.Emptyline);
     expectToken(lexer.Freestyle);
   });
-  it("can recognize links and tags", function() {
+  it("can recognize links and tags", function () {
     let source = fs.readFileSync("./test/lexer-links-and-tags.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -441,7 +441,7 @@ describe("Lexer", function() {
     expectToken(lexer.Tag);
     expectToken(lexer.Tag);
   });
-  it("can ignore trailing Emptyline before comment", function() {
+  it("can ignore trailing Emptyline before comment", function () {
     let source = fs.readFileSync(
       "./test/lexer-trailing-emptyline.argdown",
       "utf8"
@@ -454,7 +454,7 @@ describe("Lexer", function() {
     expectToken(lexer.Freestyle);
     expectToken(lexer.UnusedControlChar);
   });
-  it("can lex Windows line endings", function() {
+  it("can lex Windows line endings", function () {
     let source = `Another statement\r\n  + An argument\r\n\r\n(1) A\r\n----\r\n(2) B`;
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -476,7 +476,7 @@ describe("Lexer", function() {
     expectToken(lexer.StatementNumber);
     expectToken(lexer.Freestyle);
   });
-  it("can lex escaped chars", function() {
+  it("can lex escaped chars", function () {
     let source = fs.readFileSync("./test/lexer-escaped-chars.argdown", "utf8");
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -495,7 +495,7 @@ describe("Lexer", function() {
     expectToken(lexer.EscapedChar);
     expectToken(lexer.Freestyle);
   });
-  it("can lex special chars", function() {
+  it("can lex special chars", function () {
     let source = `p.v.q
 
 .O.p
@@ -568,7 +568,7 @@ p:->:q
     expectToken(lexer.SpecialChar);
     expectToken(lexer.Freestyle);
   });
-  it("can save correct token location data", function() {
+  it("can save correct token location data", function () {
     let source = fs.readFileSync(
       "./test/lexer-token-locations.argdown",
       "utf8"
@@ -602,7 +602,7 @@ p:->:q
     expectTokenLocation(44, 44, 7, 7, 12, 12); // Dedent is always at last column of current line
     expectTokenLocation(44, 44, 7, 7, 12, 12); // Dedent is always at last column of current line
   });
-  it("can save correct token location data if first line is empty", function() {
+  it("can save correct token location data if first line is empty", function () {
     let source = fs.readFileSync(
       "./test/lexer-token-locations-first-line-empty.argdown",
       "utf8"
@@ -617,7 +617,7 @@ p:->:q
     expectTokenLocation(2, 2, 2, 2, 2, 2); //Newline
     expectTokenLocation(3, 3, 3, 3, 1, 1); //b
   });
-  it("can lex relation after empty line", function() {
+  it("can lex relation after empty line", function () {
     let source = fs.readFileSync(
       "./test/lexer-relation-after-emptyline.argdown",
       "utf8"
@@ -633,7 +633,7 @@ p:->:q
     expectToken(lexer.Freestyle);
     expectToken(lexer.Dedent);
   });
-  it("can lex frontmatter", function() {
+  it("can lex frontmatter", function () {
     let source = `
     ===
     some: front matter
@@ -650,7 +650,7 @@ p:->:q
     expectToken(lexer.StatementDefinition);
     expectToken(lexer.Freestyle);
   });
-  it("can lex frontmatter with equal sign", function() {
+  it("can lex frontmatter with equal sign", function () {
     let source = `
     ===
     some: "front=matter"
@@ -667,7 +667,7 @@ p:->:q
     expectToken(lexer.StatementDefinition);
     expectToken(lexer.Freestyle);
   });
-  it("can lex meta data", function() {
+  it("can lex meta data", function () {
     let source = `
     # heading {some: meta data}
 
@@ -702,7 +702,7 @@ p:->:q
     expectToken(lexer.ArgumentReference);
     expectToken(lexer.Data);
   });
-  it("can lex multiline statements", function() {
+  it("can lex multiline statements", function () {
     let source = `
     I 
     am 
@@ -726,7 +726,7 @@ p:->:q
     // expectToken(lexer.StatementMentionByNumber);
     // expectToken(lexer.Dedent);
   });
-  it("can lex Windows line endings", function() {
+  it("can lex Windows line endings", function () {
     let source = `Another statement\r\n  + An argument\r\n\r\n(1) A\r\n----\r\n(2) B`;
     const result = lexer.tokenize(source);
     startTest(result.tokens);
@@ -748,7 +748,7 @@ p:->:q
     expectToken(lexer.StatementNumber);
     expectToken(lexer.Freestyle);
   });
-  it("can lex argument after frontmatter", function() {
+  it("can lex argument after frontmatter", function () {
     let source = `
     ===
     selection:
@@ -766,7 +766,7 @@ p:->:q
     expectToken(lexer.Newline);
     expectToken(lexer.ArgumentReference);
   });
-  it("can ignore trailing Emptyline", function() {
+  it("can ignore trailing Emptyline", function () {
     let source = `<A>
 
 

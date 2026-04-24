@@ -1,6 +1,6 @@
 # @argdown/core
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 The package contains
 
@@ -16,12 +16,13 @@ For more information about this package visit the [API documents](https://argdow
 
 If you want to use the package in your own software, use `npm install @argdown/core`.
 
-If you want to check out the code, fork this repository and run `npm run bootstrap`.
+<!-- Commenting below line since there is no bootstrap script. -->
+<!-- If you want to check out the code, fork this repository and run `npm run bootstrap`. -->
 
 ## Testing
 
-`npm run test`
+`yarn test`
 
 ## Building
 
-`npm run build`
+`yarn build`

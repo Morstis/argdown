@@ -1,15 +1,15 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { checkResponseFields } from "../ArgdownPluginError";
-import { IArgdownRequest, ISelectionSettings } from "../index";
-import { IEquivalenceClass, IArgument, ArgdownTypes } from "../model/model";
-import { mergeDefaults, isObject } from "../utils";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { checkResponseFields } from "../ArgdownPluginError.js";
+import { IArgdownRequest, ISelectionSettings } from "../index.js";
+import { IEquivalenceClass, IArgument, ArgdownTypes } from "../model/model.js";
+import { mergeDefaults, isObject } from "../utils.js";
 export interface ISelection {
   statements: IEquivalenceClass[];
   arguments: IArgument[];
 }
 import defaultsDeep from "lodash.defaultsdeep";
 
-declare module "../index" {
+declare module "../index.js" {
   interface IArgdownRequest {
     /**
      * Settings for the [[PreselectionPlugin]]
@@ -67,50 +67,52 @@ export class PreselectionPlugin implements IArgdownPlugin {
     const settings = this.getSettings(request);
     const selection: ISelection = { statements: [], arguments: [] };
 
-    selection.statements = Object.keys(response.statements!)
-      .map<IEquivalenceClass>(title => response.statements![title])
+    selection.statements = Object.keys(response.statements ?? {})
+      .map<IEquivalenceClass>((title) => response.statements![title])
       .filter(isPreselected(settings));
-    selection.arguments = Object.keys(response.arguments!)
-      .map<IArgument>(title => response.arguments![title])
+    selection.arguments = Object.keys(response.arguments ?? {})
+      .map<IArgument>((title) => response.arguments![title])
       .filter(isPreselected(settings));
     response.selection = selection;
   };
 }
 
-const isPreselected = (settings: ISelectionSettings) => (
-  el: IEquivalenceClass | IArgument
-) => {
-  const isInMap =
-    settings.ignoreIsInMap ||
-    (!el.data || el.data.isInMap === undefined || el.data.isInMap === true);
-  if (!isInMap) {
-    return false;
-  }
-  let includeElement = false;
-  if (el.type === ArgdownTypes.ARGUMENT) {
-    includeElement =
-      !settings.excludeArguments ||
-      settings.excludeArguments.indexOf(el.title!) === -1;
-  } else {
-    includeElement =
-      !settings.excludeStatements ||
-      settings.excludeStatements.indexOf(el.title!) === -1;
-  }
-  if (!includeElement) {
-    return false;
-  }
+const isPreselected =
+  (settings: ISelectionSettings) => (el: IEquivalenceClass | IArgument) => {
+    const isInMap =
+      settings.ignoreIsInMap ||
+      !el.data ||
+      el.data.isInMap === undefined ||
+      el.data.isInMap === true;
+    if (!isInMap) {
+      return false;
+    }
+    let includeElement = false;
+    if (el.type === ArgdownTypes.ARGUMENT) {
+      includeElement =
+        !settings.excludeArguments ||
+        settings.excludeArguments.indexOf(el.title ?? "") === -1;
+    } else {
+      includeElement =
+        !settings.excludeStatements ||
+        settings.excludeStatements.indexOf(el.title ?? "") === -1;
+    }
+    if (!includeElement) {
+      return false;
+    }
 
-  const sectionSelected =
-    !settings.selectedSections ||
-    (!el.section && settings.selectElementsWithoutSection === true) ||
-    (el.section && settings.selectedSections.indexOf(el.section!.title!) > -1);
-  if (!sectionSelected) {
-    return false;
-  }
-  const tagSelected =
-    !settings.selectedTags ||
-    (settings.selectElementsWithoutTag === true &&
-      (!el.tags || el.tags.length === 0)) ||
-    (el.tags && el.tags.find(t => settings.selectedTags!.indexOf(t) > -1));
-  return tagSelected;
-};
+    const sectionSelected =
+      !settings.selectedSections ||
+      (!el.section && settings.selectElementsWithoutSection === true) ||
+      (el.section &&
+        settings.selectedSections.indexOf(el.section.title ?? "") > -1);
+    if (!sectionSelected) {
+      return false;
+    }
+    const tagSelected =
+      !settings.selectedTags ||
+      (settings.selectElementsWithoutTag === true &&
+        (!el.tags || el.tags.length === 0)) ||
+      (el.tags && el.tags.find((t) => settings.selectedTags!.indexOf(t) > -1));
+    return tagSelected;
+  };

@@ -24,25 +24,21 @@ If you want to start working right away, you should install the [Argdown VS Code
 
 The development of Argdown and Argdown-related tools is funded by the [DebateLab](http://debatelab.philosophie.kit.edu/) at KIT, Karlsruhe.
 
-All code is published under the MIT license. The optional Argvu font is published under a [Free License](https://github.com/christianvoigt/argdown/tree/master/packages/argvu/LICENSE.md).
+All code is published under the MIT license. The optional Argvu font is published under a [Free License](https://github.com/argdown/argdown/tree/master/packages/argvu/LICENSE.md).
 
 ## About this repository
 
-This repository is a [Monorepo](https://en.wikipedia.org/wiki/Monorepo) containing all packages of the Argdown project. We use [lerna](https://github.com/lerna/lerna) to manage their internal dependencies. You can find all packages in the `packages/` folder.
+This repository is a [Monorepo](https://en.wikipedia.org/wiki/Monorepo) containing all packages of the Argdown project. We use [yarn-workspaces](https://yarnpkg.com/features/workspaces) to manage their internal dependencies. You can find all packages in the `packages/` folder.
 
-For further information about the code, consult the [API section](https://christianvoigt.github.io/argdown/api/) of the documentation.
+For further information about the code, consult the [API section](https://argdown.github.io/argdown/api/) of the documentation.
 
 To install this Monorepo
 
-- fork/pull or download this repository
-- run `npm install` in the main folder.
-- run `npm run lerna:bootstrap` to install the dependencies of all packages. This will call `lerna bootstrap`.
-- run `npm run docs:dev` if you want to work on the documentation. Run `npm run` to see the other scripts available.
-
-### Installing npm packages
-
-Example:
-
-```bash
-lerna add xmlbuilder --scope=@argdown/core
-```
+- clone this repository and cd into project dir
+- install requirements
+    - `node>=22.11.0` (e.g. via [`nvm`](https://github.com/nvm-sh/nvm)),
+    - `yarn>=4.9.4` (via [`corepack`](https://yarnpkg.com/corepack))
+- run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
+- run `yarn build`.
+- run `yarn test` for tests
+- run `yarn workspace @argdown/docs run dev` to deploy the docs website locally.

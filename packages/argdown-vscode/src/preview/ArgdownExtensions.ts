@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
-import * as arrays from "./util/arrays";
-import { Disposable } from "./util/dispose";
+import type { ArgdownEngine } from "../ArgdownEngine";
+import * as arrays from "../util/arrays";
+import { Disposable } from "../util/dispose";
 
 const resolveExtensionResource = (
   extension: vscode.Extension<any>,
@@ -157,8 +157,10 @@ export interface ArgdownContributionProvider {
   dispose(): void;
 }
 
-class VSCodeExtensionArgdownContributionProvider extends Disposable
-  implements ArgdownContributionProvider {
+class VSCodeExtensionArgdownContributionProvider
+  extends Disposable
+  implements ArgdownContributionProvider
+{
   private _contributions?: ArgdownContributions;
 
   public constructor(

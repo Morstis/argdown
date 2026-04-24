@@ -1,15 +1,22 @@
-import {
+import type {
   IAstNode,
   IRequestHandler,
   ITokenNodeHandler,
   IEquivalenceClass,
   IArgument,
-  IArgdownPlugin,
-  TokenNames
+  IArgdownPlugin
 } from "@argdown/core";
+import { TokenNames } from "@argdown/core";
+
+type IAstNodeExtension = IAstNode & {
+  startLine?: number;
+  endLine?: number;
+  startColumn?: number;
+  endColumn?: number;
+};
 
 const positionIsInRange = (
-  node: IAstNode,
+  node: IAstNodeExtension,
   settings: IFindElementAtPositionSettings
 ) => {
   if (
@@ -40,7 +47,7 @@ declare module "@argdown/core" {
 
 export const findElementAtPositionPlugin: IArgdownPlugin = {
   name: "FindElementAtPositionPlugin",
-  prepare: <IRequestHandler>(request => {
+  prepare: <IRequestHandler>((request) => {
     request.findElementAtPosition = request.findElementAtPosition || {};
   }),
   tokenListeners: {

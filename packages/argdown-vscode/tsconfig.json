@@ -1,21 +1,13 @@
 {
   "compilerOptions": {
-    "newLine": "LF",
-    "module": "es6",
-    "target": "es6",
-    "lib": ["es6", "es2015.promise", "dom"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "module": "CommonJS",
+    "target": "ESNext",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "rootDir": ".",
     "strict": true,
-    "alwaysStrict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "sourceMap": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

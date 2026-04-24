@@ -10,7 +10,7 @@ import { it, describe } from "mocha";
 
 let app = new ArgdownApplication();
 
-describe("DataPlugin", function() {
+describe("DataPlugin", function () {
   const parserPlugin = new ParserPlugin();
   const modelPlugin = new ModelPlugin();
   const dataPlugin = new DataPlugin();
@@ -18,7 +18,7 @@ describe("DataPlugin", function() {
   app.addPlugin(dataPlugin, "build-model");
   app.addPlugin(modelPlugin, "build-model");
 
-  it("can parse data", function() {
+  it("can parse data", function () {
     const source = `
 ===
 author: Christian Voigt

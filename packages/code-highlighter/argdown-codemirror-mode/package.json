@@ -1,0 +1,31 @@
+{
+  "name": "@argdown/codemirror-mode",
+  "version": "2.0.0",
+  "description": "A simple Argdown syntax highlighting mode",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-codemirror-mode"
+  },
+  "keywords": [
+    "argdown",
+    "codemirror"
+  ],
+  "scripts": {
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
+  },
+  "author": "Christian Voigt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/argdown/argdown/issues"
+  },
+  "homepage": "https://github.com/argdown/argdown",
+  "devDependencies": {
+    "codemirror": "^5.25.0"
+  },
+  "engines": {
+    "node": ">= 22.11.0"
+  },
+  "packageManager": "yarn@4.9.4"
+}

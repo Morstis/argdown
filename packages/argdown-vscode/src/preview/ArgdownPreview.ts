@@ -1,20 +1,20 @@
 import * as vscode from "vscode";
 import throttle from "lodash.throttle";
 
-import { Logger } from "./Logger";
+import { Logger } from "../Logger";
 import { ArgdownContentProvider } from "./ArgdownContentProvider";
-import { WebviewResourceProvider } from "./util/resources";
-import { Disposable } from "./util/dispose";
-import * as path from "./util/path";
+import { WebviewResourceProvider } from "../util/resources";
+import { Disposable } from "../util/dispose";
+import * as path from "../util/path";
 import {
   getVisibleLine,
   LastScrollLocation,
   TopmostLineMonitor
-} from "./util/topmostLineMonitor";
+} from "../util/topmostLineMonitor";
 import { ArgdownPreviewConfigurationManager } from "./ArgdownPreviewConfiguration";
-import { isArgdownFile } from "./util/file";
-import { ArgdownEngine } from "./ArgdownEngine";
-import { IArgdownPreviewState } from "./IArgdownPreviewState";
+import { isArgdownFile } from "../util/file";
+import type { ArgdownEngine } from "../ArgdownEngine";
+import type { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
 
 export namespace PreviewViews {
@@ -40,7 +40,7 @@ export class PreviewDocumentVersion {
 }
 interface ArgdownPreviewDelegate {
   getTitle?(resource: vscode.Uri): string;
-  getAdditionalState(): {};
+  getAdditionalState(): Record<string, unknown>;
   openPreviewLinkToArgdownFile(argdownLink: vscode.Uri, fragment: string): void;
 }
 class StartingScrollLine {
@@ -56,8 +56,10 @@ export class StartingScrollFragment {
 }
 
 type StartingScrollLocation = StartingScrollLine | StartingScrollFragment;
-export class ArgdownPreview extends Disposable
-  implements WebviewResourceProvider {
+export class ArgdownPreview
+  extends Disposable
+  implements WebviewResourceProvider
+{
   public static viewType = "argdown.preview";
 
   public delay: number = 300;
@@ -117,7 +119,7 @@ export class ArgdownPreview extends Disposable
 
     switch (startingScroll?.type) {
       case "line":
-        if (!isNaN(startingScroll.line!)) {
+        if (!isNaN(startingScroll.line)) {
           this.line = startingScroll.line;
         }
         break;
@@ -126,21 +128,21 @@ export class ArgdownPreview extends Disposable
         this.scrollToFragment = startingScroll.fragment;
         break;
     }
-    this._previewConfigurations.refreshArgdownConfig(this._resource);
+    void this._previewConfigurations.refreshArgdownConfig(this._resource);
     this._register(
       this._contributionProvider.onContributionsChanged(() => {
         setTimeout(() => this.refresh(), 0);
       })
     );
     this._register(
-      vscode.workspace.onDidChangeTextDocument(event => {
+      vscode.workspace.onDidChangeTextDocument((event) => {
         if (this.isPreviewOf(event.document.uri)) {
           this.refresh();
         }
       })
     );
     this._register(
-      vscode.workspace.onDidOpenTextDocument(document => {
+      vscode.workspace.onDidOpenTextDocument((document) => {
         if (this.isPreviewOf(document.uri)) {
           this.refresh();
         }
@@ -150,12 +152,12 @@ export class ArgdownPreview extends Disposable
       vscode.workspace.createFileSystemWatcher(resource.fsPath)
     );
     this._register(
-      watcher.onDidChange(uri => {
+      watcher.onDidChange((uri) => {
         if (this.isPreviewOf(uri)) {
           // Only use the file system event when VS Code does not already know about the file
           if (
             !vscode.workspace.textDocuments.some(
-              doc => doc.uri.toString() !== uri.toString()
+              (doc) => doc.uri.toString() !== uri.toString()
             )
           ) {
             this.refresh();
@@ -200,19 +202,19 @@ export class ArgdownPreview extends Disposable
     this.delay = config.minDelayBetweenUpdates;
 
     this._register(
-      vscode.workspace.onDidChangeConfiguration(e => {
+      vscode.workspace.onDidChangeConfiguration((e) => {
         if (e.affectsConfiguration("argdown.preview.lockMenu")) {
           this.updateConfiguration();
         }
       })
     );
     this._register(
-      this._webviewPanel.webview.onDidReceiveMessage(async e => {
+      this._webviewPanel.webview.onDidReceiveMessage(async (e) => {
         if (e.source !== this._resource.toString()) {
           return;
         }
         switch (e.type) {
-          case "command":
+          case "command": {
             const args = e.body.args;
             // Swap Uri for string, if first arg is our resource (needed for export commands)
             if (
@@ -224,6 +226,7 @@ export class ArgdownPreview extends Disposable
             }
             vscode.commands.executeCommand(e.body.command, ...args);
             break;
+          }
           case "revealLine":
             this.onDidScrollPreview(e.body.line);
             break;
@@ -245,19 +248,19 @@ export class ArgdownPreview extends Disposable
         }
       })
     );
-    this.updatePreview();
+    void this.updatePreview();
   }
-	override dispose(){
-  		super.dispose();
+  override dispose() {
+    super.dispose();
 
-  		this._disposed = true;
+    this._disposed = true;
 
-  		clearTimeout(this.throttleTimer);
-  		for (const entry of this._fileWatchersBySrc.values()) {
-  			entry.dispose();
-  		}
-  		this._fileWatchersBySrc.clear();
-  	}
+    clearTimeout(this.throttleTimer);
+    for (const entry of this._fileWatchersBySrc.values()) {
+      entry.dispose();
+    }
+    this._fileWatchersBySrc.clear();
+  }
 
   public get resource(): vscode.Uri {
     return this._resource;
@@ -309,11 +312,12 @@ export class ArgdownPreview extends Disposable
         );
       } else {
         const view = this._currentView || PreviewViews.VIZJS;
-        content = await this._contentProvider.provideOnDidChangeTextDocumentMessage(
-          view,
-          document,
-          this._previewConfigurations
-        );
+        content =
+          await this._contentProvider.provideOnDidChangeTextDocumentMessage(
+            view,
+            document,
+            this._previewConfigurations
+          );
       }
       // Another call to `doUpdate` may have happened.
       // Make sure we are still updating for the correct document
@@ -371,10 +375,10 @@ export class ArgdownPreview extends Disposable
       });
     }
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async showFileNotFoundError() {
-    this._webviewPanel.webview.html = this._contentProvider.provideFileNotFoundContent(
-      this._resource
-    );
+    this._webviewPanel.webview.html =
+      this._contentProvider.provideFileNotFoundContent(this._resource);
   }
   /**
    * The first call immediately refreshes the preview,
@@ -384,10 +388,10 @@ export class ArgdownPreview extends Disposable
     // Schedule update if none is pending
     if (!this.throttleTimer) {
       if (this.firstUpdate) {
-        this.updatePreview(true);
+        void this.updatePreview(true);
       } else {
         this.throttleTimer = setTimeout(
-          () => this.updatePreview(forceUpdate),
+          () => void this.updatePreview(forceUpdate),
           this.delay
         );
       }
@@ -457,7 +461,7 @@ export class ArgdownPreview extends Disposable
     const folder = vscode.workspace.getWorkspaceFolder(this._resource);
     if (folder) {
       const workspaceRoots = vscode.workspace.workspaceFolders?.map(
-        folder => folder.uri
+        (folder) => folder.uri
       );
       if (workspaceRoots) {
         baseRoots.push(...workspaceRoots);
@@ -516,6 +520,7 @@ export class ArgdownPreview extends Disposable
         );
       });
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async onDidChangeView(view: string) {
     if (
       view == PreviewViews.HTML ||
@@ -524,9 +529,9 @@ export class ArgdownPreview extends Disposable
     ) {
       if (view !== this._currentView) {
         // reload argdown config on view change
-        this._previewConfigurations.refreshArgdownConfig(this._resource);
+        void this._previewConfigurations.refreshArgdownConfig(this._resource);
         this._currentView = view;
-        this.updatePreview(true);
+        void this.updatePreview(true);
       }
     }
   }
@@ -540,12 +545,8 @@ export class ArgdownPreview extends Disposable
     const document = await vscode.workspace.openTextDocument(resource);
     const config = this._previewConfigurations.getConfiguration(this._resource);
     try {
-      const range = await this._argdownEngine.getRangeOfMapNode(
-        document,
-        config,
-        id
-      );
-      this.jumpToRange(range);
+      const range = this._argdownEngine.getRangeOfMapNode(document, config, id);
+      await this.jumpToRange(range);
     } catch (e) {
       if (e instanceof Error) {
         this._logger.log(e.message);
@@ -557,12 +558,12 @@ export class ArgdownPreview extends Disposable
     const document = await vscode.workspace.openTextDocument(resource);
     const config = this._previewConfigurations.getConfiguration(this._resource);
     try {
-      const range = await this._argdownEngine.getRangeOfHeading(
+      const range = this._argdownEngine.getRangeOfHeading(
         document,
         config,
         headingText
       );
-      this.jumpToRange(range);
+      await this.jumpToRange(range);
     } catch (e) {
       if (e instanceof Error) {
         this._logger.log(e.message);
@@ -587,7 +588,7 @@ export class ArgdownPreview extends Disposable
       .then(vscode.window.showTextDocument);
   }
   public refreshArgdownConfig(): void {
-    this._previewConfigurations.refreshArgdownConfig(this._resource);
+    void this._previewConfigurations.refreshArgdownConfig(this._resource);
     this.refresh(false);
   }
   //#region WebviewResourceProvider
@@ -613,9 +614,7 @@ export interface ManagedArgdownPreview {
   readonly resourceColumn: vscode.ViewColumn;
 
   readonly onDispose: vscode.Event<void>;
-  readonly onDidChangeViewState: vscode.Event<
-    vscode.WebviewPanelOnDidChangeViewStateEvent
-  >;
+  readonly onDidChangeViewState: vscode.Event<vscode.WebviewPanelOnDidChangeViewStateEvent>;
 
   dispose(): void;
 
@@ -629,8 +628,10 @@ export interface ManagedArgdownPreview {
   ): boolean;
 }
 
-export class StaticArgdownPreview extends Disposable
-  implements ManagedArgdownPreview {
+export class StaticArgdownPreview
+  extends Disposable
+  implements ManagedArgdownPreview
+{
   public static readonly customEditorViewType = "argdown.preview.editor";
 
   public static revive(
@@ -688,7 +689,7 @@ export class StaticArgdownPreview extends Disposable
             link: vscode.Uri,
             fragment?: string
           ) => {
-            return vscode.commands.executeCommand(
+            void vscode.commands.executeCommand(
               "vscode.openWith",
               link.with({
                 fragment
@@ -713,19 +714,19 @@ export class StaticArgdownPreview extends Disposable
     );
 
     this._register(
-      this._webviewPanel.onDidChangeViewState(e => {
+      this._webviewPanel.onDidChangeViewState((e) => {
         this._onDidChangeViewState.fire(e);
       })
     );
 
     this._register(
-      this.preview.onScroll(scrollInfo => {
+      this.preview.onScroll((scrollInfo) => {
         topmostLineMonitor.setPreviousStaticEditorLine(scrollInfo);
       })
     );
 
     this._register(
-      topmostLineMonitor.onDidChanged(event => {
+      topmostLineMonitor.onDidChanged((event) => {
         if (this.preview.isPreviewOf(event.resource)) {
           this.preview.scrollTo(event.line);
         }
@@ -742,13 +743,16 @@ export class StaticArgdownPreview extends Disposable
   public readonly onDidChangeViewState = this._onDidChangeViewState.event;
 
   override dispose() {
-  	this._onDispose.fire();
-  	super.dispose();
+    this._onDispose.fire();
+    super.dispose();
   }
 
   public matchesResource(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherResource: vscode.Uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherPosition: vscode.ViewColumn | undefined,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _otherLocked: boolean
   ): boolean {
     return false;
@@ -785,8 +789,10 @@ interface DynamicPreviewInput extends Partial<IArgdownPreviewState> {
 /**
  * A
  */
-export class DynamicArgdownPreview extends Disposable
-  implements ManagedArgdownPreview {
+export class DynamicArgdownPreview
+  extends Disposable
+  implements ManagedArgdownPreview
+{
   public static readonly viewType = "argdown.preview";
 
   private readonly _resourceColumn: vscode.ViewColumn;
@@ -881,12 +887,12 @@ export class DynamicArgdownPreview extends Disposable
         this.dispose();
       })
     );
-    this.throttledSelectionSync = throttle(
-      async (selection: vscode.Selection) => {
+    this.throttledSelectionSync = throttle((selection: vscode.Selection) => {
+      void (async () => {
         const resource = this._preview.resource;
         const config = this._previewConfigurations.getConfiguration(resource);
         const document = await vscode.workspace.openTextDocument(resource);
-        const id: string = await this._engine.getMapNodeId(
+        const id: string = this._engine.getMapNodeId(
           document,
           config,
           selection.active.line,
@@ -899,17 +905,16 @@ export class DynamicArgdownPreview extends Disposable
             id
           });
         }
-      },
-      this._preview.delay
-    );
+      })();
+    }, this._preview.delay);
     this._register(
-      this._webviewPanel.onDidChangeViewState(e => {
+      this._webviewPanel.onDidChangeViewState((e) => {
         this._onDidChangeViewStateEmitter.fire(e);
       })
     );
 
     this._register(
-      this._topmostLineMonitor.onDidChanged(event => {
+      this._topmostLineMonitor.onDidChanged((event) => {
         if (this._preview.isPreviewOf(event.resource)) {
           this._preview.scrollTo(event.line);
         }
@@ -917,7 +922,8 @@ export class DynamicArgdownPreview extends Disposable
     );
 
     this._register(
-      vscode.window.onDidChangeTextEditorSelection(async event => {
+      // eslint-disable-next-line @typescript-eslint/require-await
+      vscode.window.onDidChangeTextEditorSelection(async (event) => {
         if (this._preview.isPreviewOf(event.textEditor.document.uri)) {
           this._preview.postMessage({
             type: "onDidChangeTextEditorSelection",
@@ -926,13 +932,13 @@ export class DynamicArgdownPreview extends Disposable
             source: this._preview.resource.toString()
           });
           if (this._preview.currentView !== PreviewViews.HTML) {
-            await this.throttledSelectionSync(event.selections[0]);
+            this.throttledSelectionSync(event.selections[0]);
           }
         }
       })
     );
     this._register(
-      vscode.window.onDidChangeActiveTextEditor(editor => {
+      vscode.window.onDidChangeActiveTextEditor((editor) => {
         // Only allow previewing normal text editors which have a viewColumn: See #101514
         if (typeof editor?.viewColumn === "undefined") {
           return;
@@ -961,15 +967,15 @@ export class DynamicArgdownPreview extends Disposable
   private readonly _onDidChangeViewStateEmitter = this._register(
     new vscode.EventEmitter<vscode.WebviewPanelOnDidChangeViewStateEvent>()
   );
-  public readonly onDidChangeViewState = this._onDidChangeViewStateEmitter
-    .event;
+  public readonly onDidChangeViewState =
+    this._onDidChangeViewStateEmitter.event;
 
   override dispose() {
-  	this._preview.dispose();
-  	this._webviewPanel.dispose();
-  	this._onDisposeEmitter.fire();
-  	this._onDisposeEmitter.dispose();
-  	super.dispose();
+    this._preview.dispose();
+    this._webviewPanel.dispose();
+    this._onDisposeEmitter.fire();
+    this._onDisposeEmitter.dispose();
+    super.dispose();
   }
 
   public get resource() {
@@ -1077,7 +1083,7 @@ export class DynamicArgdownPreview extends Disposable
       resource,
       startingScroll,
       {
-        getTitle: resource =>
+        getTitle: (resource) =>
           DynamicArgdownPreview.getPreviewTitle(resource, this._locked),
         getAdditionalState: () => {
           return {

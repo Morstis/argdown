@@ -12,25 +12,25 @@ export const findNodesContainingPosition = (
   line: number,
   character: number
 ): any[] => {
-  let result = [];
+  const result = [];
   const closestNode = nodes
-    .filter(n => {
+    .filter((n) => {
       // Indent and Dedent are pseudo tokens that mess up the search because of their location information
       return (
         isRuleNode(n) ||
-        (n.tokenType!.name !== TokenNames.INDENT &&
-          n.tokenType!.name !== TokenNames.DEDENT)
+        (n.tokenType.name !== String(TokenNames.INDENT) &&
+          n.tokenType.name !== String(TokenNames.DEDENT))
       );
     })
-    .filter(n => {
-      return n.endLine! >= line && n.startLine! <= line;
+    .filter((n) => {
+      return n.endLine >= line && n.startLine <= line;
     })
     .reduce((acc: IAstNode | undefined, val) => {
       if (!acc) {
         return val;
       }
-      const valLineDist = line - val.startLine!;
-      const accLineDist = line - acc.startLine!;
+      const valLineDist = line - val.startLine;
+      const accLineDist = line - acc.startLine;
       if (valLineDist < accLineDist) {
         return val;
       } else if (accLineDist < valLineDist) {
@@ -38,13 +38,13 @@ export const findNodesContainingPosition = (
       } else {
         // acc & val start at the same line
         if (acc.startLine === line) {
-          const valCharDistance = character - val.startColumn!;
-          const accCharDist = character - acc.startColumn!;
+          const valCharDistance = character - val.startColumn;
+          const accCharDist = character - acc.startColumn;
           return valCharDistance < accCharDist && valCharDistance >= 0
             ? val
             : acc;
         } else {
-          return val.startColumn! > acc.startColumn! ? val : acc;
+          return val.startColumn > acc.startColumn ? val : acc;
         }
       }
     }, undefined);

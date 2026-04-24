@@ -1,12 +1,12 @@
-import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin";
-import { createMissingResponseFieldError } from "../ArgdownPluginError";
-import { IArgdownResponse } from "../index";
+import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
+import { createMissingResponseFieldError } from "../ArgdownPluginError.js";
+import { IArgdownResponse } from "../index.js";
 import {
   isGroupMapNode,
   IMapNode,
   IGroupMapNode,
   IMapEdge
-} from "../model/model";
+} from "../model/model.js";
 
 /**
  * Looks for closed group nodes in the map, removes their children and transforms relations
@@ -25,7 +25,7 @@ export class ClosedGroupPlugin implements IArgdownPlugin {
     if (!response.map) {
       throw createMissingResponseFieldError(this, "map");
     }
-    for (let node of response.map.nodes) {
+    for (const node of response.map.nodes) {
       closeGroupsRecursively(node, response);
     }
   };
@@ -38,16 +38,17 @@ const closeGroupsRecursively = (
     if (currentNode.isClosed) {
       closeGroup(currentNode, response);
     } else if (currentNode.children) {
-      for (let child of currentNode.children) {
+      for (const child of currentNode.children) {
         closeGroupsRecursively(child, response);
       }
     }
   }
 };
 const closeGroup = (node: IGroupMapNode, response: IArgdownResponse) => {
-  const descendantsMap = node.children!.reduce(reduceToDescendantsMap, <
-    { [key: string]: IMapNode }
-  >{});
+  const descendantsMap = node.children!.reduce(
+    reduceToDescendantsMap,
+    <{ [key: string]: IMapNode }>{}
+  );
   node.children = [];
   // filter out internal edges (where source and target are group descendants)
   // transform edges that cross the group border (where either source or target are a group descendant) to relations of the group node

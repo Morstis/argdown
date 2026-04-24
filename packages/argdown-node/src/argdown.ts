@@ -1,6 +1,6 @@
 "use strict";
 
-import { AsyncArgdownApplication } from "./AsyncArgdownApplication";
+import { AsyncArgdownApplication } from "./AsyncArgdownApplication.js";
 import {
   ParserPlugin,
   ModelPlugin,
@@ -20,18 +20,19 @@ import {
   WebComponentExportPlugin,
   HighlightSourcePlugin,
   ExplodeArgumentsPlugin,
-  MapNodeImagesPlugin
+  MapNodeImagesPlugin,
+  SyncDotToSvgExportPlugin
 } from "@argdown/core";
-import { SyncDotToSvgExportPlugin } from "@argdown/core/dist/plugins/SyncDotToSvgExportPlugin";
-import { SaveAsFilePlugin } from "./plugins/SaveAsFilePlugin";
-import { SvgToPdfExportPlugin } from "./plugins/SvgToPdfExportPlugin";
-import { CopyDefaultCssPlugin } from "./plugins/CopyDefaultCssPlugin";
-import { LogParserErrorsPlugin } from "./plugins/LogParserErrorsPlugin";
-import { StdOutPlugin } from "./plugins/StdOutPlugin";
-import { IncludePlugin } from "./plugins/IncludePlugin";
-import { LoadFilePlugin } from "./plugins/LoadFilePlugin";
-import { ImageSizePlugin } from "./plugins/ImageSizePlugin";
-import { GenerateDataUrlsPlugin } from "./plugins/GenerateDataUrlsPlugin";
+import { SaveAsFilePlugin } from "./plugins/SaveAsFilePlugin.js";
+import { SvgToPdfExportPlugin } from "./plugins/SvgToPdfExportPlugin.js";
+import { CopyDefaultCssPlugin } from "./plugins/CopyDefaultCssPlugin.js";
+import { LogParserErrorsPlugin } from "./plugins/LogParserErrorsPlugin.js";
+import { StdOutPlugin } from "./plugins/StdOutPlugin.js";
+import { IncludePlugin } from "./plugins/IncludePlugin.js";
+import { LoadFilePlugin } from "./plugins/LoadFilePlugin.js";
+import { ImageSizePlugin } from "./plugins/ImageSizePlugin.js";
+import { GenerateDataUrlsPlugin } from "./plugins/GenerateDataUrlsPlugin.js";
+import { AsyncSvgExportPlugin } from "./plugins/AsyncSvgExportPlugin.js";
 
 export const argdown = new AsyncArgdownApplication();
 
@@ -128,7 +129,7 @@ argdown.addPlugin(saveAsGraphML, "save-as-graphml");
 const stdoutGraphML = new StdOutPlugin({ dataKey: "graphml" });
 argdown.addPlugin(stdoutGraphML, "stdout-graphml");
 
-const dotToSvgExport = new SyncDotToSvgExportPlugin();
+const dotToSvgExport = new AsyncSvgExportPlugin();
 argdown.addPlugin(dotToSvgExport, "export-svg");
 const saveSvgAsSvg = new SaveAsFilePlugin({
   outputDir: "./svg",

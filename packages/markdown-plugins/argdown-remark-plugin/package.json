@@ -1,0 +1,66 @@
+{
+  "name": "@argdown/remark-plugin",
+  "version": "2.0.0",
+  "description": "Turns Argdown code fences into svg argument maps",
+  "main": "dist/argdown-remark-plugin.js",
+  "type": "module",
+  "scripts": {
+    "deploy": "npm run test && npm run build && npm version patch && npm run push",
+    "dev": "vite serve test",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "test": "mocha",
+    "prepublishOnly": "npm run-script build",
+    "push": "git push --tags origin HEAD:master"
+  },
+  "keywords": [
+    "remark-plugin",
+    "remark",
+    "argdown",
+    "argument maps",
+    "argumentation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-remark-plugin"
+  },
+  "author": {
+    "name": "Christian Voigt",
+    "email": "1pxsolidblack@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@argdown/web-components": "workspace:^",
+    "@types/chai": "^5.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.9",
+    "@types/mdast": "^4.0.4",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
+    "@types/unist": "^3.0.3",
+    "chai": "^4.3.10",
+    "mocha": "^11.5.0",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark": "15.0.1",
+    "remark-html": "16.0.1",
+    "remark-rehype": "^11.1.2",
+    "rimraf": "^6.0.1",
+    "typescript": "5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@argdown/core": "workspace:^",
+    "lodash.defaultsdeep": "^4.6.1",
+    "unist-builder": "4.0.0",
+    "unist-util-is": "6.0.0",
+    "unist-util-visit": "5.0.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
+  "engines": {
+    "node": ">= 20.0.0"
+  },
+  "packageManager": "yarn@4.9.4"
+}

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { argdown } from "../src/index";
+import { argdown } from "../src/index.js";
 import { IArgdownRequest } from "@argdown/core";
 import intercept from "intercept-stdout";
 describe("StdoutPlugin", () => {
@@ -25,7 +25,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -49,7 +49,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -73,7 +73,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });
@@ -105,7 +105,7 @@ describe("StdoutPlugin", () => {
     };
     let capturedText = "";
 
-    var unhook_intercept = intercept(function(text: string) {
+    var unhook_intercept = intercept(function (text: string) {
       capturedText += text;
       return "";
     });

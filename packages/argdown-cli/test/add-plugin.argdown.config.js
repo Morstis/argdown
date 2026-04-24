@@ -1,10 +1,10 @@
 var testPlugin = {
   name: "TestPlugin",
-  run: function() {
+  run: function () {
     console.log("Hallo World!");
   }
 };
-module.exports = {
+export default {
   input: "Hallo Welt!",
   plugins: [{ plugin: testPlugin, processor: "test-processor" }],
   processes: {

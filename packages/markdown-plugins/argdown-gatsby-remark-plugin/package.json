@@ -1,0 +1,41 @@
+{
+  "name": "@argdown/gatsby-remark-plugin",
+  "version": "2.0.0",
+  "description": "Turns Argdown code fences into svg argument maps",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">= 22.11.0"
+  },
+  "scripts": {
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
+  },
+  "keywords": [
+    "gatsby-remark-plugin",
+    "gatsby-plugin",
+    "gatsby",
+    "argdown",
+    "argument maps",
+    "argumentation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-gatsby-remark-plugin"
+  },
+  "author": {
+    "name": "Christian Voigt",
+    "email": "1pxsolidblack@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@argdown/remark-plugin": "workspace:^",
+    "to-vfile": "^8.0.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
+  "packageManager": "yarn@4.9.4"
+}

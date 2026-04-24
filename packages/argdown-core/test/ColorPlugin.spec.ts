@@ -30,8 +30,8 @@ app.addPlugin(new MapPlugin(), "build-map");
 app.addPlugin(new GroupPlugin(), "build-map");
 app.addPlugin(colorPlugin, "add-color");
 
-describe("ColorPlugin", function() {
-  it("can load a preset color scheme", function() {
+describe("ColorPlugin", function () {
+  it("can load a preset color scheme", function () {
     let source = `
     ===
     color:
@@ -61,7 +61,7 @@ describe("ColorPlugin", function() {
       colorSchemes["iwanthue-red-roses"][0]
     );
   });
-  it("can use a custom color scheme", function() {
+  it("can use a custom color scheme", function () {
     let source = `
     ===
     color:
@@ -91,7 +91,7 @@ describe("ColorPlugin", function() {
     expect(response.arguments!["b"].color).to.equal("#51ffae");
     expect(response.statements!["c"].color).to.equal("#f3d942");
   });
-  it("can apply colors from tagColor setting", function() {
+  it("can apply colors from tagColor setting", function () {
     let source = `
     ===
     color:
@@ -124,7 +124,7 @@ describe("ColorPlugin", function() {
       colorSchemes["colorbrewer-set3"][2]
     );
   });
-  it("can apply colors based on tag priority", function() {
+  it("can apply colors based on tag priority", function () {
     let source = `
     ===
 color:
@@ -155,7 +155,7 @@ selection:
       colorSchemes["colorbrewer-set3"][3]
     );
   });
-  it("can change group color by tag", function() {
+  it("can change group color by tag", function () {
     let source = `
     ===
     color:
@@ -197,7 +197,7 @@ selection:
       "#b3e2cd"
     );
   });
-  it("can change element color by title", function() {
+  it("can change element color by title", function () {
     let source = `
     ===
     color:
@@ -249,7 +249,7 @@ selection:
       colorSchemes["iwanthue-colorblind-friendly"][2]
     );
   });
-  it("can change element color by data color field", function() {
+  it("can change element color by data color field", function () {
     let source = `
     ===
     color:
@@ -292,7 +292,7 @@ selection:
     );
     expect(response.statements!["c"].color).to.equal("#64b964");
   });
-  it("can ignore data color field", function() {
+  it("can ignore data color field", function () {
     let source = `
     ===
     color:
@@ -342,7 +342,7 @@ selection:
       colorSchemes["iwanthue-yellow-lime"][3]
     );
   });
-  it("can colorize map", function() {
+  it("can colorize map", function () {
     let input = `    
 ===
 color:
@@ -397,7 +397,7 @@ color:
     expect(response.map!.edges![1].color).to.equal("#100000");
     expect(response.map!.edges![2].color).to.equal("#600000");
   });
-  it("can use a custom color scheme for groups", function() {
+  it("can use a custom color scheme for groups", function () {
     let source = `
     ===
     color:

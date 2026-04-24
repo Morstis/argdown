@@ -15,7 +15,7 @@ export const runArgdown = async (
     const responses = await argdown.load(config);
     if (responses && Array.isArray(responses) && responses.length > 0) {
       if (checkParserErrors) {
-        for (var r of responses) {
+        for (const r of responses) {
           if (r.parserErrors && r.parserErrors.length > 0) {
             process.exitCode = 1;
             break;

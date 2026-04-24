@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import {it} from "mocha";
+import { it } from "mocha";
 import {
   ArgdownApplication,
   ParserPlugin,
@@ -31,9 +31,8 @@ app.addPlugin(argumentSelectionPlugin, "build-map");
 const mapPlugin = new MapPlugin();
 app.addPlugin(mapPlugin, "build-map");
 
-
-describe("ExplodeArguments", function() {
-  it("can explode an argument into its inferential steps", function() {
+describe("ExplodeArguments", function () {
+  it("can explode an argument into its inferential steps", function () {
     const input = `
 <a1>
 
@@ -51,11 +50,11 @@ describe("ExplodeArguments", function() {
     - <a3>
     -> <a4>
 `;
-    let request:IArgdownRequest = {
+    let request: IArgdownRequest = {
       process: ["parse-input", "build-model"],
       input,
       model: {
-          explodeArguments: true
+        explodeArguments: true
       }
     };
     let result = app.run(request);
@@ -71,7 +70,7 @@ describe("ExplodeArguments", function() {
     expect(step2.pcs.length).to.equal(3);
     expect(result.relations!.length).to.equal(4);
   });
-  it("can explode an argument into its inferential steps based on 'uses' lists", function() {
+  it("can explode an argument into its inferential steps based on 'uses' lists", function () {
     const input = `
 <a1>
 
@@ -89,11 +88,11 @@ describe("ExplodeArguments", function() {
 ----
 (8) s8 {uses: [1, 3, 6, 7]}
 `;
-    let request:IArgdownRequest = {
+    let request: IArgdownRequest = {
       process: ["parse-input", "build-model"],
       input,
       model: {
-          explodeArguments: true
+        explodeArguments: true
       }
     };
     let result = app.run(request);
@@ -112,7 +111,7 @@ describe("ExplodeArguments", function() {
     const step3 = result.arguments!["a1 - 3"];
     expect(step3.pcs.length).to.equal(5);
   });
-  it("can explode an argument into its inferential steps and add support relations between argument nodes", function() {
+  it("can explode an argument into its inferential steps and add support relations between argument nodes", function () {
     const input = `
 <a1>
 
@@ -125,15 +124,15 @@ describe("ExplodeArguments", function() {
 ----
 (6) s6
 `;
-    let request:IArgdownRequest = {
+    let request: IArgdownRequest = {
       process: ["parse-input", "build-model", "build-map"],
       input,
       model: {
-          explodeArguments: true
+        explodeArguments: true
       }
     };
     let result = app.run(request);
-    console.log(result.map!.nodes.map(n=>n.title).join(", "));
+    console.log(result.map!.nodes.map((n) => n.title).join(", "));
     expect(result.map).to.exist;
     expect(result.map!.nodes!.length).to.equal(2);
     expect(result.map!.edges!.length).to.equal(1);
