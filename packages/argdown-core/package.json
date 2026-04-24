@@ -16,9 +16,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./dist/plugins/argdown.css": "./dist/plugins/argdown.css"
   },
@@ -55,6 +55,7 @@
   "scripts": {
     "deploy": "yarn run test && yarn run build && npm version patch && yarn run push",
     "type-check": "tsc --noEmit",
+    "dev": "tsc --watch",
     "build": "yarn run clean && tsc && yarn run copy:css",
     "docs:build": "typedoc ./src/",
     "copy:argdown": "copyfiles \"test/**/*.{ad,argdown}\" dist/",
