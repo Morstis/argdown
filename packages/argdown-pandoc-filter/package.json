@@ -17,15 +17,16 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
     "build": "tsc",
     "test": "tsc --noEmit && mocha",
     "overwrite-snapshots": "cross-env CHAI_SNAPSHOT_UPDATE=true mocha",
     "clean": "rimraf \"dist/*\"",
-    "prepublishOnly": "npm run-script build",
-    "push": "git push --tags origin HEAD:master"
+    "prepublishOnly": "npm run-script build"
   },
   "keywords": [
     "pandoc-filter",

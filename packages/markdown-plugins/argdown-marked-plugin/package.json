@@ -11,14 +11,15 @@
       "types": "./dist/argdown-marked-plugin.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "dev": "vite serve test",
     "type-check": "tsc --noEmit",
     "build": "tsc",
     "test": "tsc --noEmit && mocha",
-    "prepublishOnly": "npm run-script build",
-    "push": "git push --tags origin HEAD:master"
+    "prepublishOnly": "npm run-script build"
   },
   "keywords": [
     "marked-plugin",

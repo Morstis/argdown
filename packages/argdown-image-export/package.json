@@ -11,6 +11,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "npm run clean && tsc",
     "test": "tsc --noEmit && mocha",
