@@ -5,6 +5,9 @@
   "description": "An Argdown editor that runs in the browser",
   "author": "Christian Voigt <1pxsolidblack@googlemail.com>",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",

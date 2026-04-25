@@ -1,4 +1,4 @@
-npm run docs:build
+npm run build
 
 cd ./packages/argdown-core
 
@@ -12,8 +12,10 @@ cd ../argdown-sandbox
 
 npm run build
 
+cp -r dist ../argdown-docs/docs/.vitepress/dist/sandbox
+
 cd ../../
 
-cp ./docs/.vuepress/public/404.html ./docs/.vuepress/dist/404.html
+cp ./docs/.vitepress/public/404.html ./docs/.vitepress/dist/404.html
 
 # npm run docs:sitemap

@@ -20,6 +20,9 @@
       "types": "./dist/cli.d.ts"
     }
   },
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
@@ -40,7 +43,6 @@
     "email": "1pxsolidblack@gmail.com"
   },
   "scripts": {
-    "deploy": "yarn run version:patch && git push --tags origin HEAD:master",
     "dev": "tsc --watch",
     "build": "yarn run clean && tsc",
     "test": "tsc --noEmit && mocha",
