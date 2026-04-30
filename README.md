@@ -4,7 +4,7 @@
 
 ![Argdown logo](./argdown-arrow.png?raw=true "Argdown logo")
 
-[📑 Documentation](https://argdown.org) | [🕹️ Playground](https://argdown.org/sandbox) | [💬 Discord Server](https://discord.gg/rFe7nuDbzs)
+[📑 Documentation](https://argdown.org) | [🕹️ Playground](https://argdown.org/sandbox/html) | [💬 Discord Server](https://discord.gg/rFe7nuDbzs)
 
 </div>
 
