@@ -3,15 +3,16 @@
   "version": "2.0.0",
   "description": "Turns Argdown code fences into svg argument maps",
   "main": "dist/argdown-remark-plugin.js",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "scripts": {
-    "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "dev": "vite serve test",
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "test": "mocha",
-    "prepublishOnly": "npm run-script build",
-    "push": "git push --tags origin HEAD:master"
+    "prepublishOnly": "npm run-script build"
   },
   "keywords": [
     "remark-plugin",
