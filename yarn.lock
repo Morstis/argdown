@@ -8643,9 +8643,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"argdown-vscode@workspace:packages/argdown-vscode":
+"argdown-vsc@workspace:packages/argdown-vscode":
   version: 0.0.0-use.local
-  resolution: "argdown-vscode@workspace:packages/argdown-vscode"
+  resolution: "argdown-vsc@workspace:packages/argdown-vscode"
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/language-server": "workspace:^"
